@@ -36,10 +36,15 @@ class FermiCalculator {
             { value: 10, label: "We can probably do this", description: "Some unknowns but familiar territory" },
             { value: 100, label: "Completely within expertise", description: "We've done this before successfully" }
         ];
+
+        // Bind methods to this instance
+        this.addFeature = this.addFeature.bind(this);
+        this.updateFeature = this.updateFeature.bind(this);
+        this.removeFeature = this.removeFeature.bind(this);
+        this.renderOptionGrid = this.renderOptionGrid.bind(this);
     }
 
     initialize() {
-        // Wait for DOM content to be loaded before initializing
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', () => this.initializeApp());
         } else {
@@ -48,38 +53,28 @@ class FermiCalculator {
     }
 
     initializeApp() {
-        try {
-            this.initializeEventListeners();
-            this.loadFromStorage();
-            this.render();
-        } catch (error) {
-            console.error('Initialization error:', error);
-        }
+        this.initializeEventListeners();
+        this.loadFromStorage();
+        this.render();
     }
 
     initializeEventListeners() {
-        try {
-            const addFeatureBtn = document.getElementById('add-feature');
-            if (addFeatureBtn) {
-                addFeatureBtn.addEventListener('click', () => this.addFeature());
-            }
-
-            // Initialize language switcher
-            const languageBtns = document.querySelectorAll('.language-btn');
-            if (languageBtns) {
-                languageBtns.forEach(btn => {
-                    btn.addEventListener('click', () => {
-                        this.currentLanguage = btn.dataset.lang;
-                        this.render();
-                    });
-                });
-            }
-            
-            // Initialize option grids
-            this.initializeOptionGrids();
-        } catch (error) {
-            console.error('Event listener initialization error:', error);
+        const addFeatureBtn = document.getElementById('add-feature');
+        if (addFeatureBtn) {
+            addFeatureBtn.addEventListener('click', this.addFeature);
         }
+
+        const languageBtns = document.querySelectorAll('.language-btn');
+        if (languageBtns) {
+            languageBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    this.currentLanguage = btn.dataset.lang;
+                    this.render();
+                });
+            });
+        }
+        
+        this.initializeOptionGrids();
     }
 
     initializeOptionGrids() {
@@ -91,47 +86,35 @@ class FermiCalculator {
         ];
 
         optionSets.forEach(({ containerId, options, field }) => {
-            try {
-                const container = document.querySelector(`.${containerId}`);
-                if (!container) {
-                    console.warn(`Container not found: ${containerId}`);
-                    return;
-                }
-                this.renderOptionGrid(containerId, options, field);
-            } catch (error) {
-                console.error(`Error initializing grid for ${containerId}:`, error);
+            const container = document.querySelector(`.${containerId}`);
+            if (container) {
+                this.renderOptionGrid(container, options, field);
             }
         });
     }
 
-    renderOptionGrid(containerId, options, field) {
-        try {
-            const container = document.querySelector(`.${containerId}`);
-            if (!container) {
-                console.warn(`Container not found: ${containerId}`);
-                return;
+    renderOptionGrid(container, options, field) {
+        container.innerHTML = '';
+        
+        options.forEach(option => {
+            const card = document.createElement('div');
+            card.className = 'option-card';
+            if (this.features[this.activeFeature][field] === option.value) {
+                card.classList.add('selected');
             }
+
+            card.innerHTML = `
+                <div class="option-label fw-bold">${option.label}</div>
+                <div class="option-description small text-muted">${option.description}</div>
+            `;
             
-            container.innerHTML = '';
-            
-            options.forEach(option => {
-                const card = document.createElement('div');
-                card.className = 'option-card';
-                card.innerHTML = `
-                    <div class="option-label fw-bold">${option.label}</div>
-                    <div class="option-description small text-muted">${option.description}</div>
-                `;
-                
-                card.addEventListener('click', () => {
-                    this.updateFeature(field, option.value);
-                    this.render();
-                });
-                
-                container.appendChild(card);
+            card.addEventListener('click', () => {
+                this.updateFeature(field, option.value);
+                this.render();
             });
-        } catch (error) {
-            console.error(`Error rendering option grid for ${containerId}:`, error);
-        }
+            
+            container.appendChild(card);
+        });
     }
 
     calculateROI(feature) {
@@ -167,6 +150,7 @@ class FermiCalculator {
     updateFeature(field, value) {
         this.features[this.activeFeature][field] = value;
         this.saveToStorage();
+        this.render();
     }
 
     getAnalysis() {
@@ -255,149 +239,105 @@ class FermiCalculator {
     }
 
     render() {
-        try {
-            this.renderFeatureTabs();
-            this.renderOptionSelections();
-            this.renderAnalysis();
-        } catch (error) {
-            console.error('Render error:', error);
-        }
+        this.renderFeatureTabs();
+        this.renderOptionSelections();
+        this.renderAnalysis();
     }
 
     renderFeatureTabs() {
-        try {
-            const tabsContainer = document.getElementById('feature-tabs');
-            if (!tabsContainer) {
-                console.warn('Feature tabs container not found');
-                return;
-            }
-            
-            tabsContainer.innerHTML = '';
+        const tabsContainer = document.getElementById('feature-tabs');
+        if (!tabsContainer) return;
+        
+        tabsContainer.innerHTML = '';
 
-            this.features.forEach((feature, index) => {
-                const tab = document.createElement('div');
-                tab.className = 'feature-tab';
-                tab.innerHTML = `
-                    <button class="btn ${index === this.activeFeature ? 'btn-primary' : 'btn-outline-secondary'}">
-                        ${feature.name}
+        this.features.forEach((feature, index) => {
+            const tab = document.createElement('div');
+            tab.className = 'feature-tab';
+            tab.innerHTML = `
+                <button class="btn ${index === this.activeFeature ? 'btn-primary' : 'btn-outline-secondary'}">
+                    ${feature.name}
+                </button>
+                ${this.features.length > 1 ? `
+                    <button class="btn btn-danger btn-sm remove-feature">
+                        <i class="bi bi-x"></i>
                     </button>
-                    ${this.features.length > 1 ? `
-                        <button class="btn btn-danger btn-sm remove-feature">
-                            <i class="bi bi-x"></i>
-                        </button>
-                    ` : ''}
-                `;
+                ` : ''}
+            `;
 
-                const mainButton = tab.querySelector('button:first-child');
-                if (mainButton) {
-                    mainButton.addEventListener('click', () => {
-                        this.activeFeature = index;
-                        this.render();
+            const mainButton = tab.querySelector('button:first-child');
+            if (mainButton) {
+                mainButton.addEventListener('click', () => {
+                    this.activeFeature = index;
+                    this.render();
+                });
+            }
+
+            if (this.features.length > 1) {
+                const removeBtn = tab.querySelector('.remove-feature');
+                if (removeBtn) {
+                    removeBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        this.removeFeature(index);
                     });
                 }
+            }
 
-                if (this.features.length > 1) {
-                    const removeBtn = tab.querySelector('.remove-feature');
-                    if (removeBtn) {
-                        removeBtn.addEventListener('click', (e) => {
-                            e.stopPropagation();
-                            this.removeFeature(index);
-                        });
-                    }
-                }
-
-                tabsContainer.appendChild(tab);
-            });
-        } catch (error) {
-            console.error('Error rendering feature tabs:', error);
-        }
+            tabsContainer.appendChild(tab);
+        });
     }
 
     renderOptionSelections() {
-        try {
-            const currentFeature = this.features[this.activeFeature];
-            
-            // Clear all selected states
-            const optionCards = document.querySelectorAll('.option-card');
-            optionCards?.forEach(card => {
-                card.classList.remove('selected');
-            });
-
-            // Update selected states with null checks
-            ['revenue', 'customerCare', 'effort', 'confidence'].forEach(field => {
-                const value = currentFeature[field];
-                const container = document.querySelector(`.${field}Options`);
-                if (!container) {
-                    console.warn(`Options container not found: ${field}Options`);
-                    return;
-                }
-                
-                const cards = container.querySelectorAll('.option-card');
-                if (!cards || cards.length === 0) {
-                    console.warn(`No option cards found for ${field}`);
-                    return;
-                }
-                
-                cards.forEach((card, index) => {
-                    const option = this[`${field}Options`][index];
-                    if (option.value === value) {
-                        card.classList.add('selected');
-                    }
-                });
-            });
-        } catch (error) {
-            console.error('Error rendering option selections:', error);
-        }
+        const currentFeature = this.features[this.activeFeature];
+        
+        ['revenue', 'customerCare', 'effort', 'confidence'].forEach(field => {
+            const container = document.querySelector(`.${field}Options`);
+            if (container) {
+                this.renderOptionGrid(container, this[`${field}Options`], field);
+            }
+        });
     }
 
     renderAnalysis() {
-        try {
-            const analysisContent = document.getElementById('analysis-content');
-            if (!analysisContent) {
-                console.warn('Analysis content container not found');
-                return;
-            }
-            
-            const result = this.getAnalysis();
+        const analysisContent = document.getElementById('analysis-content');
+        if (!analysisContent) return;
+        
+        const result = this.getAnalysis();
 
-            if (!result) {
-                analysisContent.innerHTML = `
-                    <div class="text-muted">
-                        <i class="bi bi-info-circle"></i>
-                        Complete all questions for at least one feature to see analysis
-                    </div>
-                `;
-                return;
-            }
-
-            const { analysis, sortedFeatures } = result;
-            
-            let html = `
-                <div class="analysis-points mb-4">
-                    ${analysis.map(point => `
-                        <div class="analysis-point ${point.type}">
-                            ${point.content}
-                        </div>
-                    `).join('')}
-                </div>
-                
-                <div class="rankings mt-4 pt-4 border-top">
-                    <div class="fw-bold mb-2">Complete Rankings:</div>
-                    ${sortedFeatures.map((feature, index) => `
-                        <div class="d-flex align-items-center gap-2 mb-2">
-                            <i class="bi bi-arrow-right ${index === 0 ? 'text-success' : 'text-muted'}"></i>
-                            <span class="${index === 0 ? 'fw-bold' : ''}">
-                                ${feature.name}: ${feature.roi.toLocaleString()} ROI
-                            </span>
-                        </div>
-                    `).join('')}
+        if (!result) {
+            analysisContent.innerHTML = `
+                <div class="text-muted">
+                    <i class="bi bi-info-circle"></i>
+                    Complete all questions for at least one feature to see analysis
                 </div>
             `;
-
-            analysisContent.innerHTML = html;
-        } catch (error) {
-            console.error('Error rendering analysis:', error);
+            return;
         }
+
+        const { analysis, sortedFeatures } = result;
+        
+        let html = `
+            <div class="analysis-points mb-4">
+                ${analysis.map(point => `
+                    <div class="analysis-point ${point.type}">
+                        ${point.content}
+                    </div>
+                `).join('')}
+            </div>
+            
+            <div class="rankings mt-4 pt-4 border-top">
+                <div class="fw-bold mb-2">Complete Rankings:</div>
+                ${sortedFeatures.map((feature, index) => `
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        <i class="bi bi-arrow-right ${index === 0 ? 'text-success' : 'text-muted'}"></i>
+                        <span class="${index === 0 ? 'fw-bold' : ''}">
+                            ${feature.name}: ${feature.roi.toLocaleString()} ROI
+                        </span>
+                    </div>
+                `).join('')}
+            </div>
+        `;
+
+        analysisContent.innerHTML = html;
     }
 }
 
