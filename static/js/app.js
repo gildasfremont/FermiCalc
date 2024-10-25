@@ -39,29 +39,23 @@ class FermiCalculator {
         ];
 
         // Bind all methods
-        this.bindMethods();
-    }
-
-    bindMethods() {
-        try {
-            const methodsToBind = [
-                'initialize', 'initializeApp', 'initializeEventListeners', 'initializeOptionGrids',
-                'addFeature', 'removeFeature', 'updateFeature', 'calculateROI',
-                'getAnalysis', 'saveToStorage', 'loadFromStorage', 'render',
-                'renderFeatureTabs', 'renderOptionSelections', 'renderAnalysis',
-                'renderOptionGrid', 'translate'
-            ];
-
-            methodsToBind.forEach(method => {
-                if (typeof this[method] === 'function') {
-                    this[method] = this[method].bind(this);
-                } else {
-                    console.warn(`Method ${method} not found during binding`);
-                }
-            });
-        } catch (error) {
-            console.error('Error binding methods:', error);
-        }
+        this.initialize = this.initialize.bind(this);
+        this.initializeApp = this.initializeApp.bind(this);
+        this.initializeEventListeners = this.initializeEventListeners.bind(this);
+        this.initializeOptionGrids = this.initializeOptionGrids.bind(this);
+        this.addFeature = this.addFeature.bind(this);
+        this.removeFeature = this.removeFeature.bind(this);
+        this.updateFeature = this.updateFeature.bind(this);
+        this.calculateROI = this.calculateROI.bind(this);
+        this.getAnalysis = this.getAnalysis.bind(this);
+        this.saveToStorage = this.saveToStorage.bind(this);
+        this.loadFromStorage = this.loadFromStorage.bind(this);
+        this.render = this.render.bind(this);
+        this.renderFeatureSelect = this.renderFeatureSelect.bind(this);
+        this.renderOptionSelections = this.renderOptionSelections.bind(this);
+        this.renderAnalysis = this.renderAnalysis.bind(this);
+        this.renderOptionGrid = this.renderOptionGrid.bind(this);
+        this.translate = this.translate.bind(this);
     }
 
     translate(key, params = {}) {
@@ -106,6 +100,17 @@ class FermiCalculator {
             const addFeatureBtn = document.getElementById('add-feature');
             if (addFeatureBtn) {
                 addFeatureBtn.addEventListener('click', this.addFeature);
+            }
+
+            const featureSelect = document.getElementById('feature-select');
+            if (featureSelect) {
+                featureSelect.addEventListener('change', (e) => {
+                    const selectedIndex = e.target.selectedIndex;
+                    if (selectedIndex >= 0) {
+                        this.activeFeature = selectedIndex;
+                        this.render();
+                    }
+                });
             }
 
             const languageBtns = document.querySelectorAll('.language-btn');
@@ -162,18 +167,6 @@ class FermiCalculator {
         }
     }
 
-    updateFeature(field, value) {
-        try {
-            if (this.features[this.activeFeature]) {
-                this.features[this.activeFeature][field] = value;
-                this.saveToStorage();
-                this.render();
-            }
-        } catch (error) {
-            console.error('Error updating feature:', error);
-        }
-    }
-
     removeFeature(index) {
         try {
             if (this.features.length <= 1) return;
@@ -186,6 +179,18 @@ class FermiCalculator {
             this.render();
         } catch (error) {
             console.error('Error removing feature:', error);
+        }
+    }
+
+    updateFeature(field, value) {
+        try {
+            if (this.features[this.activeFeature]) {
+                this.features[this.activeFeature][field] = value;
+                this.saveToStorage();
+                this.render();
+            }
+        } catch (error) {
+            console.error('Error updating feature:', error);
         }
     }
 
@@ -303,7 +308,7 @@ class FermiCalculator {
                 }
             });
 
-            this.renderFeatureTabs();
+            this.renderFeatureSelect();
             this.renderOptionSelections();
             this.renderAnalysis();
         } catch (error) {
@@ -311,50 +316,21 @@ class FermiCalculator {
         }
     }
 
-    renderFeatureTabs() {
+    renderFeatureSelect() {
         try {
-            const tabsContainer = document.getElementById('feature-tabs');
-            if (!tabsContainer) return;
+            const select = document.getElementById('feature-select');
+            if (!select) return;
             
-            tabsContainer.innerHTML = '';
-
-            this.features.forEach((feature, index) => {
-                const tab = document.createElement('div');
-                tab.className = 'feature-tab';
-                
-                tab.innerHTML = `
-                    <button class="btn ${index === this.activeFeature ? 'btn-primary' : 'btn-outline-secondary'} w-100">
-                        ${feature.name}
-                    </button>
-                    ${this.features.length > 1 ? `
-                        <button class="btn btn-danger btn-sm remove-feature" aria-label="Remove feature">
-                            <i class="bi bi-x"></i>
-                        </button>
-                    ` : ''}
-                `;
-
-                const mainButton = tab.querySelector('button:first-child');
-                if (mainButton) {
-                    mainButton.addEventListener('click', () => {
-                        this.activeFeature = index;
-                        this.render();
-                    });
-                }
-
-                if (this.features.length > 1) {
-                    const removeBtn = tab.querySelector('.remove-feature');
-                    if (removeBtn) {
-                        removeBtn.addEventListener('click', (e) => {
-                            e.stopPropagation();
-                            this.removeFeature(index);
-                        });
-                    }
-                }
-
-                tabsContainer.appendChild(tab);
-            });
+            select.innerHTML = this.features.map((feature, index) => `
+                <option value="${index}" ${index === this.activeFeature ? 'selected' : ''}>
+                    ${feature.name}
+                    ${this.features.length > 1 ? 
+                        `<button class="btn-close" onclick="calculator.removeFeature(${index})"></button>` 
+                        : ''}
+                </option>
+            `).join('');
         } catch (error) {
-            console.error('Error rendering feature tabs:', error);
+            console.error('Error rendering feature select:', error);
         }
     }
 
