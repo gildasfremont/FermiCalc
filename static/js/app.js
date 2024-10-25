@@ -37,66 +37,92 @@ class FermiCalculator {
             { value: 100, label: "Completely within expertise", description: "We've done this before successfully" }
         ];
 
-        // Wait for DOM content to be loaded before initializing
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', () => this.initialize());
-        } else {
+        // Wait for DOM to be fully loaded before initializing
+        document.addEventListener('DOMContentLoaded', () => {
             this.initialize();
-        }
+        });
     }
 
     initialize() {
-        this.initializeEventListeners();
-        this.loadFromStorage();
-        this.render();
+        try {
+            this.initializeEventListeners();
+            this.loadFromStorage();
+            this.render();
+        } catch (error) {
+            console.error('Initialization error:', error);
+        }
     }
 
     initializeEventListeners() {
-        const addFeatureBtn = document.getElementById('add-feature');
-        if (addFeatureBtn) {
-            addFeatureBtn.addEventListener('click', () => this.addFeature());
-        }
+        try {
+            const addFeatureBtn = document.getElementById('add-feature');
+            if (addFeatureBtn) {
+                addFeatureBtn.addEventListener('click', () => this.addFeature());
+            }
 
-        // Initialize language switcher
-        const languageBtns = document.querySelectorAll('.language-btn');
-        languageBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                this.currentLanguage = btn.dataset.lang;
-                this.render();
-            });
+            // Initialize language switcher
+            const languageBtns = document.querySelectorAll('.language-btn');
+            if (languageBtns) {
+                languageBtns.forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        this.currentLanguage = btn.dataset.lang;
+                        this.render();
+                    });
+                });
+            }
+            
+            // Initialize option grids
+            this.initializeOptionGrids();
+        } catch (error) {
+            console.error('Event listener initialization error:', error);
+        }
+    }
+
+    initializeOptionGrids() {
+        const optionSets = [
+            { containerId: 'revenue-options', options: this.revenueOptions, field: 'revenue' },
+            { containerId: 'customer-care-options', options: this.customerCareOptions, field: 'customerCare' },
+            { containerId: 'effort-options', options: this.effortOptions, field: 'effort' },
+            { containerId: 'confidence-options', options: this.confidenceOptions, field: 'confidence' }
+        ];
+
+        optionSets.forEach(({ containerId, options, field }) => {
+            this.renderOptionGrid(containerId, options, field);
         });
-        
-        // Initialize option grids
-        this.renderOptionGrid('revenue-options', this.revenueOptions, 'revenue');
-        this.renderOptionGrid('customer-care-options', this.customerCareOptions, 'customerCare');
-        this.renderOptionGrid('effort-options', this.effortOptions, 'effort');
-        this.renderOptionGrid('confidence-options', this.confidenceOptions, 'confidence');
     }
 
     renderOptionGrid(containerId, options, field) {
-        const container = document.querySelector(`.${containerId}`);
-        if (!container) return;
-        
-        container.innerHTML = '';
-        
-        options.forEach(option => {
-            const card = document.createElement('div');
-            card.className = 'option-card';
-            card.innerHTML = `
-                <div class="option-label fw-bold">${option.label}</div>
-                <div class="option-description small text-muted">${option.description}</div>
-            `;
+        try {
+            const container = document.querySelector(`.${containerId}`);
+            if (!container) {
+                console.warn(`Container not found: ${containerId}`);
+                return;
+            }
             
-            card.addEventListener('click', () => {
-                this.updateFeature(field, option.value);
-                this.render();
+            container.innerHTML = '';
+            
+            options.forEach(option => {
+                const card = document.createElement('div');
+                card.className = 'option-card';
+                card.innerHTML = `
+                    <div class="option-label fw-bold">${option.label}</div>
+                    <div class="option-description small text-muted">${option.description}</div>
+                `;
+                
+                card.addEventListener('click', () => {
+                    this.updateFeature(field, option.value);
+                    this.render();
+                });
+                
+                container.appendChild(card);
             });
-            
-            container.appendChild(card);
-        });
+        } catch (error) {
+            console.error(`Error rendering option grid for ${containerId}:`, error);
+        }
     }
 
     calculateROI(feature) {
+        if (!feature.effort) return 0;
         const impact = (feature.revenue * feature.customerCare * feature.confidence) / 100;
         return Math.round(impact / feature.effort);
     }
@@ -135,7 +161,7 @@ class FermiCalculator {
         const sortedFeatures = [...this.features]
             .map(f => ({
                 ...f,
-                roi: f.effort ? this.calculateROI(f) : 0,
+                roi: this.calculateROI(f),
                 isComplete: f.revenue && f.customerCare && f.effort && f.confidence
             }))
             .sort((a, b) => b.roi - a.roi);
@@ -191,142 +217,177 @@ class FermiCalculator {
     }
 
     saveToStorage() {
-        localStorage.setItem('fermiFeatures', JSON.stringify({
-            features: this.features,
-            activeFeature: this.activeFeature,
-            language: this.currentLanguage
-        }));
+        try {
+            localStorage.setItem('fermiFeatures', JSON.stringify({
+                features: this.features,
+                activeFeature: this.activeFeature,
+                language: this.currentLanguage
+            }));
+        } catch (error) {
+            console.error('Error saving to storage:', error);
+        }
     }
 
     loadFromStorage() {
-        const saved = localStorage.getItem('fermiFeatures');
-        if (saved) {
-            const data = JSON.parse(saved);
-            this.features = data.features;
-            this.activeFeature = data.activeFeature;
-            this.currentLanguage = data.language || 'EN';
+        try {
+            const saved = localStorage.getItem('fermiFeatures');
+            if (saved) {
+                const data = JSON.parse(saved);
+                this.features = data.features;
+                this.activeFeature = data.activeFeature;
+                this.currentLanguage = data.language || 'EN';
+            }
+        } catch (error) {
+            console.error('Error loading from storage:', error);
         }
     }
 
     render() {
-        this.renderFeatureTabs();
-        this.renderOptionSelections();
-        this.renderAnalysis();
+        try {
+            this.renderFeatureTabs();
+            this.renderOptionSelections();
+            this.renderAnalysis();
+        } catch (error) {
+            console.error('Render error:', error);
+        }
     }
 
     renderFeatureTabs() {
-        const tabsContainer = document.getElementById('feature-tabs');
-        if (!tabsContainer) return;
-        
-        tabsContainer.innerHTML = '';
+        try {
+            const tabsContainer = document.getElementById('feature-tabs');
+            if (!tabsContainer) {
+                console.warn('Feature tabs container not found');
+                return;
+            }
+            
+            tabsContainer.innerHTML = '';
 
-        this.features.forEach((feature, index) => {
-            const tab = document.createElement('div');
-            tab.className = 'feature-tab';
-            tab.innerHTML = `
-                <button class="btn ${index === this.activeFeature ? 'btn-primary' : 'btn-outline-secondary'}">
-                    ${feature.name}
-                </button>
-                ${this.features.length > 1 ? `
-                    <button class="btn btn-danger btn-sm remove-feature">
-                        <i class="bi bi-x"></i>
+            this.features.forEach((feature, index) => {
+                const tab = document.createElement('div');
+                tab.className = 'feature-tab';
+                tab.innerHTML = `
+                    <button class="btn ${index === this.activeFeature ? 'btn-primary' : 'btn-outline-secondary'}">
+                        ${feature.name}
                     </button>
-                ` : ''}
-            `;
+                    ${this.features.length > 1 ? `
+                        <button class="btn btn-danger btn-sm remove-feature">
+                            <i class="bi bi-x"></i>
+                        </button>
+                    ` : ''}
+                `;
 
-            tab.querySelector('button:first-child').addEventListener('click', () => {
-                this.activeFeature = index;
-                this.render();
-            });
-
-            if (this.features.length > 1) {
-                const removeBtn = tab.querySelector('.remove-feature');
-                if (removeBtn) {
-                    removeBtn.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        this.removeFeature(index);
+                const mainButton = tab.querySelector('button:first-child');
+                if (mainButton) {
+                    mainButton.addEventListener('click', () => {
+                        this.activeFeature = index;
+                        this.render();
                     });
                 }
-            }
 
-            tabsContainer.appendChild(tab);
-        });
+                if (this.features.length > 1) {
+                    const removeBtn = tab.querySelector('.remove-feature');
+                    if (removeBtn) {
+                        removeBtn.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            this.removeFeature(index);
+                        });
+                    }
+                }
+
+                tabsContainer.appendChild(tab);
+            });
+        } catch (error) {
+            console.error('Error rendering feature tabs:', error);
+        }
     }
 
     renderOptionSelections() {
-        const currentFeature = this.features[this.activeFeature];
-        
-        // Add null checks for all option cards
-        const allCards = document.querySelectorAll('.option-card');
-        if (allCards) {
-            allCards.forEach(card => {
+        try {
+            const currentFeature = this.features[this.activeFeature];
+            
+            // Clear all selected states
+            const optionCards = document.querySelectorAll('.option-card');
+            optionCards?.forEach(card => {
                 card.classList.remove('selected');
             });
-        }
 
-        // Update selected states with null checks
-        ['revenue', 'customerCare', 'effort', 'confidence'].forEach(field => {
-            const value = currentFeature[field];
-            const options = document.querySelector(`.${field}-options`);
-            if (!options) return;
-            
-            const cards = options.querySelectorAll('.option-card');
-            if (!cards) return;
-            
-            cards.forEach((card, index) => {
-                const option = this[`${field}Options`][index];
-                if (option.value === value) {
-                    card.classList.add('selected');
+            // Update selected states with null checks
+            ['revenue', 'customerCare', 'effort', 'confidence'].forEach(field => {
+                const value = currentFeature[field];
+                const container = document.querySelector(`.${field}-options`);
+                if (!container) {
+                    console.warn(`Options container not found: ${field}-options`);
+                    return;
                 }
+                
+                const cards = container.querySelectorAll('.option-card');
+                if (!cards || cards.length === 0) {
+                    console.warn(`No option cards found for ${field}`);
+                    return;
+                }
+                
+                cards.forEach((card, index) => {
+                    const option = this[`${field}Options`][index];
+                    if (option.value === value) {
+                        card.classList.add('selected');
+                    }
+                });
             });
-        });
+        } catch (error) {
+            console.error('Error rendering option selections:', error);
+        }
     }
 
     renderAnalysis() {
-        const analysisContent = document.getElementById('analysis-content');
-        if (!analysisContent) return;
-        
-        const result = this.getAnalysis();
+        try {
+            const analysisContent = document.getElementById('analysis-content');
+            if (!analysisContent) {
+                console.warn('Analysis content container not found');
+                return;
+            }
+            
+            const result = this.getAnalysis();
 
-        if (!result) {
-            analysisContent.innerHTML = `
-                <div class="text-muted">
-                    <i class="bi bi-info-circle"></i>
-                    Complete all questions for at least one feature to see analysis
+            if (!result) {
+                analysisContent.innerHTML = `
+                    <div class="text-muted">
+                        <i class="bi bi-info-circle"></i>
+                        Complete all questions for at least one feature to see analysis
+                    </div>
+                `;
+                return;
+            }
+
+            const { analysis, sortedFeatures } = result;
+            
+            let html = `
+                <div class="analysis-points mb-4">
+                    ${analysis.map(point => `
+                        <div class="analysis-point ${point.type}">
+                            ${point.content}
+                        </div>
+                    `).join('')}
+                </div>
+                
+                <div class="rankings mt-4 pt-4 border-top">
+                    <div class="fw-bold mb-2">Complete Rankings:</div>
+                    ${sortedFeatures.map((feature, index) => `
+                        <div class="d-flex align-items-center gap-2 mb-2">
+                            <i class="bi bi-arrow-right ${index === 0 ? 'text-success' : 'text-muted'}"></i>
+                            <span class="${index === 0 ? 'fw-bold' : ''}">
+                                ${feature.name}: ${feature.roi.toLocaleString()} ROI
+                            </span>
+                        </div>
+                    `).join('')}
                 </div>
             `;
-            return;
+
+            analysisContent.innerHTML = html;
+        } catch (error) {
+            console.error('Error rendering analysis:', error);
         }
-
-        const { analysis, sortedFeatures } = result;
-        
-        let html = `
-            <div class="analysis-points mb-4">
-                ${analysis.map(point => `
-                    <div class="analysis-point ${point.type}">
-                        ${point.content}
-                    </div>
-                `).join('')}
-            </div>
-            
-            <div class="rankings mt-4 pt-4 border-top">
-                <div class="fw-bold mb-2">Complete Rankings:</div>
-                ${sortedFeatures.map((feature, index) => `
-                    <div class="d-flex align-items-center gap-2 mb-2">
-                        <i class="bi bi-arrow-right ${index === 0 ? 'text-success' : 'text-muted'}"></i>
-                        <span class="${index === 0 ? 'fw-bold' : ''}">
-                            ${feature.name}: ${feature.roi.toLocaleString()} ROI
-                        </span>
-                    </div>
-                `).join('')}
-            </div>
-        `;
-
-        analysisContent.innerHTML = html;
     }
 }
 
 // Initialize the calculator when the page loads
-document.addEventListener('DOMContentLoaded', () => {
-    new FermiCalculator();
-});
+const calculator = new FermiCalculator();
