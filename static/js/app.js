@@ -10,7 +10,6 @@ class FermiCalculator {
         }];
         this.activeFeature = 0;
         this.currentLanguage = 'EN';
-        this.isFeatureListCollapsed = false;
 
         // Initialize options arrays
         this.revenueOptions = [
@@ -39,6 +38,7 @@ class FermiCalculator {
             { value: 100, labelKey: 'confidence-100', descriptionKey: 'confidence-100-desc' }
         ];
 
+        // Bind all methods
         this.bindMethods();
     }
 
@@ -49,7 +49,7 @@ class FermiCalculator {
                 'addFeature', 'removeFeature', 'updateFeature', 'calculateROI',
                 'getAnalysis', 'saveToStorage', 'loadFromStorage', 'render',
                 'renderFeatureTabs', 'renderOptionSelections', 'renderAnalysis',
-                'renderOptionGrid', 'translate', 'toggleFeatureList'
+                'renderOptionGrid', 'translate'
             ];
 
             methodsToBind.forEach(method => {
@@ -76,16 +76,6 @@ class FermiCalculator {
         } catch (error) {
             console.warn(`Translation not found for key: ${key}`);
             return key;
-        }
-    }
-
-    toggleFeatureList() {
-        try {
-            this.isFeatureListCollapsed = !this.isFeatureListCollapsed;
-            this.saveToStorage();
-            this.renderFeatureTabs();
-        } catch (error) {
-            console.error('Error toggling feature list:', error);
         }
     }
 
@@ -116,11 +106,6 @@ class FermiCalculator {
             const addFeatureBtn = document.getElementById('add-feature');
             if (addFeatureBtn) {
                 addFeatureBtn.addEventListener('click', this.addFeature);
-            }
-
-            const toggleBtn = document.getElementById('toggle-features');
-            if (toggleBtn) {
-                toggleBtn.addEventListener('click', this.toggleFeatureList);
             }
 
             const languageBtns = document.querySelectorAll('.language-btn');
@@ -260,8 +245,7 @@ class FermiCalculator {
             localStorage.setItem('fermiFeatures', JSON.stringify({
                 features: this.features,
                 activeFeature: this.activeFeature,
-                language: this.currentLanguage,
-                isFeatureListCollapsed: this.isFeatureListCollapsed
+                language: this.currentLanguage
             }));
         } catch (error) {
             console.error('Error saving to storage:', error);
@@ -276,7 +260,6 @@ class FermiCalculator {
                 this.features = data.features;
                 this.activeFeature = data.activeFeature;
                 this.currentLanguage = data.language || 'EN';
-                this.isFeatureListCollapsed = data.isFeatureListCollapsed || false;
             }
         } catch (error) {
             console.error('Error loading from storage:', error);
@@ -312,6 +295,7 @@ class FermiCalculator {
 
     render() {
         try {
+            // Update all translatable elements
             document.querySelectorAll('[data-translate]').forEach(element => {
                 const key = element.getAttribute('data-translate');
                 if (key) {
@@ -332,19 +316,8 @@ class FermiCalculator {
             const tabsContainer = document.getElementById('feature-tabs');
             if (!tabsContainer) return;
             
-            tabsContainer.className = `feature-tabs ${this.isFeatureListCollapsed ? 'collapsed' : ''}`;
-            
             tabsContainer.innerHTML = '';
 
-            const toggleBtn = document.createElement('button');
-            toggleBtn.className = 'btn btn-outline-secondary toggle-features';
-            toggleBtn.innerHTML = `<i class="bi bi-chevron-${this.isFeatureListCollapsed ? 'down' : 'up'}"></i>`;
-            toggleBtn.addEventListener('click', this.toggleFeatureList);
-            tabsContainer.appendChild(toggleBtn);
-
-            const tabsList = document.createElement('div');
-            tabsList.className = 'tabs-list';
-            
             this.features.forEach((feature, index) => {
                 const tab = document.createElement('div');
                 tab.className = 'feature-tab';
@@ -378,10 +351,8 @@ class FermiCalculator {
                     }
                 }
 
-                tabsList.appendChild(tab);
+                tabsContainer.appendChild(tab);
             });
-
-            tabsContainer.appendChild(tabsList);
         } catch (error) {
             console.error('Error rendering feature tabs:', error);
         }
@@ -448,5 +419,6 @@ class FermiCalculator {
     }
 }
 
+// Initialize the calculator
 const calculator = new FermiCalculator();
 calculator.initialize();

@@ -39,13 +39,49 @@
         <div class="card border-2">
             <div class="card-header sticky-top">
                 <div class="d-flex align-items-center gap-3 flex-wrap">
-                    <div id="feature-tabs" class="feature-tabs flex-grow-1"></div>
+                    <div id="feature-tabs" class="d-flex gap-2 flex-grow-1"></div>
                     <button id="add-feature" class="btn btn-outline-light">
-                        <i class="bi bi-plus"></i> <span data-translate="add-feature">Add Feature</span>
+                        <i class="bi bi-plus"></i> Add Feature
                     </button>
                 </div>
             </div>
-            <!-- Rest of the HTML remains the same -->
+            <div class="card-body">
+                <div id="questions" class="mt-4">
+                    <div class="fermi-question mb-4">
+                        <h5 class="text-white" data-translate="revenue-title">What's the expected annual revenue impact?</h5>
+                        <p class="text-gray-300 small" data-translate="revenue-description">Consider direct revenue from sales, upgrades, or reduced churn</p>
+                        <div class="revenueOptions options-stack"></div>
+                    </div>
+
+                    <div class="fermi-question mb-4">
+                        <h5 class="text-white" data-translate="customer-care-title">How much do customers care about this?</h5>
+                        <p class="text-gray-300 small" data-translate="customer-care-description">Based on customer feedback and market research</p>
+                        <div class="customerCareOptions options-stack"></div>
+                    </div>
+
+                    <div class="fermi-question mb-4">
+                        <h5 class="text-white" data-translate="effort-title">How much effort would this take?</h5>
+                        <p class="text-gray-300 small" data-translate="effort-description">Include design, development, testing, and deployment</p>
+                        <div class="effortOptions options-stack"></div>
+                    </div>
+
+                    <div class="fermi-question mb-4">
+                        <h5 class="text-white" data-translate="confidence-title">How confident are we in our execution?</h5>
+                        <p class="text-gray-300 small" data-translate="confidence-description">Consider technical complexity and team expertise</p>
+                        <div class="confidenceOptions options-stack"></div>
+                    </div>
+                </div>
+
+                <div id="analysis" class="mt-4 p-4 rounded-3">
+                    <h5 class="text-white mb-3" data-translate="analysis-title">Analysis</h5>
+                    <div id="analysis-content">
+                        <div class="text-gray-300">
+                            <i class="bi bi-info-circle"></i>
+                            <span data-translate="analysis-empty">Complete all questions for at least one feature to see analysis</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <script src="/static/js/translations.js"></script>
