@@ -1,34 +1,13 @@
 class FermiCalculator {
     constructor() {
-        this.features = [{
-            id: 1,
-            name: 'Feature A',
+        // Initialize state
+        this.state = {
             revenue: 0,
             customerCare: 0,
             effort: 0,
-            confidence: 0
-        }];
-        this.activeFeature = 0;
-        this.currentLanguage = 'EN';
-
-        // Bind all methods that need 'this' context
-        this.initialize = this.initialize.bind(this);
-        this.initializeApp = this.initializeApp.bind(this);
-        this.initializeEventListeners = this.initializeEventListeners.bind(this);
-        this.initializeOptionGrids = this.initializeOptionGrids.bind(this);
-        this.renderOptionGrid = this.renderOptionGrid.bind(this);
-        this.calculateROI = this.calculateROI.bind(this);
-        this.addFeature = this.addFeature.bind(this);
-        this.removeFeature = this.removeFeature.bind(this);
-        this.updateFeature = this.updateFeature.bind(this);
-        this.getAnalysis = this.getAnalysis.bind(this);
-        this.saveToStorage = this.saveToStorage.bind(this);
-        this.loadFromStorage = this.loadFromStorage.bind(this);
-        this.render = this.render.bind(this);
-        this.renderFeatureTabs = this.renderFeatureTabs.bind(this);
-        this.renderOptionSelections = this.renderOptionSelections.bind(this);
-        this.renderAnalysis = this.renderAnalysis.bind(this);
-        this.translate = this.translate.bind(this);
+            confidence: 0,
+            language: 'EN'
+        };
 
         // Initialize options arrays
         this.revenueOptions = [
@@ -60,7 +39,7 @@ class FermiCalculator {
 
     translate(key, params = {}) {
         try {
-            let text = translations[this.currentLanguage][key];
+            let text = translations[this.state.language][key];
             if (!text) return key;
             
             Object.entries(params).forEach(([param, value]) => {
@@ -74,35 +53,16 @@ class FermiCalculator {
     }
 
     initialize() {
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', this.initializeApp);
-        } else {
-            this.initializeApp();
-        }
-    }
-
-    initializeApp() {
-        try {
-            this.initializeEventListeners();
-            this.loadFromStorage();
-            this.render();
-        } catch (error) {
-            console.error('Initialization error:', error);
-        }
+        this.loadFromStorage();
+        this.initializeEventListeners();
+        this.render();
     }
 
     initializeEventListeners() {
-        const addFeatureBtn = document.getElementById('add-feature');
-        if (addFeatureBtn) {
-            addFeatureBtn.addEventListener('click', this.addFeature);
-        }
-
-        const languageBtns = document.querySelectorAll('.language-btn');
-        languageBtns?.forEach(btn => {
+        // Set up language buttons
+        document.querySelectorAll('.language-btn').forEach(btn => {
             btn.addEventListener('click', () => {
-                this.currentLanguage = btn.dataset.lang;
-                this.saveToStorage();
-                this.render();
+                this.updateState('language', btn.dataset.lang);
             });
         });
 
@@ -131,7 +91,7 @@ class FermiCalculator {
         options.forEach(option => {
             const card = document.createElement('div');
             card.className = 'option-card';
-            if (this.features[this.activeFeature]?.[field] === option.value) {
+            if (this.state[field] === option.value) {
                 card.classList.add('selected');
             }
 
@@ -141,119 +101,71 @@ class FermiCalculator {
             `;
             
             card.addEventListener('click', () => {
-                this.updateFeature(field, option.value);
+                this.updateState(field, option.value);
             });
             
             container.appendChild(card);
         });
     }
 
-    calculateROI(feature) {
-        if (!feature?.effort) return 0;
-        const impact = (feature.revenue * feature.customerCare * feature.confidence) / 100;
-        return Math.round(impact / feature.effort);
+    calculateROI() {
+        if (!this.state.effort) return 0;
+        const impact = (this.state.revenue * this.state.customerCare * this.state.confidence) / 100;
+        return Math.round(impact / this.state.effort);
     }
 
-    addFeature() {
-        const newFeature = {
-            id: this.features.length + 1,
-            name: `Feature ${String.fromCharCode(65 + this.features.length)}`,
-            revenue: 0,
-            customerCare: 0,
-            effort: 0,
-            confidence: 0
-        };
-        this.features.push(newFeature);
-        this.activeFeature = this.features.length - 1;
+    updateState(field, value) {
+        this.state[field] = value;
         this.saveToStorage();
         this.render();
-    }
-
-    removeFeature(index) {
-        if (this.features.length <= 1) return;
-        
-        this.features = this.features.filter((_, i) => i !== index);
-        if (this.activeFeature >= index && this.activeFeature > 0) {
-            this.activeFeature--;
-        }
-        this.saveToStorage();
-        this.render();
-    }
-
-    updateFeature(field, value) {
-        if (this.features[this.activeFeature]) {
-            this.features[this.activeFeature][field] = value;
-            this.saveToStorage();
-            this.render();
-        }
     }
 
     getAnalysis() {
-        const sortedFeatures = [...this.features]
-            .map(f => ({
-                ...f,
-                roi: this.calculateROI(f),
-                isComplete: f.revenue && f.customerCare && f.effort && f.confidence
-            }))
-            .sort((a, b) => b.roi - a.roi);
-
-        const complete = sortedFeatures.filter(f => f.isComplete);
-        if (complete.length === 0) return null;
-
-        const best = complete[0];
-        const bestRatio = complete.length > 1 ? 
-            Math.round((best.roi / complete[1].roi) * 100 - 100) : 0;
+        const roi = this.calculateROI();
+        const isComplete = this.state.revenue && this.state.customerCare && 
+                         this.state.effort && this.state.confidence;
+        
+        if (!isComplete) return null;
 
         const analysis = [];
 
-        if (best.roi > 0) {
+        if (roi > 0) {
             analysis.push({
                 type: 'primary',
-                content: this.translate('best-roi', { name: best.name, roi: best.roi.toLocaleString() })
+                content: `ROI: ${roi.toLocaleString()}`
             });
-
-            if (complete.length > 1 && bestRatio > 50) {
-                analysis.push({
-                    type: 'highlight',
-                    content: this.translate('roi-comparison', { ratio: bestRatio })
-                });
-            }
         }
 
-        if (best.confidence === 100) {
+        if (this.state.confidence === 100) {
             analysis.push({
                 type: 'positive',
                 content: this.translate('high-confidence')
             });
-        } else if (best.confidence === 1) {
+        } else if (this.state.confidence === 1) {
             analysis.push({
                 type: 'warning',
                 content: this.translate('low-confidence')
             });
         }
 
-        if (best.effort === 2) {
+        if (this.state.effort === 2) {
             analysis.push({
                 type: 'positive',
                 content: this.translate('quick-win')
             });
-        } else if (best.effort === 45) {
+        } else if (this.state.effort === 45) {
             analysis.push({
                 type: 'warning',
                 content: this.translate('large-effort')
             });
         }
 
-        return { analysis, sortedFeatures: complete };
+        return analysis;
     }
 
     saveToStorage() {
         try {
-            localStorage.setItem('fermiFeatures', JSON.stringify({
-                features: this.features,
-                activeFeature: this.activeFeature,
-                language: this.currentLanguage
-            }));
+            localStorage.setItem('fermiCalculator', JSON.stringify(this.state));
         } catch (error) {
             console.error('Error saving to storage:', error);
         }
@@ -261,12 +173,9 @@ class FermiCalculator {
 
     loadFromStorage() {
         try {
-            const saved = localStorage.getItem('fermiFeatures');
+            const saved = localStorage.getItem('fermiCalculator');
             if (saved) {
-                const data = JSON.parse(saved);
-                this.features = data.features;
-                this.activeFeature = data.activeFeature;
-                this.currentLanguage = data.language || 'EN';
+                this.state = JSON.parse(saved);
             }
         } catch (error) {
             console.error('Error loading from storage:', error);
@@ -282,51 +191,8 @@ class FermiCalculator {
             }
         });
 
-        this.renderFeatureTabs();
         this.renderOptionSelections();
         this.renderAnalysis();
-    }
-
-    renderFeatureTabs() {
-        const tabsContainer = document.getElementById('feature-tabs');
-        if (!tabsContainer) return;
-        
-        tabsContainer.innerHTML = '';
-
-        this.features.forEach((feature, index) => {
-            const tab = document.createElement('div');
-            tab.className = 'feature-tab';
-            tab.innerHTML = `
-                <button class="btn ${index === this.activeFeature ? 'btn-primary' : 'btn-outline-secondary'}">
-                    ${feature.name}
-                </button>
-                ${this.features.length > 1 ? `
-                    <button class="btn btn-danger btn-sm remove-feature">
-                        <i class="bi bi-x"></i>
-                    </button>
-                ` : ''}
-            `;
-
-            const mainButton = tab.querySelector('button:first-child');
-            if (mainButton) {
-                mainButton.addEventListener('click', () => {
-                    this.activeFeature = index;
-                    this.render();
-                });
-            }
-
-            if (this.features.length > 1) {
-                const removeBtn = tab.querySelector('.remove-feature');
-                if (removeBtn) {
-                    removeBtn.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        this.removeFeature(index);
-                    });
-                }
-            }
-
-            tabsContainer.appendChild(tab);
-        });
     }
 
     renderOptionSelections() {
@@ -342,9 +208,9 @@ class FermiCalculator {
         const analysisContent = document.getElementById('analysis-content');
         if (!analysisContent) return;
         
-        const result = this.getAnalysis();
+        const analysis = this.getAnalysis();
 
-        if (!result) {
+        if (!analysis) {
             analysisContent.innerHTML = `
                 <div class="text-muted">
                     <i class="bi bi-info-circle"></i>
@@ -354,25 +220,11 @@ class FermiCalculator {
             return;
         }
 
-        const { analysis, sortedFeatures } = result;
-        
         let html = `
-            <div class="analysis-points mb-4">
+            <div class="analysis-points">
                 ${analysis.map(point => `
                     <div class="analysis-point ${point.type}">
                         ${point.content}
-                    </div>
-                `).join('')}
-            </div>
-            
-            <div class="rankings mt-4 pt-4 border-top">
-                <div class="fw-bold mb-2">${this.translate('complete-rankings')}:</div>
-                ${sortedFeatures.map((feature, index) => `
-                    <div class="d-flex align-items-center gap-2 mb-2">
-                        <i class="bi bi-arrow-right ${index === 0 ? 'text-success' : 'text-muted'}"></i>
-                        <span class="${index === 0 ? 'fw-bold' : ''}">
-                            ${feature.name}: ${feature.roi.toLocaleString()} ${this.translate('roi-suffix')}
-                        </span>
                     </div>
                 `).join('')}
             </div>
@@ -382,6 +234,9 @@ class FermiCalculator {
     }
 }
 
-// Initialize the calculator
-const calculator = new FermiCalculator();
-calculator.initialize();
+// Initialize the calculator when the DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+    const calculator = new FermiCalculator();
+    window.calculator = calculator;
+    calculator.initialize();
+});

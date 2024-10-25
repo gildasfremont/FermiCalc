@@ -27,27 +27,7 @@
     box-shadow: 0 4px 12px rgba(var(--bs-primary-rgb), 0.35);
 }
 
-.feature-tab {
-    position: relative;
-}
-
-.remove-feature {
-    position: absolute;
-    top: -8px;
-    right: -8px;
-    width: 20px;
-    height: 20px;
-    padding: 0;
-    border-radius: 50%;
-    font-size: 10px;
-    line-height: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-}
-
-/* Enhanced analysis point styling with improved contrast and accessibility */
+/* Enhanced analysis point styling */
 .analysis-point {
     padding: 1.5rem;
     margin-bottom: 1rem;
@@ -107,14 +87,7 @@
     border-color: var(--bs-secondary);
 }
 
-.card-header.sticky-top {
-    top: 56px;
-    z-index: 1020;
-    background-color: var(--bs-dark) !important;
-    border-bottom: 1px solid var(--bs-border-color);
-}
-
-/* Enhanced card and analysis container styling */
+/* Enhanced card styling */
 .card {
     border: 2px solid var(--bs-border-color);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
@@ -131,35 +104,6 @@
     font-size: 1.25rem;
     margin-bottom: 1.5rem;
     color: #FFFFFF;
-}
-
-/* Enhanced rankings section styling */
-.rankings {
-    margin-top: 2rem;
-    padding-top: 1.5rem;
-    border-top: 2px solid #1E88E5;
-}
-
-.rankings .fw-bold {
-    font-size: 1.1rem;
-    color: #FFFFFF;
-    margin-bottom: 1rem;
-}
-
-.rankings .text-muted {
-    color: #B0BEC5 !important;
-}
-
-.rankings .bi-arrow-right {
-    font-size: 1.2rem;
-}
-
-.rankings .bi-arrow-right.text-success {
-    color: #43A047 !important;
-}
-
-.rankings .bi-arrow-right.text-muted {
-    color: #78909C !important;
 }
 
 .text-muted {
