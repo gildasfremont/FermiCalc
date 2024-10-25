@@ -4,17 +4,24 @@ const translations = {
         'cohen-attribution': "Inspired by Jason Cohen's 'Fermi ROI' methodology, this calculator helps prioritize features by applying Fermi estimation principles to both impact and effort calculations, making ROI assessments more meaningful and actionable.",
         'revenue-title': "What's the expected annual revenue impact?",
         'revenue-description': "Consider direct revenue from sales, upgrades, or reduced churn",
-        'customer-care-title': "How much do customers care about this?",
+        'customer-reach-title': "How many customers care about this topic?",
+        'customer-reach-description': "Consider the size of the affected customer segment",
+        'customer-care-title': "How much do those customers care about this?",
         'customer-care-description': "Based on customer feedback and market research",
+        'insight-title': "How insightful is our perspective on this topic?",
+        'insight-description': "Evaluate the uniqueness and value of our understanding",
+        'product-payoff-title': "How powerfully does our product pay off the insight?",
+        'product-payoff-description': "Assess the effectiveness of our solution",
         'effort-title': "How much effort would this take?",
         'effort-description': "Include design, development, testing, and deployment",
+        'team-excitement-title': "How excited is the team about this?",
+        'team-excitement-description': "Gauge team motivation and interest",
         'confidence-title': "How confident are we in our execution?",
         'confidence-description': "Consider technical complexity and team expertise",
         'analysis-title': "Analysis",
-        'analysis-empty': "Complete all questions for at least one feature to see analysis",
-        'roi-suffix': "ROI",
+        'analysis-empty': "Complete all questions to see analysis",
 
-        // Revenue options
+        // Revenue options (unchanged)
         'revenue-1000': "$1,000/year",
         'revenue-1000-desc': "A minor improvement for a few customers",
         'revenue-10000': "$10,000/year",
@@ -24,156 +31,86 @@ const translations = {
         'revenue-1000000': "$1,000,000/year",
         'revenue-1000000-desc': "Transformative value for most customers",
 
-        // Customer care options
+        // Customer Reach options (new)
+        'reach-0': "No one (0)",
+        'reach-0-desc': "Can't think of anyone who cares",
+        'reach-30': "Some (30)",
+        'reach-30-desc': "A specific segment of customers",
+        'reach-70': "Most (70)",
+        'reach-70-desc': "The majority of our customers",
+        'reach-100': "Everyone (100)",
+        'reach-100-desc': "All customers would benefit",
+
+        // Customer Care options (updated)
+        'care-0': "Don't waste my time",
+        'care-0-desc': "Actively opposed to this feature",
         'care-1': "Meh, whatever",
-        'care-1-desc': "Customers are indifferent or mildly interested",
+        'care-1-desc': "Indifferent to the feature",
         'care-10': "I'm curious",
-        'care-10-desc': "Customers want to learn more about this",
+        'care-10-desc': "Interested in learning more",
         'care-100': "Serious concern",
         'care-100-desc': "This addresses a significant pain point",
         'care-1000': "Mission critical",
-        'care-1000-desc': "This is essential for customer success",
+        'care-1000-desc': "Essential for customer success",
 
-        // Effort options
-        'effort-2': "2 days",
-        'effort-2-desc': "Small, well-defined task",
-        'effort-10': "2 weeks",
-        'effort-10-desc': "Medium complexity, clear requirements",
-        'effort-45': "2 months",
-        'effort-45-desc': "Large project, may have unknowns",
+        // Insight options (new)
+        'insight-0': "No clue",
+        'insight-0-desc': "We don't understand the problem space",
+        'insight-1': "Obviously",
+        'insight-1-desc': "Common knowledge in the industry",
+        'insight-10': "Makes sense",
+        'insight-10-desc': "Logical extension of known principles",
+        'insight-100': "Great point",
+        'insight-100-desc': "Novel insight worth noting",
+        'insight-1000': "Game changer",
+        'insight-1000-desc': "Revolutionary perspective",
 
-        // Confidence options
-        'confidence-1': "I mean, we can try...",
-        'confidence-1-desc': "High uncertainty, novel problem space",
-        'confidence-10': "We can probably do this",
-        'confidence-10-desc': "Some unknowns but familiar territory",
-        'confidence-100': "Completely within expertise",
-        'confidence-100-desc': "We've done this before successfully",
+        // Product Payoff options (new)
+        'payoff-0': "Actively harmful",
+        'payoff-0-desc': "Would make things worse",
+        'payoff-1': "So what?",
+        'payoff-1-desc': "Minimal impact on the problem",
+        'payoff-10': "It's fine",
+        'payoff-10-desc': "Adequately addresses the need",
+        'payoff-100': "Very nice",
+        'payoff-100-desc': "Strong solution to the problem",
+        'payoff-1000': "Must have",
+        'payoff-1000-desc': "Worth buying just for this feature",
+
+        // Effort options (updated)
+        'effort-2d': "2 days",
+        'effort-2d-desc': "Small, well-defined task",
+        'effort-2w': "2 weeks",
+        'effort-2w-desc': "Medium complexity, clear requirements",
+        'effort-2m': "2 months",
+        'effort-2m-desc': "Large project, may have unknowns",
+
+        // Team Excitement options (new)
+        'excitement-0': "No excitement",
+        'excitement-0-desc': "No one wants to work on this",
+        'excitement-1': "One person",
+        'excitement-1-desc': "Single team member is interested",
+        'excitement-10': "Half the team",
+        'excitement-10-desc': "Mixed excitement levels",
+        'excitement-100': "Everyone",
+        'excitement-100-desc': "Full team enthusiasm",
+
+        // Confidence options (updated)
+        'confidence-0': "No way",
+        'confidence-0-desc': "We can't pull this off",
+        'confidence-1': "We can try...",
+        'confidence-1-desc': "High uncertainty, expect issues",
+        'confidence-10': "Probably doable",
+        'confidence-10-desc': "Some unknowns but familiar ground",
+        'confidence-100': "Got this",
+        'confidence-100-desc': "Completely within our expertise",
 
         // Analysis messages
-        'best-roi': "{name} is the most efficient choice with an ROI of {roi}",
-        'roi-comparison': "Its ROI is {ratio}% higher than the next best option",
-        'high-confidence': "We have high confidence in our ability to execute this feature successfully",
+        'high-team-excitement': "The team is highly motivated to work on this feature",
+        'low-team-excitement': "Consider team morale impact - no one is excited about this",
+        'high-confidence': "We have high confidence in our ability to execute this successfully",
         'low-confidence': "Consider running a spike or prototype first due to low confidence",
         'quick-win': "This is a quick win that could be delivered in days",
         'large-effort': "This is a significant investment - consider breaking it into smaller deliverables"
-    },
-    FR: {
-        'fermi-intro': "Prenez de meilleures décisions produit grâce à l'estimation Fermi - une méthode puissante qui utilise des approximations éclairées pour évaluer rapidement les idées. Décomposez les problèmes complexes en parties plus simples pour obtenir des estimations d'ordre de grandeur fiables.",
-        'cohen-attribution': "Inspiré par la méthodologie 'Fermi ROI' de Jason Cohen, ce calculateur aide à prioriser les fonctionnalités en appliquant les principes d'estimation Fermi à l'impact et à l'effort, rendant l'évaluation du ROI plus pertinente et exploitable.",
-        'revenue-title': "Quel est l'impact attendu sur les revenus annuels ?",
-        'revenue-description': "Considérez les revenus directs des ventes, des mises à niveau ou de la réduction du désabonnement",
-        'customer-care-title': "Dans quelle mesure les clients s'en soucient-ils ?",
-        'customer-care-description': "Basé sur les retours clients et l'étude de marché",
-        'effort-title': "Quel effort cela nécessiterait-il ?",
-        'effort-description': "Inclure la conception, le développement, les tests et le déploiement",
-        'confidence-title': "Quelle est notre confiance dans l'exécution ?",
-        'confidence-description': "Considérez la complexité technique et l'expertise de l'équipe",
-        'analysis-title': "Analyse",
-        'analysis-empty': "Complétez toutes les questions pour au moins une fonctionnalité pour voir l'analyse",
-        'roi-suffix': "ROI",
-
-        // Revenue options
-        'revenue-1000': "1 000 €/an",
-        'revenue-1000-desc': "Une amélioration mineure pour quelques clients",
-        'revenue-10000': "10 000 €/an",
-        'revenue-10000-desc': "Valeur notable pour plusieurs clients",
-        'revenue-100000': "100 000 €/an",
-        'revenue-100000-desc': "Valeur majeure pour de nombreux clients",
-        'revenue-1000000': "1 000 000 €/an",
-        'revenue-1000000-desc': "Valeur transformative pour la plupart des clients",
-
-        // Customer care options
-        'care-1': "Bof, peu importe",
-        'care-1-desc': "Les clients sont indifférents ou légèrement intéressés",
-        'care-10': "Je suis curieux",
-        'care-10-desc': "Les clients veulent en savoir plus",
-        'care-100': "Préoccupation sérieuse",
-        'care-100-desc': "Cela résout un point de douleur important",
-        'care-1000': "Mission critique",
-        'care-1000-desc': "C'est essentiel pour le succès des clients",
-
-        // Effort options
-        'effort-2': "2 jours",
-        'effort-2-desc': "Tâche simple et bien définie",
-        'effort-10': "2 semaines",
-        'effort-10-desc': "Complexité moyenne, exigences claires",
-        'effort-45': "2 mois",
-        'effort-45-desc': "Grand projet, peut avoir des inconnues",
-
-        // Confidence options
-        'confidence-1': "On peut essayer...",
-        'confidence-1-desc': "Grande incertitude, domaine nouveau",
-        'confidence-10': "On peut probablement le faire",
-        'confidence-10-desc': "Quelques inconnues mais terrain familier",
-        'confidence-100': "Totalement dans notre expertise",
-        'confidence-100-desc': "Nous l'avons déjà fait avec succès",
-
-        // Analysis messages
-        'best-roi': "{name} est le choix le plus efficace avec un ROI de {roi}",
-        'roi-comparison': "Son ROI est {ratio}% plus élevé que la prochaine meilleure option",
-        'high-confidence': "Nous avons une grande confiance dans notre capacité à exécuter cette fonctionnalité",
-        'low-confidence': "Envisagez de faire un prototype en raison de la faible confiance",
-        'quick-win': "C'est une victoire rapide qui pourrait être livrée en quelques jours",
-        'large-effort': "C'est un investissement important - envisagez de le diviser en plus petites livraisons"
-    },
-    ES: {
-        'fermi-intro': "Tome mejores decisiones de producto con la estimación Fermi - un método poderoso que utiliza suposiciones educadas para evaluar ideas rápidamente. Desglose problemas complejos en partes más simples para obtener estimaciones fiables de orden de magnitud.",
-        'cohen-attribution': "Inspirado en la metodología 'Fermi ROI' de Jason Cohen, esta calculadora ayuda a priorizar funcionalidades aplicando principios de estimación Fermi tanto al impacto como al esfuerzo, haciendo que las evaluaciones de ROI sean más significativas y procesables.",
-        'revenue-title': "¿Cuál es el impacto esperado en los ingresos anuales?",
-        'revenue-description': "Considere ingresos directos de ventas, actualizaciones o reducción de cancelaciones",
-        'customer-care-title': "¿Cuánto les importa esto a los clientes?",
-        'customer-care-description': "Basado en comentarios de clientes e investigación de mercado",
-        'effort-title': "¿Cuánto esfuerzo requeriría?",
-        'effort-description': "Incluye diseño, desarrollo, pruebas y despliegue",
-        'confidence-title': "¿Qué tan seguros estamos en la ejecución?",
-        'confidence-description': "Considere la complejidad técnica y la experiencia del equipo",
-        'analysis-title': "Análisis",
-        'analysis-empty': "Complete todas las preguntas para al menos una función para ver el análisis",
-        'roi-suffix': "ROI",
-
-        // Revenue options
-        'revenue-1000': "$1,000/año",
-        'revenue-1000-desc': "Una mejora menor para algunos clientes",
-        'revenue-10000': "$10,000/año",
-        'revenue-10000-desc': "Valor notable para varios clientes",
-        'revenue-100000': "$100,000/año",
-        'revenue-100000-desc': "Valor importante para muchos clientes",
-        'revenue-1000000': "$1,000,000/año",
-        'revenue-1000000-desc': "Valor transformador para la mayoría de los clientes",
-
-        // Customer care options
-        'care-1': "Meh, lo que sea",
-        'care-1-desc': "Los clientes son indiferentes o están levemente interesados",
-        'care-10': "Tengo curiosidad",
-        'care-10-desc': "Los clientes quieren saber más sobre esto",
-        'care-100': "Preocupación seria",
-        'care-100-desc': "Esto aborda un punto de dolor significativo",
-        'care-1000': "Misión crítica",
-        'care-1000-desc': "Esto es esencial para el éxito del cliente",
-
-        // Effort options
-        'effort-2': "2 días",
-        'effort-2-desc': "Tarea pequeña y bien definida",
-        'effort-10': "2 semanas",
-        'effort-10-desc': "Complejidad media, requisitos claros",
-        'effort-45': "2 meses",
-        'effort-45-desc': "Proyecto grande, puede tener incógnitas",
-
-        // Confidence options
-        'confidence-1': "Bueno, podemos intentar...",
-        'confidence-1-desc': "Alta incertidumbre, espacio del problema nuevo",
-        'confidence-10': "Probablemente podamos hacerlo",
-        'confidence-10-desc': "Algunas incógnitas pero territorio familiar",
-        'confidence-100': "Completamente dentro de nuestra experiencia",
-        'confidence-100-desc': "Lo hemos hecho antes con éxito",
-
-        // Analysis messages
-        'best-roi': "{name} es la opción más eficiente con un ROI de {roi}",
-        'roi-comparison': "Su ROI es {ratio}% más alto que la siguiente mejor opción",
-        'high-confidence': "Tenemos alta confianza en nuestra capacidad para ejecutar esta función",
-        'low-confidence': "Considere hacer un prototipo primero debido a la baja confianza",
-        'quick-win': "Esta es una victoria rápida que podría entregarse en días",
-        'large-effort': "Esta es una inversión significativa - considere dividirla en entregas más pequeñas"
     }
 };

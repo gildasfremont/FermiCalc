@@ -3,8 +3,12 @@ class FermiCalculator {
         // Initialize state
         this.state = {
             revenue: 0,
+            customerReach: 0,
             customerCare: 0,
+            insight: 0,
+            productPayoff: 0,
             effort: 0,
+            teamExcitement: 0,
             confidence: 0,
             language: 'EN'
         };
@@ -17,26 +21,65 @@ class FermiCalculator {
             { value: 1000000, labelKey: 'revenue-1000000', descriptionKey: 'revenue-1000000-desc' }
         ];
 
+        // Customer Reach options (0-100)
+        this.customerReachOptions = [
+            { value: 0, labelKey: 'reach-0', descriptionKey: 'reach-0-desc' },
+            { value: 30, labelKey: 'reach-30', descriptionKey: 'reach-30-desc' },
+            { value: 70, labelKey: 'reach-70', descriptionKey: 'reach-70-desc' },
+            { value: 100, labelKey: 'reach-100', descriptionKey: 'reach-100-desc' }
+        ];
+
+        // Customer Care options (0-1000)
         this.customerCareOptions = [
+            { value: 0, labelKey: 'care-0', descriptionKey: 'care-0-desc' },
             { value: 1, labelKey: 'care-1', descriptionKey: 'care-1-desc' },
             { value: 10, labelKey: 'care-10', descriptionKey: 'care-10-desc' },
             { value: 100, labelKey: 'care-100', descriptionKey: 'care-100-desc' },
             { value: 1000, labelKey: 'care-1000', descriptionKey: 'care-1000-desc' }
         ];
 
-        this.effortOptions = [
-            { value: 2, labelKey: 'effort-2', descriptionKey: 'effort-2-desc' },
-            { value: 10, labelKey: 'effort-10', descriptionKey: 'effort-10-desc' },
-            { value: 45, labelKey: 'effort-45', descriptionKey: 'effort-45-desc' }
+        // Insight options (0-1000)
+        this.insightOptions = [
+            { value: 0, labelKey: 'insight-0', descriptionKey: 'insight-0-desc' },
+            { value: 1, labelKey: 'insight-1', descriptionKey: 'insight-1-desc' },
+            { value: 10, labelKey: 'insight-10', descriptionKey: 'insight-10-desc' },
+            { value: 100, labelKey: 'insight-100', descriptionKey: 'insight-100-desc' },
+            { value: 1000, labelKey: 'insight-1000', descriptionKey: 'insight-1000-desc' }
         ];
 
+        // Product Payoff options (0-1000)
+        this.productPayoffOptions = [
+            { value: 0, labelKey: 'payoff-0', descriptionKey: 'payoff-0-desc' },
+            { value: 1, labelKey: 'payoff-1', descriptionKey: 'payoff-1-desc' },
+            { value: 10, labelKey: 'payoff-10', descriptionKey: 'payoff-10-desc' },
+            { value: 100, labelKey: 'payoff-100', descriptionKey: 'payoff-100-desc' },
+            { value: 1000, labelKey: 'payoff-1000', descriptionKey: 'payoff-1000-desc' }
+        ];
+
+        // Effort options (2d, 2w, 2m)
+        this.effortOptions = [
+            { value: 2, labelKey: 'effort-2d', descriptionKey: 'effort-2d-desc' },
+            { value: 10, labelKey: 'effort-2w', descriptionKey: 'effort-2w-desc' },
+            { value: 45, labelKey: 'effort-2m', descriptionKey: 'effort-2m-desc' }
+        ];
+
+        // Team Excitement options (0-100)
+        this.teamExcitementOptions = [
+            { value: 0, labelKey: 'excitement-0', descriptionKey: 'excitement-0-desc' },
+            { value: 1, labelKey: 'excitement-1', descriptionKey: 'excitement-1-desc' },
+            { value: 10, labelKey: 'excitement-10', descriptionKey: 'excitement-10-desc' },
+            { value: 100, labelKey: 'excitement-100', descriptionKey: 'excitement-100-desc' }
+        ];
+
+        // Confidence options (0-100)
         this.confidenceOptions = [
+            { value: 0, labelKey: 'confidence-0', descriptionKey: 'confidence-0-desc' },
             { value: 1, labelKey: 'confidence-1', descriptionKey: 'confidence-1-desc' },
             { value: 10, labelKey: 'confidence-10', descriptionKey: 'confidence-10-desc' },
             { value: 100, labelKey: 'confidence-100', descriptionKey: 'confidence-100-desc' }
         ];
 
-        // Bind all methods to this instance
+        // Bind methods
         this.initialize = this.initialize.bind(this);
         this.translate = this.translate.bind(this);
         this.initializeEventListeners = this.initializeEventListeners.bind(this);
@@ -52,34 +95,6 @@ class FermiCalculator {
         this.renderAnalysis = this.renderAnalysis.bind(this);
     }
 
-    translate(key, params = {}) {
-        try {
-            if (!translations) {
-                console.error('Translations object not found');
-                return key;
-            }
-
-            if (!translations[this.state.language]) {
-                console.error(`Language '${this.state.language}' not found in translations`);
-                return key;
-            }
-            
-            let text = translations[this.state.language][key];
-            if (!text) {
-                console.warn(`Translation not found for key: ${key}`);
-                return key;
-            }
-            
-            Object.entries(params).forEach(([param, value]) => {
-                text = text.replace(`{${param}}`, value);
-            });
-            return text;
-        } catch (error) {
-            console.error('Translation error:', error);
-            return key;
-        }
-    }
-
     initialize() {
         try {
             this.loadFromStorage();
@@ -92,21 +107,13 @@ class FermiCalculator {
 
     initializeEventListeners() {
         try {
-            // Set up language select
             const languageSelect = document.getElementById('languageSelect');
             if (languageSelect) {
                 languageSelect.value = this.state.language;
                 languageSelect.addEventListener('change', (event) => {
-                    const newLanguage = event.target.value;
-                    if (translations && translations[newLanguage]) {
-                        this.updateState('language', newLanguage);
-                    } else {
-                        console.error(`Invalid language selected: ${newLanguage}`);
-                        event.target.value = this.state.language;
-                    }
+                    this.updateState('language', event.target.value);
                 });
             }
-            
             this.initializeOptionGrids();
         } catch (error) {
             console.error('Error initializing event listeners:', error);
@@ -117,18 +124,22 @@ class FermiCalculator {
         try {
             const optionSets = [
                 { containerId: 'revenueOptions', options: this.revenueOptions, field: 'revenue' },
+                { containerId: 'customerReachOptions', options: this.customerReachOptions, field: 'customerReach' },
                 { containerId: 'customerCareOptions', options: this.customerCareOptions, field: 'customerCare' },
+                { containerId: 'insightOptions', options: this.insightOptions, field: 'insight' },
+                { containerId: 'productPayoffOptions', options: this.productPayoffOptions, field: 'productPayoff' },
                 { containerId: 'effortOptions', options: this.effortOptions, field: 'effort' },
+                { containerId: 'teamExcitementOptions', options: this.teamExcitementOptions, field: 'teamExcitement' },
                 { containerId: 'confidenceOptions', options: this.confidenceOptions, field: 'confidence' }
             ];
 
             optionSets.forEach(({ containerId, options, field }) => {
                 const container = document.querySelector(`.${containerId}`);
-                if (!container) {
+                if (container) {
+                    this.renderOptionGrid(container, options, field);
+                } else {
                     console.warn(`Container .${containerId} not found`);
-                    return;
                 }
-                this.renderOptionGrid(container, options, field);
             });
         } catch (error) {
             console.error('Error initializing option grids:', error);
@@ -137,10 +148,7 @@ class FermiCalculator {
 
     renderOptionGrid(container, options, field) {
         try {
-            if (!container) return;
-            
             container.innerHTML = '';
-            
             options.forEach(option => {
                 const card = document.createElement('div');
                 card.className = 'option-card';
@@ -167,8 +175,19 @@ class FermiCalculator {
     calculateROI() {
         try {
             if (!this.state.effort) return 0;
-            const impact = (this.state.revenue * this.state.customerCare * this.state.confidence) / 100;
-            return Math.round(impact / this.state.effort);
+            
+            // Calculate impact using the exact multiplication formula from the framework
+            const impact = (
+                this.state.customerReach * 
+                this.state.customerCare * 
+                this.state.insight * 
+                this.state.productPayoff * 
+                this.state.confidence
+            ) / 10000; // Normalizing factor
+            
+            // Calculate ROI as Impact / Effort
+            const roi = Math.round((this.state.revenue * impact) / this.state.effort);
+            return roi;
         } catch (error) {
             console.error('Error calculating ROI:', error);
             return 0;
@@ -188,8 +207,9 @@ class FermiCalculator {
     getAnalysis() {
         try {
             const roi = this.calculateROI();
-            const isComplete = this.state.revenue && this.state.customerCare && 
-                            this.state.effort && this.state.confidence;
+            const isComplete = Object.entries(this.state)
+                .filter(([key]) => key !== 'language')
+                .every(([_, value]) => value > 0);
             
             if (!isComplete) return null;
 
@@ -202,18 +222,33 @@ class FermiCalculator {
                 });
             }
 
+            // Team excitement analysis
+            if (this.state.teamExcitement === 100) {
+                analysis.push({
+                    type: 'positive',
+                    content: this.translate('high-team-excitement')
+                });
+            } else if (this.state.teamExcitement === 0) {
+                analysis.push({
+                    type: 'warning',
+                    content: this.translate('low-team-excitement')
+                });
+            }
+
+            // Confidence analysis
             if (this.state.confidence === 100) {
                 analysis.push({
                     type: 'positive',
                     content: this.translate('high-confidence')
                 });
-            } else if (this.state.confidence === 1) {
+            } else if (this.state.confidence <= 1) {
                 analysis.push({
                     type: 'warning',
                     content: this.translate('low-confidence')
                 });
             }
 
+            // Effort analysis
             if (this.state.effort === 2) {
                 analysis.push({
                     type: 'positive',
@@ -252,9 +287,29 @@ class FermiCalculator {
         }
     }
 
+    translate(key, params = {}) {
+        try {
+            if (!translations || !translations[this.state.language]) {
+                return key;
+            }
+            
+            let text = translations[this.state.language][key];
+            if (!text) {
+                return key;
+            }
+            
+            Object.entries(params).forEach(([param, value]) => {
+                text = text.replace(`{${param}}`, value);
+            });
+            return text;
+        } catch (error) {
+            console.error('Translation error:', error);
+            return key;
+        }
+    }
+
     render() {
         try {
-            // Update all translatable elements
             document.querySelectorAll('[data-translate]').forEach(element => {
                 const key = element.getAttribute('data-translate');
                 if (key) {
@@ -271,7 +326,12 @@ class FermiCalculator {
 
     renderOptionSelections() {
         try {
-            ['revenue', 'customerCare', 'effort', 'confidence'].forEach(field => {
+            const fields = [
+                'revenue', 'customerReach', 'customerCare', 'insight',
+                'productPayoff', 'effort', 'teamExcitement', 'confidence'
+            ];
+            
+            fields.forEach(field => {
                 const container = document.querySelector(`.${field}Options`);
                 if (container) {
                     this.renderOptionGrid(container, this[`${field}Options`], field);
@@ -302,7 +362,7 @@ class FermiCalculator {
                 return;
             }
 
-            let html = `
+            analysisContent.innerHTML = `
                 <div class="card-body p-5">
                     <h5 class="text-white mb-4" data-translate="analysis-title">Analysis</h5>
                     <div class="analysis-points">
@@ -314,8 +374,6 @@ class FermiCalculator {
                     </div>
                 </div>
             `;
-
-            analysisContent.innerHTML = html;
         } catch (error) {
             console.error('Error rendering analysis:', error);
         }
