@@ -37,30 +37,38 @@ class FermiCalculator {
         ];
 
         // Bind all methods to this instance
-        this.initialize = this._initialize.bind(this);
-        this.translate = this._translate.bind(this);
-        this.initializeEventListeners = this._initializeEventListeners.bind(this);
-        this.initializeOptionGrids = this._initializeOptionGrids.bind(this);
-        this.renderOptionGrid = this._renderOptionGrid.bind(this);
-        this.calculateROI = this._calculateROI.bind(this);
-        this.updateState = this._updateState.bind(this);
-        this.getAnalysis = this._getAnalysis.bind(this);
-        this.saveToStorage = this._saveToStorage.bind(this);
-        this.loadFromStorage = this._loadFromStorage.bind(this);
-        this.render = this._render.bind(this);
-        this.renderOptionSelections = this._renderOptionSelections.bind(this);
-        this.renderAnalysis = this._renderAnalysis.bind(this);
+        this.initialize = this.initialize.bind(this);
+        this.translate = this.translate.bind(this);
+        this.initializeEventListeners = this.initializeEventListeners.bind(this);
+        this.initializeOptionGrids = this.initializeOptionGrids.bind(this);
+        this.renderOptionGrid = this.renderOptionGrid.bind(this);
+        this.calculateROI = this.calculateROI.bind(this);
+        this.updateState = this.updateState.bind(this);
+        this.getAnalysis = this.getAnalysis.bind(this);
+        this.saveToStorage = this.saveToStorage.bind(this);
+        this.loadFromStorage = this.loadFromStorage.bind(this);
+        this.render = this.render.bind(this);
+        this.renderOptionSelections = this.renderOptionSelections.bind(this);
+        this.renderAnalysis = this.renderAnalysis.bind(this);
     }
 
-    _translate(key, params = {}) {
+    translate(key, params = {}) {
         try {
-            if (!translations || !translations[this.state.language]) {
-                console.error('Translations not loaded');
+            if (!translations) {
+                console.error('Translations object not found');
+                return key;
+            }
+
+            if (!translations[this.state.language]) {
+                console.error(`Language '${this.state.language}' not found in translations`);
                 return key;
             }
             
             let text = translations[this.state.language][key];
-            if (!text) return key;
+            if (!text) {
+                console.warn(`Translation not found for key: ${key}`);
+                return key;
+            }
             
             Object.entries(params).forEach(([param, value]) => {
                 text = text.replace(`{${param}}`, value);
@@ -72,7 +80,7 @@ class FermiCalculator {
         }
     }
 
-    _initialize() {
+    initialize() {
         try {
             this.loadFromStorage();
             this.initializeEventListeners();
@@ -82,14 +90,20 @@ class FermiCalculator {
         }
     }
 
-    _initializeEventListeners() {
+    initializeEventListeners() {
         try {
             // Set up language select
             const languageSelect = document.getElementById('languageSelect');
             if (languageSelect) {
                 languageSelect.value = this.state.language;
-                languageSelect.addEventListener('change', () => {
-                    this.updateState('language', languageSelect.value);
+                languageSelect.addEventListener('change', (event) => {
+                    const newLanguage = event.target.value;
+                    if (translations && translations[newLanguage]) {
+                        this.updateState('language', newLanguage);
+                    } else {
+                        console.error(`Invalid language selected: ${newLanguage}`);
+                        event.target.value = this.state.language;
+                    }
                 });
             }
             
@@ -99,7 +113,7 @@ class FermiCalculator {
         }
     }
 
-    _initializeOptionGrids() {
+    initializeOptionGrids() {
         try {
             const optionSets = [
                 { containerId: 'revenueOptions', options: this.revenueOptions, field: 'revenue' },
@@ -121,7 +135,7 @@ class FermiCalculator {
         }
     }
 
-    _renderOptionGrid(container, options, field) {
+    renderOptionGrid(container, options, field) {
         try {
             if (!container) return;
             
@@ -150,7 +164,7 @@ class FermiCalculator {
         }
     }
 
-    _calculateROI() {
+    calculateROI() {
         try {
             if (!this.state.effort) return 0;
             const impact = (this.state.revenue * this.state.customerCare * this.state.confidence) / 100;
@@ -161,7 +175,7 @@ class FermiCalculator {
         }
     }
 
-    _updateState(field, value) {
+    updateState(field, value) {
         try {
             this.state[field] = value;
             this.saveToStorage();
@@ -171,7 +185,7 @@ class FermiCalculator {
         }
     }
 
-    _getAnalysis() {
+    getAnalysis() {
         try {
             const roi = this.calculateROI();
             const isComplete = this.state.revenue && this.state.customerCare && 
@@ -219,7 +233,7 @@ class FermiCalculator {
         }
     }
 
-    _saveToStorage() {
+    saveToStorage() {
         try {
             localStorage.setItem('fermiCalculator', JSON.stringify(this.state));
         } catch (error) {
@@ -227,7 +241,7 @@ class FermiCalculator {
         }
     }
 
-    _loadFromStorage() {
+    loadFromStorage() {
         try {
             const saved = localStorage.getItem('fermiCalculator');
             if (saved) {
@@ -238,7 +252,7 @@ class FermiCalculator {
         }
     }
 
-    _render() {
+    render() {
         try {
             // Update all translatable elements
             document.querySelectorAll('[data-translate]').forEach(element => {
@@ -255,7 +269,7 @@ class FermiCalculator {
         }
     }
 
-    _renderOptionSelections() {
+    renderOptionSelections() {
         try {
             ['revenue', 'customerCare', 'effort', 'confidence'].forEach(field => {
                 const container = document.querySelector(`.${field}Options`);
@@ -268,7 +282,7 @@ class FermiCalculator {
         }
     }
 
-    _renderAnalysis() {
+    renderAnalysis() {
         try {
             const analysisContent = document.getElementById('analysis-content');
             if (!analysisContent) return;
