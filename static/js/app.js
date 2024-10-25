@@ -9,6 +9,7 @@ class FermiCalculator {
             confidence: 0
         }];
         this.activeFeature = 0;
+        this.currentLanguage = 'EN';
 
         this.revenueOptions = [
             { value: 1000, label: "$1,000/year", description: "A minor improvement for a few customers" },
@@ -36,13 +37,34 @@ class FermiCalculator {
             { value: 100, label: "Completely within expertise", description: "We've done this before successfully" }
         ];
 
+        // Wait for DOM content to be loaded before initializing
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => this.initialize());
+        } else {
+            this.initialize();
+        }
+    }
+
+    initialize() {
         this.initializeEventListeners();
         this.loadFromStorage();
         this.render();
     }
 
     initializeEventListeners() {
-        document.getElementById('add-feature').addEventListener('click', () => this.addFeature());
+        const addFeatureBtn = document.getElementById('add-feature');
+        if (addFeatureBtn) {
+            addFeatureBtn.addEventListener('click', () => this.addFeature());
+        }
+
+        // Initialize language switcher
+        const languageBtns = document.querySelectorAll('.language-btn');
+        languageBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                this.currentLanguage = btn.dataset.lang;
+                this.render();
+            });
+        });
         
         // Initialize option grids
         this.renderOptionGrid('revenue-options', this.revenueOptions, 'revenue');
@@ -53,6 +75,8 @@ class FermiCalculator {
 
     renderOptionGrid(containerId, options, field) {
         const container = document.querySelector(`.${containerId}`);
+        if (!container) return;
+        
         container.innerHTML = '';
         
         options.forEach(option => {
@@ -169,7 +193,8 @@ class FermiCalculator {
     saveToStorage() {
         localStorage.setItem('fermiFeatures', JSON.stringify({
             features: this.features,
-            activeFeature: this.activeFeature
+            activeFeature: this.activeFeature,
+            language: this.currentLanguage
         }));
     }
 
@@ -179,6 +204,7 @@ class FermiCalculator {
             const data = JSON.parse(saved);
             this.features = data.features;
             this.activeFeature = data.activeFeature;
+            this.currentLanguage = data.language || 'EN';
         }
     }
 
@@ -190,6 +216,8 @@ class FermiCalculator {
 
     renderFeatureTabs() {
         const tabsContainer = document.getElementById('feature-tabs');
+        if (!tabsContainer) return;
+        
         tabsContainer.innerHTML = '';
 
         this.features.forEach((feature, index) => {
@@ -212,10 +240,13 @@ class FermiCalculator {
             });
 
             if (this.features.length > 1) {
-                tab.querySelector('.remove-feature').addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    this.removeFeature(index);
-                });
+                const removeBtn = tab.querySelector('.remove-feature');
+                if (removeBtn) {
+                    removeBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        this.removeFeature(index);
+                    });
+                }
             }
 
             tabsContainer.appendChild(tab);
@@ -225,15 +256,22 @@ class FermiCalculator {
     renderOptionSelections() {
         const currentFeature = this.features[this.activeFeature];
         
-        document.querySelectorAll('.option-card').forEach(card => {
-            card.classList.remove('selected');
-        });
+        // Add null checks for all option cards
+        const allCards = document.querySelectorAll('.option-card');
+        if (allCards) {
+            allCards.forEach(card => {
+                card.classList.remove('selected');
+            });
+        }
 
-        // Update selected states
+        // Update selected states with null checks
         ['revenue', 'customerCare', 'effort', 'confidence'].forEach(field => {
             const value = currentFeature[field];
             const options = document.querySelector(`.${field}-options`);
+            if (!options) return;
+            
             const cards = options.querySelectorAll('.option-card');
+            if (!cards) return;
             
             cards.forEach((card, index) => {
                 const option = this[`${field}Options`][index];
@@ -246,6 +284,8 @@ class FermiCalculator {
 
     renderAnalysis() {
         const analysisContent = document.getElementById('analysis-content');
+        if (!analysisContent) return;
+        
         const result = this.getAnalysis();
 
         if (!result) {
