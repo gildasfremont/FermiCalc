@@ -1,28 +1,103 @@
+/* Feature select container */
+.feature-select-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+}
+
 /* Feature select styling */
 #feature-select {
+    flex: 1;
     background-color: var(--bs-dark);
     border: 2px solid var(--bs-border-color);
     color: var(--bs-white);
-    padding: 0.5rem 1rem;
+    padding: 0.75rem 1rem;
     border-radius: 0.375rem;
     font-size: 1rem;
-    width: 100%;
-    transition: border-color 0.15s ease-in-out;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+}
+
+#feature-select:hover {
+    border-color: var(--bs-primary);
+    box-shadow: 0 0 0 0.25rem rgba(var(--bs-primary-rgb), 0.15);
 }
 
 #feature-select:focus {
     border-color: var(--bs-primary);
     box-shadow: 0 0 0 0.25rem rgba(var(--bs-primary-rgb), 0.25);
+    outline: none;
 }
 
-#feature-select option {
+/* Options stack styling */
+.options-stack {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.option-card {
+    border: 2px solid var(--bs-border-color);
+    border-radius: 0.5rem;
+    padding: 1.25rem;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
     background-color: var(--bs-dark);
-    color: var(--bs-white);
-    padding: 0.5rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
-#feature-select option:checked {
+.option-card:hover {
+    border-color: var(--bs-primary);
+    box-shadow: 0 4px 12px rgba(var(--bs-primary-rgb), 0.25);
+    transform: translateY(-2px);
+}
+
+.option-card.selected {
     background-color: var(--bs-primary);
+    border-color: var(--bs-primary);
+    color: var(--bs-white);
+    box-shadow: 0 4px 12px rgba(var(--bs-primary-rgb), 0.35);
+}
+
+.option-card .option-label {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.option-card .option-description {
+    font-size: 0.875rem;
+    opacity: 0.8;
+}
+
+.option-card.selected .option-description {
+    opacity: 0.9;
+    color: var(--bs-white);
+}
+
+/* Add/Remove feature buttons */
+#add-feature {
+    white-space: nowrap;
+    border-width: 2px;
+    padding: 0.75rem 1rem;
+    font-weight: 500;
+    transition: all 0.2s ease-in-out;
+}
+
+#remove-feature-button {
+    white-space: nowrap;
+    border-width: 2px;
+    padding: 0.75rem 1rem;
+    transition: all 0.2s ease-in-out;
+}
+
+#add-feature:hover,
+#remove-feature-button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(var(--bs-primary-rgb), 0.2);
 }
 
 /* Card header styling */
@@ -34,36 +109,15 @@
     padding: 1rem;
 }
 
-/* Options stack styling */
-.options-stack {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    margin-top: 1rem;
-}
-
-.option-card {
-    border: 2px solid var(--bs-border-color);
+/* Analysis section */
+#analysis {
+    background-color: rgba(var(--bs-dark-rgb), 0.8);
+    border: 2px solid var(--bs-primary);
+    padding: 2rem;
+    margin-top: 2rem;
     border-radius: 0.5rem;
-    padding: 1.25rem;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    background-color: var(--bs-dark);
 }
 
-.option-card:hover {
-    border-color: var(--bs-primary);
-    box-shadow: 0 4px 12px rgba(var(--bs-primary-rgb), 0.25);
-}
-
-.option-card.selected {
-    background-color: var(--bs-primary);
-    border-color: var(--bs-primary);
-    color: var(--bs-white);
-    box-shadow: 0 4px 12px rgba(var(--bs-primary-rgb), 0.35);
-}
-
-/* Analysis point styling */
 .analysis-point {
     padding: 1.5rem;
     margin-bottom: 1rem;
@@ -74,104 +128,58 @@
 }
 
 .analysis-point.primary {
-    background-color: #0D47A1;
-    color: #FFFFFF;
-    border: 2px solid #1565C0;
+    background-color: var(--bs-primary);
+    border: 2px solid var(--bs-primary);
 }
 
 .analysis-point.highlight {
-    background-color: #4A148C;
-    color: #FFFFFF;
-    border: 2px solid #6A1B9A;
+    background-color: var(--bs-success);
+    border: 2px solid var(--bs-success);
 }
 
 .analysis-point.warning {
-    background-color: #FF8F00;
-    color: #000000;
-    border: 2px solid #F57C00;
-}
-
-.analysis-point.positive {
-    background-color: #1B5E20;
-    color: #FFFFFF;
-    border: 2px solid #2E7D32;
-}
-
-/* Navbar styling */
-.navbar.sticky-top {
-    background-color: var(--bs-dark) !important;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-    border-bottom: 1px solid var(--bs-border-color);
-    z-index: 1030;
-    padding: 0.75rem 1rem;
-}
-
-.navbar-brand {
-    color: var(--bs-white) !important;
-    font-weight: 600;
-}
-
-.language-btn {
-    min-width: 48px;
-    font-weight: 500;
-    border-width: 2px;
-}
-
-.language-btn:hover,
-.language-btn:focus {
-    background-color: var(--bs-secondary);
-    color: var(--bs-white);
-    border-color: var(--bs-secondary);
-}
-
-/* Card and container styling */
-.card {
-    border: 2px solid var(--bs-border-color);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    background-color: var(--bs-dark);
-}
-
-.card-body {
-    padding: 1.5rem;
-}
-
-#analysis {
-    background-color: #121212;
-    border: 2px solid #1E88E5;
-    padding: 2rem !important;
-    margin-top: 2rem;
-}
-
-/* Rankings section */
-.rankings {
-    margin-top: 2rem;
-    padding-top: 1.5rem;
-    border-top: 2px solid #1E88E5;
-}
-
-.rankings .fw-bold {
-    font-size: 1.1rem;
-    color: #FFFFFF;
-    margin-bottom: 1rem;
+    background-color: var(--bs-warning);
+    border: 2px solid var(--bs-warning);
+    color: var(--bs-dark);
 }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-    .container {
-        padding-left: 1rem;
-        padding-right: 1rem;
+    .options-stack {
+        grid-template-columns: 1fr;
     }
-    
-    .card-body {
-        padding: 1rem;
-    }
-    
-    #analysis {
-        padding: 1.25rem !important;
-        margin-top: 1.5rem;
-    }
-    
+
     .card-header.sticky-top {
         padding: 0.75rem;
     }
+
+    #feature-select,
+    #add-feature,
+    #remove-feature-button {
+        padding: 0.625rem 0.875rem;
+        font-size: 0.875rem;
+    }
+
+    #analysis {
+        padding: 1.25rem;
+        margin-top: 1.5rem;
+    }
+
+    .analysis-point {
+        padding: 1rem;
+        font-size: 1rem;
+    }
+}
+
+/* Dark theme specific adjustments */
+[data-bs-theme="dark"] .option-card {
+    background-color: var(--bs-dark);
+}
+
+[data-bs-theme="dark"] .option-card:hover {
+    background-color: var(--bs-dark);
+}
+
+[data-bs-theme="dark"] .option-card.selected {
+    background-color: var(--bs-primary);
 }
