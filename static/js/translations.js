@@ -1,5 +1,7 @@
 const translations = {
     EN: {
+        'fermi-intro': "Make better product decisions with Fermi estimation - a powerful method that uses educated guesses to quickly evaluate ideas. Break down complex problems into simpler parts to get reliable order-of-magnitude estimates.",
+        'cohen-attribution': "Inspired by Jason Cohen's 'Fermi ROI' methodology, this calculator helps prioritize features by applying Fermi estimation principles to both impact and effort calculations, making ROI assessments more meaningful and actionable.",
         'revenue-title': "What's the expected annual revenue impact?",
         'revenue-description': "Consider direct revenue from sales, upgrades, or reduced churn",
         'customer-care-title': "How much do customers care about this?",
@@ -10,8 +12,6 @@ const translations = {
         'confidence-description': "Consider technical complexity and team expertise",
         'analysis-title': "Analysis",
         'analysis-empty': "Complete all questions for at least one feature to see analysis",
-        'add-feature': "Add Feature",
-        'complete-rankings': "Complete Rankings",
         'roi-suffix': "ROI",
 
         // Revenue options
@@ -59,6 +59,8 @@ const translations = {
         'large-effort': "This is a significant investment - consider breaking it into smaller deliverables"
     },
     FR: {
+        'fermi-intro': "Prenez de meilleures décisions produit grâce à l'estimation Fermi - une méthode puissante qui utilise des approximations éclairées pour évaluer rapidement les idées. Décomposez les problèmes complexes en parties plus simples pour obtenir des estimations d'ordre de grandeur fiables.",
+        'cohen-attribution': "Inspiré par la méthodologie 'Fermi ROI' de Jason Cohen, ce calculateur aide à prioriser les fonctionnalités en appliquant les principes d'estimation Fermi à l'impact et à l'effort, rendant l'évaluation du ROI plus pertinente et exploitable.",
         'revenue-title': "Quel est l'impact attendu sur les revenus annuels ?",
         'revenue-description': "Considérez les revenus directs des ventes, des mises à niveau ou de la réduction du désabonnement",
         'customer-care-title': "Dans quelle mesure les clients s'en soucient-ils ?",
@@ -69,8 +71,6 @@ const translations = {
         'confidence-description': "Considérez la complexité technique et l'expertise de l'équipe",
         'analysis-title': "Analyse",
         'analysis-empty': "Complétez toutes les questions pour au moins une fonctionnalité pour voir l'analyse",
-        'add-feature': "Ajouter une fonctionnalité",
-        'complete-rankings': "Classements complets",
         'roi-suffix': "ROI",
 
         // Revenue options
@@ -118,6 +118,8 @@ const translations = {
         'large-effort': "C'est un investissement important - envisagez de le diviser en plus petites livraisons"
     },
     ES: {
+        'fermi-intro': "Tome mejores decisiones de producto con la estimación Fermi - un método poderoso que utiliza suposiciones educadas para evaluar ideas rápidamente. Desglose problemas complejos en partes más simples para obtener estimaciones fiables de orden de magnitud.",
+        'cohen-attribution': "Inspirado en la metodología 'Fermi ROI' de Jason Cohen, esta calculadora ayuda a priorizar funcionalidades aplicando principios de estimación Fermi tanto al impacto como al esfuerzo, haciendo que las evaluaciones de ROI sean más significativas y procesables.",
         'revenue-title': "¿Cuál es el impacto esperado en los ingresos anuales?",
         'revenue-description': "Considere ingresos directos de ventas, actualizaciones o reducción de cancelaciones",
         'customer-care-title': "¿Cuánto les importa esto a los clientes?",
@@ -128,8 +130,6 @@ const translations = {
         'confidence-description': "Considere la complejidad técnica y la experiencia del equipo",
         'analysis-title': "Análisis",
         'analysis-empty': "Complete todas las preguntas para al menos una función para ver el análisis",
-        'add-feature': "Añadir función",
-        'complete-rankings': "Rankings completos",
         'roi-suffix': "ROI",
 
         // Revenue options
