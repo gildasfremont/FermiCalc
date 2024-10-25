@@ -1,14 +1,15 @@
 class FermiCalculator {
     constructor() {
+        // Initialize containers using parent fermi-question elements
         this.containers = {
-            revenue: document.querySelector('#revenueOptions'),
-            customerReach: document.querySelector('#customerReachOptions'),
-            customerCare: document.querySelector('#customerCareOptions'),
-            insight: document.querySelector('#insightOptions'),
-            productPayoff: document.querySelector('#productPayoffOptions'),
-            effort: document.querySelector('#effortOptions'),
-            teamExcitement: document.querySelector('#teamExcitementOptions'),
-            confidence: document.querySelector('#confidenceOptions')
+            revenue: document.querySelector('.fermi-question:has(#revenueOptions)'),
+            customerReach: document.querySelector('.fermi-question:has(#customerReachOptions)'),
+            customerCare: document.querySelector('.fermi-question:has(#customerCareOptions)'),
+            insight: document.querySelector('.fermi-question:has(#insightOptions)'),
+            productPayoff: document.querySelector('.fermi-question:has(#productPayoffOptions)'),
+            effort: document.querySelector('.fermi-question:has(#effortOptions)'),
+            teamExcitement: document.querySelector('.fermi-question:has(#teamExcitementOptions)'),
+            confidence: document.querySelector('.fermi-question:has(#confidenceOptions)')
         };
 
         this.state = {
@@ -151,6 +152,47 @@ class FermiCalculator {
         }
     }
 
+    renderOptionGrid(container, options, field) {
+        try {
+            const optionsContainer = container.querySelector('.options-stack');
+            if (!optionsContainer) return;
+            
+            optionsContainer.innerHTML = '';
+            options.forEach(option => {
+                const card = document.createElement('div');
+                card.className = 'option-card';
+                if (this.state[field] === option.value) {
+                    card.classList.add('selected');
+                }
+
+                card.innerHTML = `
+                    <div class="option-label fw-bold">${this.translate(option.labelKey)}</div>
+                    <div class="option-description small text-gray-300">${this.translate(option.descriptionKey)}</div>
+                `;
+                
+                card.addEventListener('click', () => this.handleOptionClick(field, option.value));
+                
+                optionsContainer.appendChild(card);
+            });
+        } catch (error) {
+            console.error('Error rendering option grid:', error);
+            this.handleError('render', error);
+        }
+    }
+
+    renderOptionSelections() {
+        try {
+            Object.entries(this.containers).forEach(([field, container]) => {
+                if (container) {
+                    this.renderOptionGrid(container, this[`${field}Options`], field);
+                }
+            });
+        } catch (error) {
+            console.error('Error rendering options:', error);
+            this.handleError('render', error);
+        }
+    }
+
     getUnansweredQuestions() {
         const unanswered = [];
         Object.entries(this.state)
@@ -205,44 +247,6 @@ class FermiCalculator {
         } catch (error) {
             console.error('Error handling option click:', error);
             this.handleError('option-click', error);
-        }
-    }
-
-    renderOptionGrid(container, options, field) {
-        try {
-            container.innerHTML = '';
-            options.forEach(option => {
-                const card = document.createElement('div');
-                card.className = 'option-card';
-                if (this.state[field] === option.value) {
-                    card.classList.add('selected');
-                }
-
-                card.innerHTML = `
-                    <div class="option-label fw-bold">${this.translate(option.labelKey)}</div>
-                    <div class="option-description small text-gray-300">${this.translate(option.descriptionKey)}</div>
-                `;
-                
-                card.addEventListener('click', () => this.handleOptionClick(field, option.value));
-                
-                container.appendChild(card);
-            });
-        } catch (error) {
-            console.error('Error rendering option grid:', error);
-            this.handleError('render', error);
-        }
-    }
-
-    renderOptionSelections() {
-        try {
-            Object.entries(this.containers).forEach(([field, container]) => {
-                if (container) {
-                    this.renderOptionGrid(container, this[`${field}Options`], field);
-                }
-            });
-        } catch (error) {
-            console.error('Error rendering options:', error);
-            this.handleError('render', error);
         }
     }
 
