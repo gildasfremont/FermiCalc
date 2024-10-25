@@ -1,6 +1,6 @@
 class FermiCalculator {
     constructor() {
-        // Initialize state
+        // Initialize state first
         this.state = {
             revenue: 0,
             customerCare: 0,
@@ -35,10 +35,30 @@ class FermiCalculator {
             { value: 10, labelKey: 'confidence-10', descriptionKey: 'confidence-10-desc' },
             { value: 100, labelKey: 'confidence-100', descriptionKey: 'confidence-100-desc' }
         ];
+
+        // Initialize methods
+        this.initialize = () => this._initialize();
+        this.translate = (key, params = {}) => this._translate(key, params);
+        this.initializeEventListeners = () => this._initializeEventListeners();
+        this.initializeOptionGrids = () => this._initializeOptionGrids();
+        this.renderOptionGrid = (container, options, field) => this._renderOptionGrid(container, options, field);
+        this.calculateROI = () => this._calculateROI();
+        this.updateState = (field, value) => this._updateState(field, value);
+        this.getAnalysis = () => this._getAnalysis();
+        this.saveToStorage = () => this._saveToStorage();
+        this.loadFromStorage = () => this._loadFromStorage();
+        this.render = () => this._render();
+        this.renderOptionSelections = () => this._renderOptionSelections();
+        this.renderAnalysis = () => this._renderAnalysis();
     }
 
-    translate(key, params = {}) {
+    _translate(key, params = {}) {
         try {
+            if (!translations || !translations[this.state.language]) {
+                console.error('Translations not loaded');
+                return key;
+            }
+            
             let text = translations[this.state.language][key];
             if (!text) return key;
             
@@ -47,123 +67,159 @@ class FermiCalculator {
             });
             return text;
         } catch (error) {
-            console.warn(`Translation not found for key: ${key}`);
+            console.error('Translation error:', error);
             return key;
         }
     }
 
-    initialize() {
-        this.loadFromStorage();
-        this.initializeEventListeners();
-        this.render();
+    _initialize() {
+        try {
+            this.loadFromStorage();
+            this.initializeEventListeners();
+            this.render();
+        } catch (error) {
+            console.error('Initialization error:', error);
+        }
     }
 
-    initializeEventListeners() {
-        // Set up language buttons
-        document.querySelectorAll('.language-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                this.updateState('language', btn.dataset.lang);
-            });
-        });
-
-        this.initializeOptionGrids();
+    _initializeEventListeners() {
+        try {
+            // Set up language buttons
+            const languageBtns = document.querySelectorAll('.language-btn');
+            if (languageBtns) {
+                languageBtns.forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        this.updateState('language', btn.dataset.lang);
+                    });
+                });
+            }
+            this.initializeOptionGrids();
+        } catch (error) {
+            console.error('Error initializing event listeners:', error);
+        }
     }
 
-    initializeOptionGrids() {
-        const optionSets = [
-            { containerId: 'revenueOptions', options: this.revenueOptions, field: 'revenue' },
-            { containerId: 'customerCareOptions', options: this.customerCareOptions, field: 'customerCare' },
-            { containerId: 'effortOptions', options: this.effortOptions, field: 'effort' },
-            { containerId: 'confidenceOptions', options: this.confidenceOptions, field: 'confidence' }
-        ];
+    _initializeOptionGrids() {
+        try {
+            const optionSets = [
+                { containerId: 'revenueOptions', options: this.revenueOptions, field: 'revenue' },
+                { containerId: 'customerCareOptions', options: this.customerCareOptions, field: 'customerCare' },
+                { containerId: 'effortOptions', options: this.effortOptions, field: 'effort' },
+                { containerId: 'confidenceOptions', options: this.confidenceOptions, field: 'confidence' }
+            ];
 
-        optionSets.forEach(({ containerId, options, field }) => {
-            const container = document.querySelector(`.${containerId}`);
-            if (container) {
+            optionSets.forEach(({ containerId, options, field }) => {
+                const container = document.querySelector(`.${containerId}`);
+                if (!container) {
+                    console.warn(`Container .${containerId} not found`);
+                    return;
+                }
                 this.renderOptionGrid(container, options, field);
-            }
-        });
+            });
+        } catch (error) {
+            console.error('Error initializing option grids:', error);
+        }
     }
 
-    renderOptionGrid(container, options, field) {
-        container.innerHTML = '';
-        
-        options.forEach(option => {
-            const card = document.createElement('div');
-            card.className = 'option-card';
-            if (this.state[field] === option.value) {
-                card.classList.add('selected');
-            }
-
-            card.innerHTML = `
-                <div class="option-label fw-bold">${this.translate(option.labelKey)}</div>
-                <div class="option-description small text-muted">${this.translate(option.descriptionKey)}</div>
-            `;
+    _renderOptionGrid(container, options, field) {
+        try {
+            if (!container) return;
             
-            card.addEventListener('click', () => {
-                this.updateState(field, option.value);
-            });
+            container.innerHTML = '';
             
-            container.appendChild(card);
-        });
-    }
+            options.forEach(option => {
+                const card = document.createElement('div');
+                card.className = 'option-card';
+                if (this.state[field] === option.value) {
+                    card.classList.add('selected');
+                }
 
-    calculateROI() {
-        if (!this.state.effort) return 0;
-        const impact = (this.state.revenue * this.state.customerCare * this.state.confidence) / 100;
-        return Math.round(impact / this.state.effort);
-    }
-
-    updateState(field, value) {
-        this.state[field] = value;
-        this.saveToStorage();
-        this.render();
-    }
-
-    getAnalysis() {
-        const roi = this.calculateROI();
-        const isComplete = this.state.revenue && this.state.customerCare && 
-                         this.state.effort && this.state.confidence;
-        
-        if (!isComplete) return null;
-
-        const analysis = [];
-
-        if (roi > 0) {
-            analysis.push({
-                type: 'primary',
-                content: `ROI: ${roi.toLocaleString()}`
+                card.innerHTML = `
+                    <div class="option-label fw-bold">${this.translate(option.labelKey)}</div>
+                    <div class="option-description small text-gray-300">${this.translate(option.descriptionKey)}</div>
+                `;
+                
+                card.addEventListener('click', () => {
+                    this.updateState(field, option.value);
+                });
+                
+                container.appendChild(card);
             });
+        } catch (error) {
+            console.error('Error rendering option grid:', error);
         }
-
-        if (this.state.confidence === 100) {
-            analysis.push({
-                type: 'positive',
-                content: this.translate('high-confidence')
-            });
-        } else if (this.state.confidence === 1) {
-            analysis.push({
-                type: 'warning',
-                content: this.translate('low-confidence')
-            });
-        }
-
-        if (this.state.effort === 2) {
-            analysis.push({
-                type: 'positive',
-                content: this.translate('quick-win')
-            });
-        } else if (this.state.effort === 45) {
-            analysis.push({
-                type: 'warning',
-                content: this.translate('large-effort')
-            });
-        }
-
-        return analysis;
     }
 
-    saveToStorage() {
+    _calculateROI() {
+        try {
+            if (!this.state.effort) return 0;
+            const impact = (this.state.revenue * this.state.customerCare * this.state.confidence) / 100;
+            return Math.round(impact / this.state.effort);
+        } catch (error) {
+            console.error('Error calculating ROI:', error);
+            return 0;
+        }
+    }
+
+    _updateState(field, value) {
+        try {
+            this.state[field] = value;
+            this.saveToStorage();
+            this.render();
+        } catch (error) {
+            console.error('Error updating state:', error);
+        }
+    }
+
+    _getAnalysis() {
+        try {
+            const roi = this.calculateROI();
+            const isComplete = this.state.revenue && this.state.customerCare && 
+                            this.state.effort && this.state.confidence;
+            
+            if (!isComplete) return null;
+
+            const analysis = [];
+
+            if (roi > 0) {
+                analysis.push({
+                    type: 'primary',
+                    content: `ROI: ${roi.toLocaleString()}`
+                });
+            }
+
+            if (this.state.confidence === 100) {
+                analysis.push({
+                    type: 'positive',
+                    content: this.translate('high-confidence')
+                });
+            } else if (this.state.confidence === 1) {
+                analysis.push({
+                    type: 'warning',
+                    content: this.translate('low-confidence')
+                });
+            }
+
+            if (this.state.effort === 2) {
+                analysis.push({
+                    type: 'positive',
+                    content: this.translate('quick-win')
+                });
+            } else if (this.state.effort === 45) {
+                analysis.push({
+                    type: 'warning',
+                    content: this.translate('large-effort')
+                });
+            }
+
+            return analysis;
+        } catch (error) {
+            console.error('Error getting analysis:', error);
+            return null;
+        }
+    }
+
+    _saveToStorage() {
         try {
             localStorage.setItem('fermiCalculator', JSON.stringify(this.state));
         } catch (error) {
@@ -171,7 +227,7 @@ class FermiCalculator {
         }
     }
 
-    loadFromStorage() {
+    _loadFromStorage() {
         try {
             const saved = localStorage.getItem('fermiCalculator');
             if (saved) {
@@ -182,61 +238,76 @@ class FermiCalculator {
         }
     }
 
-    render() {
-        // Update all translatable elements
-        document.querySelectorAll('[data-translate]').forEach(element => {
-            const key = element.getAttribute('data-translate');
-            if (key) {
-                element.textContent = this.translate(key);
-            }
-        });
+    _render() {
+        try {
+            // Update all translatable elements
+            document.querySelectorAll('[data-translate]').forEach(element => {
+                const key = element.getAttribute('data-translate');
+                if (key) {
+                    element.textContent = this.translate(key);
+                }
+            });
 
-        this.renderOptionSelections();
-        this.renderAnalysis();
+            this.renderOptionSelections();
+            this.renderAnalysis();
+        } catch (error) {
+            console.error('Error rendering:', error);
+        }
     }
 
-    renderOptionSelections() {
-        ['revenue', 'customerCare', 'effort', 'confidence'].forEach(field => {
-            const container = document.querySelector(`.${field}Options`);
-            if (container) {
-                this.renderOptionGrid(container, this[`${field}Options`], field);
-            }
-        });
+    _renderOptionSelections() {
+        try {
+            ['revenue', 'customerCare', 'effort', 'confidence'].forEach(field => {
+                const container = document.querySelector(`.${field}Options`);
+                if (container) {
+                    this.renderOptionGrid(container, this[`${field}Options`], field);
+                }
+            });
+        } catch (error) {
+            console.error('Error rendering option selections:', error);
+        }
     }
 
-    renderAnalysis() {
-        const analysisContent = document.getElementById('analysis-content');
-        if (!analysisContent) return;
-        
-        const analysis = this.getAnalysis();
+    _renderAnalysis() {
+        try {
+            const analysisContent = document.getElementById('analysis-content');
+            if (!analysisContent) return;
+            
+            const analysis = this.getAnalysis();
 
-        if (!analysis) {
-            analysisContent.innerHTML = `
-                <div class="text-muted">
-                    <i class="bi bi-info-circle"></i>
-                    ${this.translate('analysis-empty')}
+            if (!analysis) {
+                analysisContent.innerHTML = `
+                    <div class="text-gray-300">
+                        <i class="bi bi-info-circle"></i>
+                        ${this.translate('analysis-empty')}
+                    </div>
+                `;
+                return;
+            }
+
+            let html = `
+                <div class="analysis-points">
+                    ${analysis.map(point => `
+                        <div class="analysis-point ${point.type}">
+                            ${point.content}
+                        </div>
+                    `).join('')}
                 </div>
             `;
-            return;
+
+            analysisContent.innerHTML = html;
+        } catch (error) {
+            console.error('Error rendering analysis:', error);
         }
-
-        let html = `
-            <div class="analysis-points">
-                ${analysis.map(point => `
-                    <div class="analysis-point ${point.type}">
-                        ${point.content}
-                    </div>
-                `).join('')}
-            </div>
-        `;
-
-        analysisContent.innerHTML = html;
     }
 }
 
 // Initialize the calculator when the DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
-    const calculator = new FermiCalculator();
-    window.calculator = calculator;
-    calculator.initialize();
+    try {
+        window.calculator = new FermiCalculator();
+        window.calculator.initialize();
+    } catch (error) {
+        console.error('Error initializing calculator:', error);
+    }
 });
