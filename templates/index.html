@@ -12,10 +12,13 @@
     <nav class="navbar navbar-expand-lg sticky-top">
         <div class="container-fluid">
             <span class="navbar-brand fw-bold">Is it worth it?</span>
-            <div class="d-flex gap-2">
-                <button class="btn btn-outline-light language-btn fw-medium" data-lang="EN">EN</button>
-                <button class="btn btn-outline-light language-btn fw-medium" data-lang="FR">FR</button>
-                <button class="btn btn-outline-light language-btn fw-medium" data-lang="ES">ES</button>
+            <div class="d-flex gap-3 align-items-center">
+                <select id="variant-selector" class="form-select form-select-sm"></select>
+                <div class="d-flex gap-2">
+                    <button class="btn btn-outline-light language-btn fw-medium" data-lang="EN">EN</button>
+                    <button class="btn btn-outline-light language-btn fw-medium" data-lang="FR">FR</button>
+                    <button class="btn btn-outline-light language-btn fw-medium" data-lang="ES">ES</button>
+                </div>
             </div>
         </div>
     </nav>
@@ -40,9 +43,14 @@
             <div class="card-header sticky-top">
                 <div class="d-flex align-items-center gap-3 flex-wrap">
                     <div id="feature-tabs" class="d-flex gap-2 flex-grow-1"></div>
-                    <button id="add-feature" class="btn btn-outline-light">
-                        <i class="bi bi-plus"></i> Add Feature
-                    </button>
+                    <div class="d-flex gap-2">
+                        <button id="add-feature" class="btn btn-outline-light">
+                            <i class="bi bi-plus"></i> Add Feature
+                        </button>
+                        <button id="save-variant" class="btn btn-outline-success">
+                            <i class="bi bi-save"></i> Save as Variant
+                        </button>
+                    </div>
                 </div>
             </div>
             <div class="card-body">
