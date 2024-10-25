@@ -50,10 +50,25 @@
     text-overflow: ellipsis;
 }
 
+/* Updated remove feature button styling */
 .remove-feature {
-    padding: 0.25rem 0.5rem !important;
+    opacity: 0.6;
+    padding: 0.25rem;
+    border: none;
+    background: transparent;
+    transition: all 0.2s ease-in-out;
+    margin-left: 0.5rem;
+}
+
+.remove-feature:hover {
+    opacity: 1;
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--bs-danger);
+}
+
+.remove-feature i {
+    font-size: 0.875rem;
     line-height: 1;
-    border-radius: 50% !important;
 }
 
 /* Mobile sidebar behavior */
