@@ -170,9 +170,15 @@ class FermiCalculator {
         Object.entries(this.state)
             .filter(([key]) => key !== 'language')
             .forEach(([field, value]) => {
-                // Consider 0 as unanswered for confidence and team excitement
-                const isUnanswered = value === 0 && (field === 'confidence' || field === 'teamExcitement') || 
-                                   !value;
+                // Special cases for fields where 0 means unanswered
+                const isZeroMeansUnanswered = ['confidence', 'teamExcitement'].includes(field);
+                
+                // For fields where 0 is a valid answer
+                const isValidZero = ['customerReach', 'customerCare', 'insight', 'productPayoff'].includes(field) && value === 0;
+                
+                // Check if question is unanswered
+                const isUnanswered = isZeroMeansUnanswered ? value === 0 : 
+                                   isValidZero ? false : !value;
                 
                 if (isUnanswered) {
                     const titleKey = {
@@ -233,10 +239,12 @@ class FermiCalculator {
 
     calculateROI() {
         try {
+            // Only block calculation if required fields are missing
             if (!this.state.effort || 
                 this.state.confidence === 0 || 
                 this.state.teamExcitement === 0) return 0;
             
+            // Allow zero values in impact calculation
             const impact = (
                 this.state.customerReach * 
                 this.state.customerCare * 
