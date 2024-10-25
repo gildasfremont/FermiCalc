@@ -1,8 +1,5 @@
 class FermiCalculator {
     constructor() {
-        // Initialize state
-        this.variants = this.loadVariants();
-        this.currentVariantId = this.variants[0]?.id || 'default';
         this.features = [{
             id: 1,
             name: 'Feature A',
@@ -14,7 +11,7 @@ class FermiCalculator {
         this.activeFeature = 0;
         this.currentLanguage = 'EN';
 
-        // Bind all methods
+        // Bind all methods that need 'this' context
         this.initialize = this.initialize.bind(this);
         this.initializeApp = this.initializeApp.bind(this);
         this.initializeEventListeners = this.initializeEventListeners.bind(this);
@@ -32,9 +29,6 @@ class FermiCalculator {
         this.renderOptionSelections = this.renderOptionSelections.bind(this);
         this.renderAnalysis = this.renderAnalysis.bind(this);
         this.translate = this.translate.bind(this);
-        this.saveVariant = this.saveVariant.bind(this);
-        this.loadVariant = this.loadVariant.bind(this);
-        this.updateVariantSelector = this.updateVariantSelector.bind(this);
 
         // Initialize options arrays
         this.revenueOptions = [
@@ -64,73 +58,6 @@ class FermiCalculator {
         ];
     }
 
-    // Variant Management Methods
-    loadVariants() {
-        try {
-            const variants = JSON.parse(localStorage.getItem('fermiVariants') || '[]');
-            return variants.length ? variants : [{ id: 'default', name: 'Default' }];
-        } catch (error) {
-            console.error('Error loading variants:', error);
-            return [{ id: 'default', name: 'Default' }];
-        }
-    }
-
-    saveVariant() {
-        try {
-            const name = prompt('Enter a name for this variant:');
-            if (!name) return;
-
-            const variantId = `variant_${Date.now()}`;
-            const newVariant = {
-                id: variantId,
-                name: name,
-                data: {
-                    features: this.features,
-                    activeFeature: this.activeFeature,
-                    language: this.currentLanguage
-                }
-            };
-
-            this.variants.push(newVariant);
-            localStorage.setItem('fermiVariants', JSON.stringify(this.variants));
-            localStorage.setItem(`fermi_${variantId}`, JSON.stringify(newVariant.data));
-            
-            this.currentVariantId = variantId;
-            this.updateVariantSelector();
-        } catch (error) {
-            console.error('Error saving variant:', error);
-            alert('Failed to save variant. Please try again.');
-        }
-    }
-
-    loadVariant(variantId) {
-        try {
-            const savedData = localStorage.getItem(`fermi_${variantId}`);
-            if (savedData) {
-                const data = JSON.parse(savedData);
-                this.features = data.features;
-                this.activeFeature = data.activeFeature;
-                this.currentLanguage = data.language;
-                this.currentVariantId = variantId;
-                this.render();
-            }
-        } catch (error) {
-            console.error('Error loading variant:', error);
-            alert('Failed to load variant. Please try again.');
-        }
-    }
-
-    updateVariantSelector() {
-        const selector = document.getElementById('variant-selector');
-        if (!selector) return;
-
-        selector.innerHTML = this.variants.map(variant => 
-            `<option value="${variant.id}" ${variant.id === this.currentVariantId ? 'selected' : ''}>
-                ${variant.name}
-            </option>`
-        ).join('');
-    }
-
     translate(key, params = {}) {
         try {
             let text = translations[this.currentLanguage][key];
@@ -158,7 +85,6 @@ class FermiCalculator {
         try {
             this.initializeEventListeners();
             this.loadFromStorage();
-            this.updateVariantSelector();
             this.render();
         } catch (error) {
             console.error('Initialization error:', error);
@@ -169,16 +95,6 @@ class FermiCalculator {
         const addFeatureBtn = document.getElementById('add-feature');
         if (addFeatureBtn) {
             addFeatureBtn.addEventListener('click', this.addFeature);
-        }
-
-        const saveVariantBtn = document.getElementById('save-variant');
-        if (saveVariantBtn) {
-            saveVariantBtn.addEventListener('click', this.saveVariant);
-        }
-
-        const variantSelector = document.getElementById('variant-selector');
-        if (variantSelector) {
-            variantSelector.addEventListener('change', (e) => this.loadVariant(e.target.value));
         }
 
         const languageBtns = document.querySelectorAll('.language-btn');
@@ -333,7 +249,7 @@ class FermiCalculator {
 
     saveToStorage() {
         try {
-            localStorage.setItem(`fermi_${this.currentVariantId}`, JSON.stringify({
+            localStorage.setItem('fermiFeatures', JSON.stringify({
                 features: this.features,
                 activeFeature: this.activeFeature,
                 language: this.currentLanguage
@@ -345,7 +261,7 @@ class FermiCalculator {
 
     loadFromStorage() {
         try {
-            const saved = localStorage.getItem(`fermi_${this.currentVariantId}`);
+            const saved = localStorage.getItem('fermiFeatures');
             if (saved) {
                 const data = JSON.parse(saved);
                 this.features = data.features;
