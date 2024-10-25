@@ -2,14 +2,14 @@ class FermiCalculator {
     constructor() {
         // Initialize state
         this.state = {
-            revenue: 0,
-            customerReach: 0,
-            customerCare: 0,
-            insight: 0,
-            productPayoff: 0,
-            effort: 0,
-            teamExcitement: 0,
-            confidence: 0,
+            revenue: undefined,
+            customerReach: undefined,
+            customerCare: undefined,
+            insight: undefined,
+            productPayoff: undefined,
+            effort: undefined,
+            teamExcitement: undefined,
+            confidence: undefined,
             language: 'EN'
         };
 
@@ -72,7 +72,7 @@ class FermiCalculator {
             { value: 100, labelKey: 'confidence-100', descriptionKey: 'confidence-100-desc' }
         ];
 
-        // Bind methods
+        // Bind all methods
         this.initialize = this.initialize.bind(this);
         this.translate = this.translate.bind(this);
         this.initializeEventListeners = this.initializeEventListeners.bind(this);
@@ -88,6 +88,7 @@ class FermiCalculator {
         this.renderOptionSelections = this.renderOptionSelections.bind(this);
         this.renderAnalysis = this.renderAnalysis.bind(this);
         this.scrollToQuestion = this.scrollToQuestion.bind(this);
+        this.handleError = this.handleError.bind(this);
     }
 
     initialize() {
@@ -170,17 +171,8 @@ class FermiCalculator {
         Object.entries(this.state)
             .filter(([key]) => key !== 'language')
             .forEach(([field, value]) => {
-                // Special cases for fields where 0 means unanswered
-                const isZeroMeansUnanswered = ['confidence', 'teamExcitement'].includes(field);
-                
-                // For fields where 0 is a valid answer
-                const isValidZero = ['customerReach', 'customerCare', 'insight', 'productPayoff'].includes(field) && value === 0;
-                
-                // Check if question is unanswered
-                const isUnanswered = isZeroMeansUnanswered ? value === 0 : 
-                                   isValidZero ? false : !value;
-                
-                if (isUnanswered) {
+                // Only check if the question has been answered (value is not undefined/null)
+                if (value === undefined || value === null) {
                     const titleKey = {
                         revenue: 'revenue-title',
                         customerReach: 'customer-reach-title',
@@ -239,12 +231,8 @@ class FermiCalculator {
 
     calculateROI() {
         try {
-            // Only block calculation if required fields are missing
-            if (!this.state.effort || 
-                this.state.confidence === 0 || 
-                this.state.teamExcitement === 0) return 0;
+            if (!this.state.effort) return 0;
             
-            // Allow zero values in impact calculation
             const impact = (
                 this.state.customerReach * 
                 this.state.customerCare * 
@@ -275,12 +263,9 @@ class FermiCalculator {
 
     getAnalysis() {
         try {
-            const roi = this.calculateROI();
             const unanswered = this.getUnansweredQuestions();
             
-            if (unanswered.length > 0 || 
-                this.state.confidence === 0 || 
-                this.state.teamExcitement === 0) {
+            if (unanswered.length > 0) {
                 return {
                     complete: false,
                     unanswered,
@@ -288,6 +273,7 @@ class FermiCalculator {
                 };
             }
 
+            const roi = this.calculateROI();
             const analysis = [];
 
             if (roi > 0) {
