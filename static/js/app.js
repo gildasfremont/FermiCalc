@@ -21,7 +21,6 @@ class FermiCalculator {
             { value: 1000000, labelKey: 'revenue-1000000', descriptionKey: 'revenue-1000000-desc' }
         ];
 
-        // Customer Reach options (0-100)
         this.customerReachOptions = [
             { value: 0, labelKey: 'reach-0', descriptionKey: 'reach-0-desc' },
             { value: 30, labelKey: 'reach-30', descriptionKey: 'reach-30-desc' },
@@ -29,7 +28,6 @@ class FermiCalculator {
             { value: 100, labelKey: 'reach-100', descriptionKey: 'reach-100-desc' }
         ];
 
-        // Customer Care options (0-1000)
         this.customerCareOptions = [
             { value: 0, labelKey: 'care-0', descriptionKey: 'care-0-desc' },
             { value: 1, labelKey: 'care-1', descriptionKey: 'care-1-desc' },
@@ -38,7 +36,6 @@ class FermiCalculator {
             { value: 1000, labelKey: 'care-1000', descriptionKey: 'care-1000-desc' }
         ];
 
-        // Insight options (0-1000)
         this.insightOptions = [
             { value: 0, labelKey: 'insight-0', descriptionKey: 'insight-0-desc' },
             { value: 1, labelKey: 'insight-1', descriptionKey: 'insight-1-desc' },
@@ -47,7 +44,6 @@ class FermiCalculator {
             { value: 1000, labelKey: 'insight-1000', descriptionKey: 'insight-1000-desc' }
         ];
 
-        // Product Payoff options (0-1000)
         this.productPayoffOptions = [
             { value: 0, labelKey: 'payoff-0', descriptionKey: 'payoff-0-desc' },
             { value: 1, labelKey: 'payoff-1', descriptionKey: 'payoff-1-desc' },
@@ -56,14 +52,12 @@ class FermiCalculator {
             { value: 1000, labelKey: 'payoff-1000', descriptionKey: 'payoff-1000-desc' }
         ];
 
-        // Effort options (2d, 2w, 2m)
         this.effortOptions = [
             { value: 2, labelKey: 'effort-2d', descriptionKey: 'effort-2d-desc' },
             { value: 10, labelKey: 'effort-2w', descriptionKey: 'effort-2w-desc' },
             { value: 45, labelKey: 'effort-2m', descriptionKey: 'effort-2m-desc' }
         ];
 
-        // Team Excitement options (0-100)
         this.teamExcitementOptions = [
             { value: 0, labelKey: 'excitement-0', descriptionKey: 'excitement-0-desc' },
             { value: 1, labelKey: 'excitement-1', descriptionKey: 'excitement-1-desc' },
@@ -71,25 +65,12 @@ class FermiCalculator {
             { value: 100, labelKey: 'excitement-100', descriptionKey: 'excitement-100-desc' }
         ];
 
-        // Confidence options (0-100)
         this.confidenceOptions = [
             { value: 0, labelKey: 'confidence-0', descriptionKey: 'confidence-0-desc' },
             { value: 1, labelKey: 'confidence-1', descriptionKey: 'confidence-1-desc' },
             { value: 10, labelKey: 'confidence-10', descriptionKey: 'confidence-10-desc' },
             { value: 100, labelKey: 'confidence-100', descriptionKey: 'confidence-100-desc' }
         ];
-
-        // Question titles mapping
-        this.questionTitles = {
-            revenue: 'revenue-title',
-            customerReach: 'customer-reach-title',
-            customerCare: 'customer-care-title',
-            insight: 'insight-title',
-            productPayoff: 'product-payoff-title',
-            effort: 'effort-title',
-            teamExcitement: 'team-excitement-title',
-            confidence: 'confidence-title'
-        };
 
         // Bind methods
         this.initialize = this.initialize.bind(this);
@@ -149,15 +130,20 @@ class FermiCalculator {
                 { containerId: 'confidenceOptions', options: this.confidenceOptions, field: 'confidence' }
             ];
 
+            let missingContainers = [];
             optionSets.forEach(({ containerId, options, field }) => {
                 const container = document.querySelector(`.${containerId}`);
                 if (!container) {
-                    console.warn(`Container .${containerId} not found`);
-                    this.handleError('missing-container', { containerId });
+                    missingContainers.push(containerId);
+                    console.error(`Missing required container: .${containerId}`);
                     return;
                 }
                 this.renderOptionGrid(container, options, field);
             });
+
+            if (missingContainers.length > 0) {
+                this.handleError('missing-containers', { containers: missingContainers });
+            }
         } catch (error) {
             console.error('Error initializing option grids:', error);
             this.handleError('option-grids', error);
@@ -166,12 +152,13 @@ class FermiCalculator {
 
     handleError(type, error) {
         const errorMessages = {
-            'missing-container': `Missing container: ${error.containerId}`,
+            'missing-containers': `Missing containers: ${error.containers?.join(', ')}`,
             'initialization': 'Failed to initialize calculator',
             'event-listeners': 'Failed to set up event listeners',
             'option-grids': 'Failed to set up option grids',
             'render': 'Failed to render calculator',
-            'analysis': 'Failed to generate analysis'
+            'analysis': 'Failed to generate analysis',
+            'storage': 'Failed to access local storage'
         };
 
         const message = errorMessages[type] || 'An unknown error occurred';
@@ -184,9 +171,20 @@ class FermiCalculator {
             .filter(([key]) => key !== 'language')
             .forEach(([field, value]) => {
                 if (!value) {
+                    const titleKey = {
+                        revenue: 'revenue-title',
+                        customerReach: 'customer-reach-title',
+                        customerCare: 'customer-care-title',
+                        insight: 'insight-title',
+                        productPayoff: 'product-payoff-title',
+                        effort: 'effort-title',
+                        teamExcitement: 'team-excitement-title',
+                        confidence: 'confidence-title'
+                    }[field];
+                    
                     unanswered.push({
                         field,
-                        title: this.translate(this.questionTitles[field])
+                        title: this.translate(titleKey)
                     });
                 }
             });
