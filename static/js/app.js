@@ -36,14 +36,18 @@ class FermiCalculator {
             { value: 10, label: "We can probably do this", description: "Some unknowns but familiar territory" },
             { value: 100, label: "Completely within expertise", description: "We've done this before successfully" }
         ];
-
-        // Wait for DOM to be fully loaded before initializing
-        document.addEventListener('DOMContentLoaded', () => {
-            this.initialize();
-        });
     }
 
     initialize() {
+        // Wait for DOM content to be loaded before initializing
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => this.initializeApp());
+        } else {
+            this.initializeApp();
+        }
+    }
+
+    initializeApp() {
         try {
             this.initializeEventListeners();
             this.loadFromStorage();
@@ -80,14 +84,23 @@ class FermiCalculator {
 
     initializeOptionGrids() {
         const optionSets = [
-            { containerId: 'revenue-options', options: this.revenueOptions, field: 'revenue' },
-            { containerId: 'customer-care-options', options: this.customerCareOptions, field: 'customerCare' },
-            { containerId: 'effort-options', options: this.effortOptions, field: 'effort' },
-            { containerId: 'confidence-options', options: this.confidenceOptions, field: 'confidence' }
+            { containerId: 'revenueOptions', options: this.revenueOptions, field: 'revenue' },
+            { containerId: 'customerCareOptions', options: this.customerCareOptions, field: 'customerCare' },
+            { containerId: 'effortOptions', options: this.effortOptions, field: 'effort' },
+            { containerId: 'confidenceOptions', options: this.confidenceOptions, field: 'confidence' }
         ];
 
         optionSets.forEach(({ containerId, options, field }) => {
-            this.renderOptionGrid(containerId, options, field);
+            try {
+                const container = document.querySelector(`.${containerId}`);
+                if (!container) {
+                    console.warn(`Container not found: ${containerId}`);
+                    return;
+                }
+                this.renderOptionGrid(containerId, options, field);
+            } catch (error) {
+                console.error(`Error initializing grid for ${containerId}:`, error);
+            }
         });
     }
 
@@ -154,7 +167,6 @@ class FermiCalculator {
     updateFeature(field, value) {
         this.features[this.activeFeature][field] = value;
         this.saveToStorage();
-        this.render();
     }
 
     getAnalysis() {
@@ -314,9 +326,9 @@ class FermiCalculator {
             // Update selected states with null checks
             ['revenue', 'customerCare', 'effort', 'confidence'].forEach(field => {
                 const value = currentFeature[field];
-                const container = document.querySelector(`.${field}-options`);
+                const container = document.querySelector(`.${field}Options`);
                 if (!container) {
-                    console.warn(`Options container not found: ${field}-options`);
+                    console.warn(`Options container not found: ${field}Options`);
                     return;
                 }
                 
@@ -389,5 +401,6 @@ class FermiCalculator {
     }
 }
 
-// Initialize the calculator when the page loads
+// Initialize the calculator
 const calculator = new FermiCalculator();
+calculator.initialize();
