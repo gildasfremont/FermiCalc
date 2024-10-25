@@ -12,10 +12,12 @@
     <nav class="navbar navbar-expand-lg sticky-top">
         <div class="container-fluid">
             <span class="navbar-brand fw-bold">Is it worth it?</span>
-            <div class="d-flex gap-2">
-                <button class="btn btn-outline-light language-btn fw-medium" data-lang="EN">EN</button>
-                <button class="btn btn-outline-light language-btn fw-medium" data-lang="FR">FR</button>
-                <button class="btn btn-outline-light language-btn fw-medium" data-lang="ES">ES</button>
+            <div class="d-flex align-items-center">
+                <select id="languageSelect" class="form-select language-select">
+                    <option value="EN">English</option>
+                    <option value="FR">Français</option>
+                    <option value="ES">Español</option>
+                </select>
             </div>
         </div>
     </nav>
@@ -36,7 +38,7 @@
             </div>
         </div>
 
-        <div class="card border-2">
+        <div class="card border-2 mb-4">
             <div class="card-body p-5">
                 <div id="questions" class="mt-4">
                     <div class="fermi-question mb-5">
@@ -63,13 +65,15 @@
                         <div class="confidenceOptions options-stack"></div>
                     </div>
                 </div>
+            </div>
+        </div>
 
-                <div id="analysis-content" class="mt-5 p-5 rounded-3 bg-dark border-2">
-                    <h5 class="text-white mb-4" data-translate="analysis-title">Analysis</h5>
-                    <div class="text-gray-300">
-                        <i class="bi bi-info-circle"></i>
-                        <span data-translate="analysis-empty">Complete all questions to see analysis</span>
-                    </div>
+        <div id="analysis-content" class="card border-2">
+            <div class="card-body p-5">
+                <h5 class="text-white mb-4" data-translate="analysis-title">Analysis</h5>
+                <div class="text-gray-300">
+                    <i class="bi bi-info-circle"></i>
+                    <span data-translate="analysis-empty">Complete all questions to see analysis</span>
                 </div>
             </div>
         </div>

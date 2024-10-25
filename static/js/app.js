@@ -1,6 +1,6 @@
 class FermiCalculator {
     constructor() {
-        // Initialize state first
+        // Initialize state
         this.state = {
             revenue: 0,
             customerCare: 0,
@@ -36,20 +36,20 @@ class FermiCalculator {
             { value: 100, labelKey: 'confidence-100', descriptionKey: 'confidence-100-desc' }
         ];
 
-        // Initialize methods
-        this.initialize = () => this._initialize();
-        this.translate = (key, params = {}) => this._translate(key, params);
-        this.initializeEventListeners = () => this._initializeEventListeners();
-        this.initializeOptionGrids = () => this._initializeOptionGrids();
-        this.renderOptionGrid = (container, options, field) => this._renderOptionGrid(container, options, field);
-        this.calculateROI = () => this._calculateROI();
-        this.updateState = (field, value) => this._updateState(field, value);
-        this.getAnalysis = () => this._getAnalysis();
-        this.saveToStorage = () => this._saveToStorage();
-        this.loadFromStorage = () => this._loadFromStorage();
-        this.render = () => this._render();
-        this.renderOptionSelections = () => this._renderOptionSelections();
-        this.renderAnalysis = () => this._renderAnalysis();
+        // Bind all methods to this instance
+        this.initialize = this._initialize.bind(this);
+        this.translate = this._translate.bind(this);
+        this.initializeEventListeners = this._initializeEventListeners.bind(this);
+        this.initializeOptionGrids = this._initializeOptionGrids.bind(this);
+        this.renderOptionGrid = this._renderOptionGrid.bind(this);
+        this.calculateROI = this._calculateROI.bind(this);
+        this.updateState = this._updateState.bind(this);
+        this.getAnalysis = this._getAnalysis.bind(this);
+        this.saveToStorage = this._saveToStorage.bind(this);
+        this.loadFromStorage = this._loadFromStorage.bind(this);
+        this.render = this._render.bind(this);
+        this.renderOptionSelections = this._renderOptionSelections.bind(this);
+        this.renderAnalysis = this._renderAnalysis.bind(this);
     }
 
     _translate(key, params = {}) {
@@ -84,15 +84,15 @@ class FermiCalculator {
 
     _initializeEventListeners() {
         try {
-            // Set up language buttons
-            const languageBtns = document.querySelectorAll('.language-btn');
-            if (languageBtns) {
-                languageBtns.forEach(btn => {
-                    btn.addEventListener('click', () => {
-                        this.updateState('language', btn.dataset.lang);
-                    });
+            // Set up language select
+            const languageSelect = document.getElementById('languageSelect');
+            if (languageSelect) {
+                languageSelect.value = this.state.language;
+                languageSelect.addEventListener('change', () => {
+                    this.updateState('language', languageSelect.value);
                 });
             }
+            
             this.initializeOptionGrids();
         } catch (error) {
             console.error('Error initializing event listeners:', error);
@@ -277,21 +277,27 @@ class FermiCalculator {
 
             if (!analysis) {
                 analysisContent.innerHTML = `
-                    <div class="text-gray-300">
-                        <i class="bi bi-info-circle"></i>
-                        ${this.translate('analysis-empty')}
+                    <div class="card-body p-5">
+                        <h5 class="text-white mb-4" data-translate="analysis-title">Analysis</h5>
+                        <div class="text-gray-300">
+                            <i class="bi bi-info-circle"></i>
+                            ${this.translate('analysis-empty')}
+                        </div>
                     </div>
                 `;
                 return;
             }
 
             let html = `
-                <div class="analysis-points">
-                    ${analysis.map(point => `
-                        <div class="analysis-point ${point.type}">
-                            ${point.content}
-                        </div>
-                    `).join('')}
+                <div class="card-body p-5">
+                    <h5 class="text-white mb-4" data-translate="analysis-title">Analysis</h5>
+                    <div class="analysis-points">
+                        ${analysis.map(point => `
+                            <div class="analysis-point ${point.type}">
+                                ${point.content}
+                            </div>
+                        `).join('')}
+                    </div>
                 </div>
             `;
 
