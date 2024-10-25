@@ -79,6 +79,18 @@ class FermiCalculator {
             { value: 100, labelKey: 'confidence-100', descriptionKey: 'confidence-100-desc' }
         ];
 
+        // Question titles mapping
+        this.questionTitles = {
+            revenue: 'revenue-title',
+            customerReach: 'customer-reach-title',
+            customerCare: 'customer-care-title',
+            insight: 'insight-title',
+            productPayoff: 'product-payoff-title',
+            effort: 'effort-title',
+            teamExcitement: 'team-excitement-title',
+            confidence: 'confidence-title'
+        };
+
         // Bind methods
         this.initialize = this.initialize.bind(this);
         this.translate = this.translate.bind(this);
@@ -88,11 +100,13 @@ class FermiCalculator {
         this.calculateROI = this.calculateROI.bind(this);
         this.updateState = this.updateState.bind(this);
         this.getAnalysis = this.getAnalysis.bind(this);
+        this.getUnansweredQuestions = this.getUnansweredQuestions.bind(this);
         this.saveToStorage = this.saveToStorage.bind(this);
         this.loadFromStorage = this.loadFromStorage.bind(this);
         this.render = this.render.bind(this);
         this.renderOptionSelections = this.renderOptionSelections.bind(this);
         this.renderAnalysis = this.renderAnalysis.bind(this);
+        this.scrollToQuestion = this.scrollToQuestion.bind(this);
     }
 
     initialize() {
@@ -102,6 +116,7 @@ class FermiCalculator {
             this.render();
         } catch (error) {
             console.error('Initialization error:', error);
+            this.handleError('initialization', error);
         }
     }
 
@@ -117,6 +132,7 @@ class FermiCalculator {
             this.initializeOptionGrids();
         } catch (error) {
             console.error('Error initializing event listeners:', error);
+            this.handleError('event-listeners', error);
         }
     }
 
@@ -135,14 +151,54 @@ class FermiCalculator {
 
             optionSets.forEach(({ containerId, options, field }) => {
                 const container = document.querySelector(`.${containerId}`);
-                if (container) {
-                    this.renderOptionGrid(container, options, field);
-                } else {
+                if (!container) {
                     console.warn(`Container .${containerId} not found`);
+                    this.handleError('missing-container', { containerId });
+                    return;
                 }
+                this.renderOptionGrid(container, options, field);
             });
         } catch (error) {
             console.error('Error initializing option grids:', error);
+            this.handleError('option-grids', error);
+        }
+    }
+
+    handleError(type, error) {
+        const errorMessages = {
+            'missing-container': `Missing container: ${error.containerId}`,
+            'initialization': 'Failed to initialize calculator',
+            'event-listeners': 'Failed to set up event listeners',
+            'option-grids': 'Failed to set up option grids',
+            'render': 'Failed to render calculator',
+            'analysis': 'Failed to generate analysis'
+        };
+
+        const message = errorMessages[type] || 'An unknown error occurred';
+        console.error(`${message}:`, error);
+    }
+
+    getUnansweredQuestions() {
+        const unanswered = [];
+        Object.entries(this.state)
+            .filter(([key]) => key !== 'language')
+            .forEach(([field, value]) => {
+                if (!value) {
+                    unanswered.push({
+                        field,
+                        title: this.translate(this.questionTitles[field])
+                    });
+                }
+            });
+        return unanswered;
+    }
+
+    scrollToQuestion(field) {
+        const container = document.querySelector(`.${field}Options`);
+        if (container) {
+            container.scrollIntoView({ behavior: 'smooth' });
+            container.classList.add('highlight-container');
+            setTimeout(() => container.classList.remove('highlight-container'), 2000);
         }
     }
 
@@ -169,6 +225,7 @@ class FermiCalculator {
             });
         } catch (error) {
             console.error('Error rendering option grid:', error);
+            this.handleError('render', error);
         }
     }
 
@@ -176,20 +233,19 @@ class FermiCalculator {
         try {
             if (!this.state.effort) return 0;
             
-            // Calculate impact using the exact multiplication formula from the framework
             const impact = (
                 this.state.customerReach * 
                 this.state.customerCare * 
                 this.state.insight * 
                 this.state.productPayoff * 
                 this.state.confidence
-            ) / 10000; // Normalizing factor
+            ) / 10000;
             
-            // Calculate ROI as Impact / Effort
             const roi = Math.round((this.state.revenue * impact) / this.state.effort);
             return roi;
         } catch (error) {
             console.error('Error calculating ROI:', error);
+            this.handleError('analysis', error);
             return 0;
         }
     }
@@ -201,17 +257,22 @@ class FermiCalculator {
             this.render();
         } catch (error) {
             console.error('Error updating state:', error);
+            this.handleError('state-update', error);
         }
     }
 
     getAnalysis() {
         try {
             const roi = this.calculateROI();
-            const isComplete = Object.entries(this.state)
-                .filter(([key]) => key !== 'language')
-                .every(([_, value]) => value > 0);
+            const unanswered = this.getUnansweredQuestions();
             
-            if (!isComplete) return null;
+            if (unanswered.length > 0) {
+                return {
+                    complete: false,
+                    unanswered,
+                    points: []
+                };
+            }
 
             const analysis = [];
 
@@ -222,7 +283,6 @@ class FermiCalculator {
                 });
             }
 
-            // Team excitement analysis
             if (this.state.teamExcitement === 100) {
                 analysis.push({
                     type: 'positive',
@@ -235,7 +295,6 @@ class FermiCalculator {
                 });
             }
 
-            // Confidence analysis
             if (this.state.confidence === 100) {
                 analysis.push({
                     type: 'positive',
@@ -248,7 +307,6 @@ class FermiCalculator {
                 });
             }
 
-            // Effort analysis
             if (this.state.effort === 2) {
                 analysis.push({
                     type: 'positive',
@@ -261,9 +319,13 @@ class FermiCalculator {
                 });
             }
 
-            return analysis;
+            return {
+                complete: true,
+                points: analysis
+            };
         } catch (error) {
             console.error('Error getting analysis:', error);
+            this.handleError('analysis', error);
             return null;
         }
     }
@@ -273,6 +335,7 @@ class FermiCalculator {
             localStorage.setItem('fermiCalculator', JSON.stringify(this.state));
         } catch (error) {
             console.error('Error saving to storage:', error);
+            this.handleError('storage', error);
         }
     }
 
@@ -284,6 +347,7 @@ class FermiCalculator {
             }
         } catch (error) {
             console.error('Error loading from storage:', error);
+            this.handleError('storage', error);
         }
     }
 
@@ -304,6 +368,7 @@ class FermiCalculator {
             return text;
         } catch (error) {
             console.error('Translation error:', error);
+            this.handleError('translation', error);
             return key;
         }
     }
@@ -321,6 +386,7 @@ class FermiCalculator {
             this.renderAnalysis();
         } catch (error) {
             console.error('Error rendering:', error);
+            this.handleError('render', error);
         }
     }
 
@@ -339,6 +405,7 @@ class FermiCalculator {
             });
         } catch (error) {
             console.error('Error rendering option selections:', error);
+            this.handleError('render', error);
         }
     }
 
@@ -348,7 +415,6 @@ class FermiCalculator {
             if (!analysisContent) return;
             
             const analysis = this.getAnalysis();
-
             if (!analysis) {
                 analysisContent.innerHTML = `
                     <div class="card-body p-5">
@@ -362,20 +428,46 @@ class FermiCalculator {
                 return;
             }
 
-            analysisContent.innerHTML = `
+            let content = `
                 <div class="card-body p-5">
                     <h5 class="text-white mb-4" data-translate="analysis-title">Analysis</h5>
+            `;
+
+            if (!analysis.complete) {
+                content += `
+                    <div class="alert alert-warning mb-4">
+                        <h6 class="alert-heading mb-3">Unanswered Questions:</h6>
+                        <ul class="list-unstyled mb-0">
+                            ${analysis.unanswered.map(q => `
+                                <li class="mb-2">
+                                    <a href="#" class="text-warning text-decoration-none" 
+                                       onclick="window.calculator.scrollToQuestion('${q.field}'); return false;">
+                                        <i class="bi bi-arrow-right me-2"></i>${q.title}
+                                    </a>
+                                </li>
+                            `).join('')}
+                        </ul>
+                    </div>
+                `;
+            }
+
+            if (analysis.points.length > 0) {
+                content += `
                     <div class="analysis-points">
-                        ${analysis.map(point => `
+                        ${analysis.points.map(point => `
                             <div class="analysis-point ${point.type}">
                                 ${point.content}
                             </div>
                         `).join('')}
                     </div>
-                </div>
-            `;
+                `;
+            }
+
+            content += `</div>`;
+            analysisContent.innerHTML = content;
         } catch (error) {
             console.error('Error rendering analysis:', error);
+            this.handleError('render', error);
         }
     }
 }
