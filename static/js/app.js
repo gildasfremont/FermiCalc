@@ -13,7 +13,7 @@ class FermiCalculator {
             language: 'EN'
         };
 
-        // Initialize options arrays
+        // Initialize revenue options
         this.revenueOptions = [
             { value: 1000, labelKey: 'revenue-1000', descriptionKey: 'revenue-1000-desc' },
             { value: 10000, labelKey: 'revenue-10000', descriptionKey: 'revenue-10000-desc' },
@@ -21,58 +21,65 @@ class FermiCalculator {
             { value: 1000000, labelKey: 'revenue-1000000', descriptionKey: 'revenue-1000000-desc' }
         ];
 
+        // Initialize customer reach options
         this.customerReachOptions = [
-            { value: 0, labelKey: 'reach-0', descriptionKey: 'reach-0-desc' },
-            { value: 30, labelKey: 'reach-30', descriptionKey: 'reach-30-desc' },
+            { value: 100, labelKey: 'reach-100', descriptionKey: 'reach-100-desc' },
             { value: 70, labelKey: 'reach-70', descriptionKey: 'reach-70-desc' },
-            { value: 100, labelKey: 'reach-100', descriptionKey: 'reach-100-desc' }
+            { value: 30, labelKey: 'reach-30', descriptionKey: 'reach-30-desc' },
+            { value: 0, labelKey: 'reach-0', descriptionKey: 'reach-0-desc' }
         ];
 
+        // Initialize customer care options
         this.customerCareOptions = [
-            { value: 0, labelKey: 'care-0', descriptionKey: 'care-0-desc' },
-            { value: 1, labelKey: 'care-1', descriptionKey: 'care-1-desc' },
-            { value: 10, labelKey: 'care-10', descriptionKey: 'care-10-desc' },
+            { value: 1000, labelKey: 'care-1000', descriptionKey: 'care-1000-desc' },
             { value: 100, labelKey: 'care-100', descriptionKey: 'care-100-desc' },
-            { value: 1000, labelKey: 'care-1000', descriptionKey: 'care-1000-desc' }
+            { value: 10, labelKey: 'care-10', descriptionKey: 'care-10-desc' },
+            { value: 1, labelKey: 'care-1', descriptionKey: 'care-1-desc' },
+            { value: 0, labelKey: 'care-0', descriptionKey: 'care-0-desc' }
         ];
 
+        // Initialize insight options
         this.insightOptions = [
-            { value: 0, labelKey: 'insight-0', descriptionKey: 'insight-0-desc' },
-            { value: 1, labelKey: 'insight-1', descriptionKey: 'insight-1-desc' },
-            { value: 10, labelKey: 'insight-10', descriptionKey: 'insight-10-desc' },
+            { value: 1000, labelKey: 'insight-1000', descriptionKey: 'insight-1000-desc' },
             { value: 100, labelKey: 'insight-100', descriptionKey: 'insight-100-desc' },
-            { value: 1000, labelKey: 'insight-1000', descriptionKey: 'insight-1000-desc' }
+            { value: 10, labelKey: 'insight-10', descriptionKey: 'insight-10-desc' },
+            { value: 1, labelKey: 'insight-1', descriptionKey: 'insight-1-desc' },
+            { value: 0, labelKey: 'insight-0', descriptionKey: 'insight-0-desc' }
         ];
 
+        // Initialize product payoff options
         this.productPayoffOptions = [
-            { value: 0, labelKey: 'payoff-0', descriptionKey: 'payoff-0-desc' },
-            { value: 1, labelKey: 'payoff-1', descriptionKey: 'payoff-1-desc' },
-            { value: 10, labelKey: 'payoff-10', descriptionKey: 'payoff-10-desc' },
+            { value: 1000, labelKey: 'payoff-1000', descriptionKey: 'payoff-1000-desc' },
             { value: 100, labelKey: 'payoff-100', descriptionKey: 'payoff-100-desc' },
-            { value: 1000, labelKey: 'payoff-1000', descriptionKey: 'payoff-1000-desc' }
+            { value: 10, labelKey: 'payoff-10', descriptionKey: 'payoff-10-desc' },
+            { value: 1, labelKey: 'payoff-1', descriptionKey: 'payoff-1-desc' },
+            { value: 0, labelKey: 'payoff-0', descriptionKey: 'payoff-0-desc' }
         ];
 
+        // Initialize effort options
         this.effortOptions = [
             { value: 2, labelKey: 'effort-2d', descriptionKey: 'effort-2d-desc' },
             { value: 10, labelKey: 'effort-2w', descriptionKey: 'effort-2w-desc' },
             { value: 45, labelKey: 'effort-2m', descriptionKey: 'effort-2m-desc' }
         ];
 
+        // Initialize team excitement options
         this.teamExcitementOptions = [
-            { value: 0, labelKey: 'excitement-0', descriptionKey: 'excitement-0-desc' },
-            { value: 1, labelKey: 'excitement-1', descriptionKey: 'excitement-1-desc' },
+            { value: 100, labelKey: 'excitement-100', descriptionKey: 'excitement-100-desc' },
             { value: 10, labelKey: 'excitement-10', descriptionKey: 'excitement-10-desc' },
-            { value: 100, labelKey: 'excitement-100', descriptionKey: 'excitement-100-desc' }
+            { value: 1, labelKey: 'excitement-1', descriptionKey: 'excitement-1-desc' },
+            { value: 0, labelKey: 'excitement-0', descriptionKey: 'excitement-0-desc' }
         ];
 
+        // Initialize confidence options
         this.confidenceOptions = [
-            { value: 0, labelKey: 'confidence-0', descriptionKey: 'confidence-0-desc' },
-            { value: 1, labelKey: 'confidence-1', descriptionKey: 'confidence-1-desc' },
+            { value: 100, labelKey: 'confidence-100', descriptionKey: 'confidence-100-desc' },
             { value: 10, labelKey: 'confidence-10', descriptionKey: 'confidence-10-desc' },
-            { value: 100, labelKey: 'confidence-100', descriptionKey: 'confidence-100-desc' }
+            { value: 1, labelKey: 'confidence-1', descriptionKey: 'confidence-1-desc' },
+            { value: 0, labelKey: 'confidence-0', descriptionKey: 'confidence-0-desc' }
         ];
 
-        // Define methods before binding
+        // Define all methods and bind them
         this.initialize = function() {
             try {
                 this.loadFromStorage();
@@ -133,7 +140,6 @@ class FermiCalculator {
                     const container = document.getElementById(containerId);
                     if (!container) {
                         missingContainers.push(containerId);
-                        console.error(`Missing required container: #${containerId}`);
                         return;
                     }
                     this.renderOptionGrid(container, options, field);
@@ -183,8 +189,7 @@ class FermiCalculator {
                     this.state.customerReach * 
                     this.state.customerCare * 
                     this.state.insight * 
-                    this.state.productPayoff * 
-                    this.state.confidence
+                    this.state.productPayoff
                 ) / 10000;
                 
                 const roi = Math.round((this.state.revenue * impact) / this.state.effort);
@@ -260,7 +265,7 @@ class FermiCalculator {
                         type: 'positive',
                         content: this.translate('high-team-excitement')
                     });
-                } else if (this.state.teamExcitement < 10) {
+                } else if (this.state.teamExcitement === 0) {
                     analysis.push({
                         type: 'warning',
                         content: this.translate('low-team-excitement')
@@ -470,7 +475,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     } catch (error) {
         console.error('Error initializing calculator:', error);
-        // Show user-friendly error message
         const container = document.getElementById('analysis-content');
         if (container) {
             container.innerHTML = `
