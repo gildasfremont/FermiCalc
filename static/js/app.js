@@ -201,7 +201,11 @@ class FermiCalculator {
         }
     }
 
-    // ... [Rest of the code remains unchanged] ...
+                // Set event listener for language change
+                languageSelect.addEventListener('change', (event) => {
+                    this.state.language = event.target.value;
+                    this.translate();
+                });
 
 }
 
