@@ -132,10 +132,10 @@ class FermiCalculator {
 
             let missingContainers = [];
             optionSets.forEach(({ containerId, options, field }) => {
-                const container = document.querySelector(`.${containerId}`);
+                const container = document.getElementById(containerId);
                 if (!container) {
                     missingContainers.push(containerId);
-                    console.error(`Missing required container: .${containerId}`);
+                    console.error(`Missing required container: #${containerId}`);
                     return;
                 }
                 this.renderOptionGrid(container, options, field);
@@ -170,7 +170,11 @@ class FermiCalculator {
         Object.entries(this.state)
             .filter(([key]) => key !== 'language')
             .forEach(([field, value]) => {
-                if (!value) {
+                // Consider 0 as unanswered for confidence and team excitement
+                const isUnanswered = value === 0 && (field === 'confidence' || field === 'teamExcitement') || 
+                                   !value;
+                
+                if (isUnanswered) {
                     const titleKey = {
                         revenue: 'revenue-title',
                         customerReach: 'customer-reach-title',
@@ -192,7 +196,7 @@ class FermiCalculator {
     }
 
     scrollToQuestion(field) {
-        const container = document.querySelector(`.${field}Options`);
+        const container = document.getElementById(`${field}Options`);
         if (container) {
             container.scrollIntoView({ behavior: 'smooth' });
             container.classList.add('highlight-container');
@@ -229,7 +233,9 @@ class FermiCalculator {
 
     calculateROI() {
         try {
-            if (!this.state.effort) return 0;
+            if (!this.state.effort || 
+                this.state.confidence === 0 || 
+                this.state.teamExcitement === 0) return 0;
             
             const impact = (
                 this.state.customerReach * 
@@ -264,7 +270,9 @@ class FermiCalculator {
             const roi = this.calculateROI();
             const unanswered = this.getUnansweredQuestions();
             
-            if (unanswered.length > 0) {
+            if (unanswered.length > 0 || 
+                this.state.confidence === 0 || 
+                this.state.teamExcitement === 0) {
                 return {
                     complete: false,
                     unanswered,
@@ -286,7 +294,7 @@ class FermiCalculator {
                     type: 'positive',
                     content: this.translate('high-team-excitement')
                 });
-            } else if (this.state.teamExcitement === 0) {
+            } else if (this.state.teamExcitement < 10) {
                 analysis.push({
                     type: 'warning',
                     content: this.translate('low-team-excitement')
@@ -396,7 +404,7 @@ class FermiCalculator {
             ];
             
             fields.forEach(field => {
-                const container = document.querySelector(`.${field}Options`);
+                const container = document.getElementById(`${field}Options`);
                 if (container) {
                     this.renderOptionGrid(container, this[`${field}Options`], field);
                 }
