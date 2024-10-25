@@ -2,27 +2,47 @@
 #feature-tabs {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-bottom: 0.5rem;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+    width: 100%;
 }
 
 .feature-tab {
     position: relative;
-    flex: 0 1 auto;
-    min-width: 120px;
+    flex: 1 1 auto;
+    min-width: 150px;
+    max-width: calc(33.333% - 0.5rem);
+}
+
+.feature-tab button:first-child {
+    width: 100%;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 0.5rem 1rem;
+}
+
+@media (max-width: 768px) {
+    .feature-tab {
+        flex: 1 1 calc(50% - 0.5rem);
+        max-width: calc(50% - 0.5rem);
+    }
 }
 
 @media (max-width: 576px) {
-    .feature-tab {
-        flex: 1 1 100%;
+    #feature-tabs {
+        gap: 0.5rem;
     }
     
-    .feature-tab button:first-child {
-        width: 100%;
+    .feature-tab {
+        flex: 1 1 100%;
+        max-width: 100%;
+        margin-bottom: 0.25rem;
     }
 }
 
-/* Other existing styles remain the same */
+/* Options stack styling */
 .options-stack {
     display: flex;
     flex-direction: column;
@@ -67,7 +87,7 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
-/* Enhanced analysis point styling with improved contrast and accessibility */
+/* Enhanced analysis point styling */
 .analysis-point {
     padding: 1.5rem;
     margin-bottom: 1rem;
@@ -101,12 +121,13 @@
     border: 2px solid #2E7D32;
 }
 
-/* Enhanced navbar styling */
+/* Navbar styling */
 .navbar.sticky-top {
     background-color: var(--bs-dark) !important;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     border-bottom: 1px solid var(--bs-border-color);
     z-index: 1030;
+    padding: 0.75rem 1rem;
 }
 
 .navbar-brand {
@@ -132,28 +153,28 @@
     z-index: 1020;
     background-color: var(--bs-dark) !important;
     border-bottom: 1px solid var(--bs-border-color);
+    padding: 1rem;
 }
 
-/* Enhanced card and analysis container styling */
+/* Card and container styling */
 .card {
     border: 2px solid var(--bs-border-color);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     background-color: var(--bs-dark);
 }
 
+.card-body {
+    padding: 1.5rem;
+}
+
 #analysis {
     background-color: #121212;
     border: 2px solid #1E88E5;
     padding: 2rem !important;
+    margin-top: 2rem;
 }
 
-#analysis h5 {
-    font-size: 1.25rem;
-    margin-bottom: 1.5rem;
-    color: #FFFFFF;
-}
-
-/* Enhanced rankings section styling */
+/* Rankings section */
 .rankings {
     margin-top: 2rem;
     padding-top: 1.5rem;
@@ -166,32 +187,7 @@
     margin-bottom: 1rem;
 }
 
-.rankings .text-muted {
-    color: #B0BEC5 !important;
-}
-
-.rankings .bi-arrow-right {
-    font-size: 1.2rem;
-}
-
-.rankings .bi-arrow-right.text-success {
-    color: #43A047 !important;
-}
-
-.rankings .bi-arrow-right.text-muted {
-    color: #78909C !important;
-}
-
-.text-muted {
-    color: #B0BEC5 !important;
-}
-
-.small {
-    color: #90A4AE;
-    font-size: 0.95rem;
-}
-
-/* Responsive container adjustments */
+/* Responsive adjustments */
 @media (max-width: 768px) {
     .container {
         padding-left: 1rem;
@@ -203,6 +199,11 @@
     }
     
     #analysis {
-        padding: 1rem !important;
+        padding: 1.25rem !important;
+        margin-top: 1.5rem;
+    }
+    
+    .card-header.sticky-top {
+        padding: 0.75rem;
     }
 }
