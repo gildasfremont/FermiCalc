@@ -1,4 +1,28 @@
-/* Vertical stacking for options */
+/* Feature tabs responsive styling */
+#feature-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.feature-tab {
+    position: relative;
+    flex: 0 1 auto;
+    min-width: 120px;
+}
+
+@media (max-width: 576px) {
+    .feature-tab {
+        flex: 1 1 100%;
+    }
+    
+    .feature-tab button:first-child {
+        width: 100%;
+    }
+}
+
+/* Other existing styles remain the same */
 .options-stack {
     display: flex;
     flex-direction: column;
@@ -25,10 +49,6 @@
     border-color: var(--bs-primary);
     color: var(--bs-white);
     box-shadow: 0 4px 12px rgba(var(--bs-primary-rgb), 0.35);
-}
-
-.feature-tab {
-    position: relative;
 }
 
 .remove-feature {
@@ -169,4 +189,20 @@
 .small {
     color: #90A4AE;
     font-size: 0.95rem;
+}
+
+/* Responsive container adjustments */
+@media (max-width: 768px) {
+    .container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+    
+    .card-body {
+        padding: 1rem;
+    }
+    
+    #analysis {
+        padding: 1rem !important;
+    }
 }
