@@ -1,96 +1,8 @@
-/* Sidebar styling */
-.sidebar {
-    width: 280px;
-    height: calc(100vh - 56px);
-    position: fixed;
-    top: 56px;
-    left: 0;
-    background-color: var(--bs-dark);
-    border-right: 1px solid var(--bs-border-color);
-    transition: transform 0.3s ease-in-out, margin-left 0.3s ease-in-out;
-    z-index: 1025;
-    padding: 1rem;
-}
-
-.sidebar-content {
-    height: 100%;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-}
-
-#main-content {
-    margin-left: 280px;
-    transition: margin-left 0.3s ease-in-out;
-}
-
-/* Feature tabs styling */
-#feature-tabs {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    margin-bottom: 1rem;
-}
-
-.feature-tab {
-    width: 100%;
-}
-
-.feature-tab button {
-    width: 100%;
-    text-align: left;
-    padding: 0.75rem 1rem;
-    transition: all 0.2s ease-in-out;
-}
-
-.feature-tab .feature-name {
-    flex-grow: 1;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-/* Updated remove feature button styling */
-.remove-feature {
-    opacity: 0.6;
-    padding: 0.25rem;
-    border: none;
-    background: transparent;
-    transition: all 0.2s ease-in-out;
-    margin-left: 0.5rem;
-}
-
-.remove-feature:hover {
-    opacity: 1;
-    background: rgba(255, 255, 255, 0.1);
-    color: var(--bs-danger);
-}
-
-.remove-feature i {
-    font-size: 0.875rem;
-    line-height: 1;
-}
-
-/* Mobile sidebar behavior */
-@media (max-width: 991.98px) {
-    .sidebar {
-        transform: translateX(-100%);
-    }
-
-    .sidebar.show {
-        transform: translateX(0);
-    }
-
-    #main-content {
-        margin-left: 0;
-    }
-}
-
-/* Options stack styling */
+/* Vertical stacking for options */
 .options-stack {
-    display: grid;
+    display: flex;
+    flex-direction: column;
     gap: 1rem;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     margin-top: 1rem;
 }
 
@@ -115,7 +27,27 @@
     box-shadow: 0 4px 12px rgba(var(--bs-primary-rgb), 0.35);
 }
 
-/* Analysis styling */
+.feature-tab {
+    position: relative;
+}
+
+.remove-feature {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    border-radius: 50%;
+    font-size: 10px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Enhanced analysis point styling with improved contrast and accessibility */
 .analysis-point {
     padding: 1.5rem;
     margin-bottom: 1rem;
@@ -126,80 +58,115 @@
 }
 
 .analysis-point.primary {
-    background-color: var(--bs-primary);
-    color: var(--bs-white);
-    border: 2px solid var(--bs-primary);
+    background-color: #0D47A1;
+    color: #FFFFFF;
+    border: 2px solid #1565C0;
 }
 
 .analysis-point.highlight {
-    background-color: var(--bs-info);
-    color: var(--bs-white);
-    border: 2px solid var(--bs-info);
+    background-color: #4A148C;
+    color: #FFFFFF;
+    border: 2px solid #6A1B9A;
 }
 
 .analysis-point.warning {
-    background-color: var(--bs-warning);
-    color: var(--bs-dark);
-    border: 2px solid var(--bs-warning);
+    background-color: #FF8F00;
+    color: #000000;
+    border: 2px solid #F57C00;
 }
 
 .analysis-point.positive {
-    background-color: var(--bs-success);
-    color: var(--bs-white);
-    border: 2px solid var(--bs-success);
+    background-color: #1B5E20;
+    color: #FFFFFF;
+    border: 2px solid #2E7D32;
 }
 
-/* Navbar styling */
-.navbar {
-    background-color: var(--bs-dark);
+/* Enhanced navbar styling */
+.navbar.sticky-top {
+    background-color: var(--bs-dark) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     border-bottom: 1px solid var(--bs-border-color);
-    padding: 0.75rem 1rem;
-    position: sticky;
-    top: 0;
     z-index: 1030;
 }
 
 .navbar-brand {
-    color: var(--bs-white);
+    color: var(--bs-white) !important;
     font-weight: 600;
 }
 
-/* Sidebar toggle button */
-#sidebar-toggle {
-    width: 40px;
-    height: 40px;
-    padding: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-right: 1rem;
+.language-btn {
+    min-width: 48px;
+    font-weight: 500;
+    border-width: 2px;
 }
 
-#sidebar-toggle .bi {
-    font-size: 1.5rem;
+.language-btn:hover,
+.language-btn:focus {
+    background-color: var(--bs-secondary);
+    color: var(--bs-white);
+    border-color: var(--bs-secondary);
 }
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    .option-card {
-        padding: 1rem;
-    }
-
-    .analysis-point {
-        padding: 1.25rem;
-        font-size: 1rem;
-    }
+.card-header.sticky-top {
+    top: 56px;
+    z-index: 1020;
+    background-color: var(--bs-dark) !important;
+    border-bottom: 1px solid var(--bs-border-color);
 }
 
-/* Dark mode optimizations */
-[data-bs-theme="dark"] .option-card {
-    background-color: rgba(255, 255, 255, 0.05);
+/* Enhanced card and analysis container styling */
+.card {
+    border: 2px solid var(--bs-border-color);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    background-color: var(--bs-dark);
 }
 
-[data-bs-theme="dark"] .option-card:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+#analysis {
+    background-color: #121212;
+    border: 2px solid #1E88E5;
+    padding: 2rem !important;
 }
 
-[data-bs-theme="dark"] .option-card.selected {
-    background-color: var(--bs-primary);
+#analysis h5 {
+    font-size: 1.25rem;
+    margin-bottom: 1.5rem;
+    color: #FFFFFF;
+}
+
+/* Enhanced rankings section styling */
+.rankings {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid #1E88E5;
+}
+
+.rankings .fw-bold {
+    font-size: 1.1rem;
+    color: #FFFFFF;
+    margin-bottom: 1rem;
+}
+
+.rankings .text-muted {
+    color: #B0BEC5 !important;
+}
+
+.rankings .bi-arrow-right {
+    font-size: 1.2rem;
+}
+
+.rankings .bi-arrow-right.text-success {
+    color: #43A047 !important;
+}
+
+.rankings .bi-arrow-right.text-muted {
+    color: #78909C !important;
+}
+
+.text-muted {
+    color: #B0BEC5 !important;
+}
+
+.small {
+    color: #90A4AE;
+    font-size: 0.95rem;
 }

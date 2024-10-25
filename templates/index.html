@@ -11,9 +11,6 @@
 <body class="bg-dark">
     <nav class="navbar navbar-expand-lg sticky-top">
         <div class="container-fluid">
-            <button id="sidebar-toggle" class="btn btn-outline-light d-lg-none me-2">
-                <i class="bi bi-list"></i>
-            </button>
             <span class="navbar-brand fw-bold">Is it worth it?</span>
             <div class="d-flex gap-2">
                 <button class="btn btn-outline-light language-btn fw-medium" data-lang="EN">EN</button>
@@ -23,78 +20,70 @@
         </div>
     </nav>
 
-    <div class="d-flex">
-        <!-- Side Menu -->
-        <div id="sidebar" class="sidebar">
-            <div class="sidebar-content">
-                <div id="feature-tabs" class="d-flex flex-column gap-2"></div>
-                <button id="add-feature" class="btn btn-outline-light mt-3 w-100">
-                    <i class="bi bi-plus"></i> <span data-translate="add-feature">Add Feature</span>
-                </button>
+    <div class="container py-4">
+        <div class="row mb-4">
+            <div class="col-12">
+                <h4 class="mb-2 text-white">Feature Prioritization Calculator</h4>
+                <p class="text-gray-300 mb-2">
+                    Based on Fermi estimation - a problem-solving method that emphasizes educated guesses and 
+                    rough calculations to arrive at quick, order-of-magnitude estimates.
+                </p>
+                <p class="text-gray-300 small">
+                    This tool is inspired by Jason Cohen's 'Fermi ROI: Fixing the ROI rubric' article, which introduced 
+                    a systematic approach to making ROI calculations more reliable and meaningful by applying Fermi 
+                    estimation principles to both impact and effort calculations.
+                </p>
             </div>
         </div>
 
-        <!-- Main Content -->
-        <div id="main-content" class="flex-grow-1">
-            <div class="container py-4">
-                <div class="row mb-4">
-                    <div class="col-12">
-                        <h4 class="mb-2 text-white">Feature Prioritization Calculator</h4>
-                        <p class="text-gray-300 mb-2">
-                            Based on Fermi estimation - a problem-solving method that emphasizes educated guesses and 
-                            rough calculations to arrive at quick, order-of-magnitude estimates.
-                        </p>
-                        <p class="text-gray-300 small">
-                            This tool is inspired by Jason Cohen's 'Fermi ROI: Fixing the ROI rubric' article, which introduced 
-                            a systematic approach to making ROI calculations more reliable and meaningful by applying Fermi 
-                            estimation principles to both impact and effort calculations.
-                        </p>
+        <div class="card border-2">
+            <div class="card-header sticky-top">
+                <div class="d-flex align-items-center gap-3 flex-wrap">
+                    <div id="feature-tabs" class="d-flex gap-2 flex-grow-1"></div>
+                    <button id="add-feature" class="btn btn-outline-light">
+                        <i class="bi bi-plus"></i> Add Feature
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div id="questions" class="mt-4">
+                    <div class="fermi-question mb-4">
+                        <h5 class="text-white" data-translate="revenue-title">What's the expected annual revenue impact?</h5>
+                        <p class="text-gray-300 small" data-translate="revenue-description">Consider direct revenue from sales, upgrades, or reduced churn</p>
+                        <div class="revenueOptions options-stack"></div>
+                    </div>
+
+                    <div class="fermi-question mb-4">
+                        <h5 class="text-white" data-translate="customer-care-title">How much do customers care about this?</h5>
+                        <p class="text-gray-300 small" data-translate="customer-care-description">Based on customer feedback and market research</p>
+                        <div class="customerCareOptions options-stack"></div>
+                    </div>
+
+                    <div class="fermi-question mb-4">
+                        <h5 class="text-white" data-translate="effort-title">How much effort would this take?</h5>
+                        <p class="text-gray-300 small" data-translate="effort-description">Include design, development, testing, and deployment</p>
+                        <div class="effortOptions options-stack"></div>
+                    </div>
+
+                    <div class="fermi-question mb-4">
+                        <h5 class="text-white" data-translate="confidence-title">How confident are we in our execution?</h5>
+                        <p class="text-gray-300 small" data-translate="confidence-description">Consider technical complexity and team expertise</p>
+                        <div class="confidenceOptions options-stack"></div>
                     </div>
                 </div>
 
-                <div class="card border-2">
-                    <div class="card-body">
-                        <div id="questions" class="mt-4">
-                            <div class="fermi-question mb-4">
-                                <h5 class="text-white" data-translate="revenue-title">What's the expected annual revenue impact?</h5>
-                                <p class="text-gray-300 small" data-translate="revenue-description">Consider direct revenue from sales, upgrades, or reduced churn</p>
-                                <div class="revenueOptions options-stack"></div>
-                            </div>
-
-                            <div class="fermi-question mb-4">
-                                <h5 class="text-white" data-translate="customer-care-title">How much do customers care about this?</h5>
-                                <p class="text-gray-300 small" data-translate="customer-care-description">Based on customer feedback and market research</p>
-                                <div class="customerCareOptions options-stack"></div>
-                            </div>
-
-                            <div class="fermi-question mb-4">
-                                <h5 class="text-white" data-translate="effort-title">How much effort would this take?</h5>
-                                <p class="text-gray-300 small" data-translate="effort-description">Include design, development, testing, and deployment</p>
-                                <div class="effortOptions options-stack"></div>
-                            </div>
-
-                            <div class="fermi-question mb-4">
-                                <h5 class="text-white" data-translate="confidence-title">How confident are we in our execution?</h5>
-                                <p class="text-gray-300 small" data-translate="confidence-description">Consider technical complexity and team expertise</p>
-                                <div class="confidenceOptions options-stack"></div>
-                            </div>
-                        </div>
-
-                        <div id="analysis" class="mt-4 p-4 rounded-3">
-                            <h5 class="text-white mb-3" data-translate="analysis-title">Analysis</h5>
-                            <div id="analysis-content">
-                                <div class="text-gray-300">
-                                    <i class="bi bi-info-circle"></i>
-                                    <span data-translate="analysis-empty">Complete all questions for at least one feature to see analysis</span>
-                                </div>
-                            </div>
+                <div id="analysis" class="mt-4 p-4 rounded-3">
+                    <h5 class="text-white mb-3" data-translate="analysis-title">Analysis</h5>
+                    <div id="analysis-content">
+                        <div class="text-gray-300">
+                            <i class="bi bi-info-circle"></i>
+                            <span data-translate="analysis-empty">Complete all questions for at least one feature to see analysis</span>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
     <script src="/static/js/translations.js"></script>
     <script src="/static/js/app.js"></script>
 </body>
