@@ -16,36 +16,15 @@ class FermiCalculator {
         // Initialize options
         this.initializeOptions();
 
-        // Bind all methods
-        this.initialize = this.initialize.bind(this);
-        this.initializeApp = this.initializeApp.bind(this);
-        this.initializeEventListeners = this.initializeEventListeners.bind(this);
-        this.initializeOptionGrids = this.initializeOptionGrids.bind(this);
-        this.initializeSidebar = this.initializeSidebar.bind(this);
-        this.toggleSidebar = this.toggleSidebar.bind(this);
-        this.handleResize = this.handleResize.bind(this);
-        this.addFeature = this.addFeature.bind(this);
-        this.updateFeature = this.updateFeature.bind(this);
-        this.removeFeature = this.removeFeature.bind(this);
-        this.calculateROI = this.calculateROI.bind(this);
-        this.getAnalysis = this.getAnalysis.bind(this);
-        this.saveToStorage = this.saveToStorage.bind(this);
-        this.loadFromStorage = this.loadFromStorage.bind(this);
-        this.render = this.render.bind(this);
-        this.renderFeatureTabs = this.renderFeatureTabs.bind(this);
-        this.renderOptionSelections = this.renderOptionSelections.bind(this);
-        this.renderAnalysis = this.renderAnalysis.bind(this);
-        this.renderOptionGrid = this.renderOptionGrid.bind(this);
-        this.translate = this.translate.bind(this);
-
-        // Initialize immediately if document is ready
-        if (document.readyState !== 'loading') {
-            this.initializeApp();
+        // Set up initialization
+        if (document.readyState === 'complete' || document.readyState === 'interactive') {
+            setTimeout(() => this.initialize(), 1);
         } else {
-            document.addEventListener('DOMContentLoaded', this.initializeApp);
+            document.addEventListener('DOMContentLoaded', () => this.initialize());
         }
     }
 
+    // All method definitions first
     initializeOptions() {
         this.revenueOptions = [
             { value: 1000, labelKey: 'revenue-1000', descriptionKey: 'revenue-1000-desc' },
@@ -74,7 +53,7 @@ class FermiCalculator {
         ];
     }
 
-    initializeApp() {
+    initialize = () => {
         try {
             this.loadFromStorage();
             this.initializeEventListeners();
@@ -85,7 +64,7 @@ class FermiCalculator {
         }
     }
 
-    initializeEventListeners() {
+    initializeEventListeners = () => {
         // Add Feature button
         const addFeatureBtn = document.getElementById('add-feature');
         if (addFeatureBtn) {
@@ -114,7 +93,7 @@ class FermiCalculator {
         this.initializeOptionGrids();
     }
 
-    initializeOptionGrids() {
+    initializeOptionGrids = () => {
         const containers = {
             revenue: '.revenueOptions',
             customerCare: '.customerCareOptions',
@@ -130,7 +109,7 @@ class FermiCalculator {
         });
     }
 
-    initializeSidebar() {
+    initializeSidebar = () => {
         const sidebar = document.getElementById('sidebar');
         const mainContent = document.getElementById('main-content');
         
@@ -145,12 +124,12 @@ class FermiCalculator {
         }
     }
 
-    toggleSidebar() {
+    toggleSidebar = () => {
         this.sidebarVisible = !this.sidebarVisible;
         this.initializeSidebar();
     }
 
-    handleResize() {
+    handleResize = () => {
         const isDesktop = window.innerWidth >= 992;
         if (isDesktop !== this.sidebarVisible) {
             this.sidebarVisible = isDesktop;
@@ -158,7 +137,7 @@ class FermiCalculator {
         }
     }
 
-    addFeature() {
+    addFeature = () => {
         const newFeature = {
             id: Date.now(),
             name: `Feature ${String.fromCharCode(65 + this.features.length)}`,
@@ -174,7 +153,7 @@ class FermiCalculator {
         this.render();
     }
 
-    updateFeature(field, value) {
+    updateFeature = (field, value) => {
         if (this.features[this.activeFeature]) {
             this.features[this.activeFeature][field] = value;
             this.saveToStorage();
@@ -182,7 +161,7 @@ class FermiCalculator {
         }
     }
 
-    removeFeature(index) {
+    removeFeature = (index) => {
         if (this.features.length <= 1) return;
         
         this.features = this.features.filter((_, i) => i !== index);
@@ -193,13 +172,13 @@ class FermiCalculator {
         this.render();
     }
 
-    calculateROI(feature) {
+    calculateROI = (feature) => {
         if (!feature?.effort) return 0;
         const impact = (feature.revenue * feature.customerCare * feature.confidence) / 100;
         return Math.round(impact / feature.effort);
     }
 
-    getAnalysis() {
+    getAnalysis = () => {
         const complete = this.features.filter(f => 
             f.revenue && f.customerCare && f.effort && f.confidence
         );
@@ -219,7 +198,6 @@ class FermiCalculator {
 
         const analysis = [];
 
-        // Primary recommendation
         if (best.roi > 0) {
             analysis.push({
                 type: 'primary',
@@ -237,7 +215,7 @@ class FermiCalculator {
         return { analysis, sortedFeatures };
     }
 
-    saveToStorage() {
+    saveToStorage = () => {
         try {
             localStorage.setItem('fermiFeatures', JSON.stringify({
                 features: this.features,
@@ -249,7 +227,7 @@ class FermiCalculator {
         }
     }
 
-    loadFromStorage() {
+    loadFromStorage = () => {
         try {
             const saved = localStorage.getItem('fermiFeatures');
             if (saved) {
@@ -263,7 +241,7 @@ class FermiCalculator {
         }
     }
 
-    render() {
+    render = () => {
         document.querySelectorAll('[data-translate]').forEach(element => {
             const key = element.getAttribute('data-translate');
             if (key) {
@@ -276,7 +254,7 @@ class FermiCalculator {
         this.renderAnalysis();
     }
 
-    renderFeatureTabs() {
+    renderFeatureTabs = () => {
         const tabsContainer = document.getElementById('feature-tabs');
         if (!tabsContainer) return;
         
@@ -317,7 +295,7 @@ class FermiCalculator {
         });
     }
 
-    renderOptionSelections() {
+    renderOptionSelections = () => {
         ['revenue', 'customerCare', 'effort', 'confidence'].forEach(field => {
             const container = document.querySelector(`.${field}Options`);
             if (container) {
@@ -326,7 +304,7 @@ class FermiCalculator {
         });
     }
 
-    renderOptionGrid(container, options, field) {
+    renderOptionGrid = (container, options, field) => {
         container.innerHTML = '';
         
         options.forEach(option => {
@@ -346,7 +324,7 @@ class FermiCalculator {
         });
     }
 
-    renderAnalysis() {
+    renderAnalysis = () => {
         const analysisContent = document.getElementById('analysis-content');
         if (!analysisContent) return;
         
@@ -387,7 +365,7 @@ class FermiCalculator {
         `;
     }
 
-    translate(key, params = {}) {
+    translate = (key, params = {}) => {
         try {
             let text = translations[this.currentLanguage][key];
             if (!text) return key;
@@ -404,4 +382,6 @@ class FermiCalculator {
 }
 
 // Initialize the calculator
-const calculator = new FermiCalculator();
+window.addEventListener('load', () => {
+    window.calculator = new FermiCalculator();
+});
