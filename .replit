@@ -28,6 +28,8 @@ args = "python3 main.py"
 waitForPort = 5000
 
 [deployment]
+deploymentTarget = "static"
+publicDir = "fermiROI"
 run = ["sh", "-c", "python3 main.py"]
 
 [[ports]]

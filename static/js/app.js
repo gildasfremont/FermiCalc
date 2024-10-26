@@ -16,23 +16,25 @@ class FermiCalculator {
         // Initialize clear button
         this.initializeClearButton();
 
+        // Initialize all options
+        this.initializeOptions();
+    }
+
+    initializeOptions() {
         // Revenue options
         this.revenueOptions = [{
             value: 1000000,
             labelKey: 'revenue-1000000',
             descriptionKey: 'revenue-1000000-desc'
-        },
-        {
+        }, {
             value: 100000,
             labelKey: 'revenue-100000',
             descriptionKey: 'revenue-100000-desc'
-        },
-        {
+        }, {
             value: 10000,
             labelKey: 'revenue-10000',
             descriptionKey: 'revenue-10000-desc'
-        },
-        {
+        }, {
             value: 1000,
             labelKey: 'revenue-1000',
             descriptionKey: 'revenue-1000-desc'
@@ -43,18 +45,15 @@ class FermiCalculator {
             value: 100,
             labelKey: 'reach-100',
             descriptionKey: 'reach-100-desc'
-        },
-        {
+        }, {
             value: 70,
             labelKey: 'reach-70',
             descriptionKey: 'reach-70-desc'
-        },
-        {
+        }, {
             value: 30,
             labelKey: 'reach-30',
             descriptionKey: 'reach-30-desc'
-        },
-        {
+        }, {
             value: 0,
             labelKey: 'reach-0',
             descriptionKey: 'reach-0-desc'
@@ -65,23 +64,19 @@ class FermiCalculator {
             value: 1000,
             labelKey: 'care-1000',
             descriptionKey: 'care-1000-desc'
-        },
-        {
+        }, {
             value: 100,
             labelKey: 'care-100',
             descriptionKey: 'care-100-desc'
-        },
-        {
+        }, {
             value: 10,
             labelKey: 'care-10',
             descriptionKey: 'care-10-desc'
-        },
-        {
+        }, {
             value: 1,
             labelKey: 'care-1',
             descriptionKey: 'care-1-desc'
-        },
-        {
+        }, {
             value: 0,
             labelKey: 'care-0',
             descriptionKey: 'care-0-desc'
@@ -92,23 +87,19 @@ class FermiCalculator {
             value: 1000,
             labelKey: 'insight-1000',
             descriptionKey: 'insight-1000-desc'
-        },
-        {
+        }, {
             value: 100,
             labelKey: 'insight-100',
             descriptionKey: 'insight-100-desc'
-        },
-        {
+        }, {
             value: 10,
             labelKey: 'insight-10',
             descriptionKey: 'insight-10-desc'
-        },
-        {
+        }, {
             value: 1,
             labelKey: 'insight-1',
             descriptionKey: 'insight-1-desc'
-        },
-        {
+        }, {
             value: 0,
             labelKey: 'insight-0',
             descriptionKey: 'insight-0-desc'
@@ -119,23 +110,19 @@ class FermiCalculator {
             value: 1000,
             labelKey: 'payoff-1000',
             descriptionKey: 'payoff-1000-desc'
-        },
-        {
+        }, {
             value: 100,
             labelKey: 'payoff-100',
             descriptionKey: 'payoff-100-desc'
-        },
-        {
+        }, {
             value: 10,
             labelKey: 'payoff-10',
             descriptionKey: 'payoff-10-desc'
-        },
-        {
+        }, {
             value: 1,
             labelKey: 'payoff-1',
             descriptionKey: 'payoff-1-desc'
-        },
-        {
+        }, {
             value: 0,
             labelKey: 'payoff-0',
             descriptionKey: 'payoff-0-desc'
@@ -146,13 +133,11 @@ class FermiCalculator {
             value: 60,  // 2 months
             labelKey: 'effort-2m',
             descriptionKey: 'effort-2m-desc'
-        },
-        {
+        }, {
             value: 10,  // 2 weeks
             labelKey: 'effort-2w',
             descriptionKey: 'effort-2w-desc'
-        },
-        {
+        }, {
             value: 2,   // 2 days
             labelKey: 'effort-2d',
             descriptionKey: 'effort-2d-desc'
@@ -163,18 +148,15 @@ class FermiCalculator {
             value: 100,
             labelKey: 'excitement-100',
             descriptionKey: 'excitement-100-desc'
-        },
-        {
+        }, {
             value: 10,
             labelKey: 'excitement-10',
             descriptionKey: 'excitement-10-desc'
-        },
-        {
+        }, {
             value: 1,
             labelKey: 'excitement-1',
             descriptionKey: 'excitement-1-desc'
-        },
-        {
+        }, {
             value: 0,
             labelKey: 'excitement-0',
             descriptionKey: 'excitement-0-desc'
@@ -185,18 +167,15 @@ class FermiCalculator {
             value: 100,
             labelKey: 'confidence-100',
             descriptionKey: 'confidence-100-desc'
-        },
-        {
+        }, {
             value: 10,
             labelKey: 'confidence-10',
             descriptionKey: 'confidence-10-desc'
-        },
-        {
+        }, {
             value: 1,
             labelKey: 'confidence-1',
             descriptionKey: 'confidence-1-desc'
-        },
-        {
+        }, {
             value: 0,
             labelKey: 'confidence-0',
             descriptionKey: 'confidence-0-desc'
@@ -276,46 +255,14 @@ class FermiCalculator {
     initializeOptionGrids() {
         try {
             const optionSets = [
-                {
-                    containerId: 'revenueOptions',
-                    options: this.revenueOptions,
-                    field: 'revenue'
-                },
-                {
-                    containerId: 'customerReachOptions',
-                    options: this.customerReachOptions,
-                    field: 'customerReach'
-                },
-                {
-                    containerId: 'customerCareOptions',
-                    options: this.customerCareOptions,
-                    field: 'customerCare'
-                },
-                {
-                    containerId: 'insightOptions',
-                    options: this.insightOptions,
-                    field: 'insight'
-                },
-                {
-                    containerId: 'productPayoffOptions',
-                    options: this.productPayoffOptions,
-                    field: 'productPayoff'
-                },
-                {
-                    containerId: 'effortOptions',
-                    options: this.effortOptions,
-                    field: 'effort'
-                },
-                {
-                    containerId: 'teamExcitementOptions',
-                    options: this.teamExcitementOptions,
-                    field: 'teamExcitement'
-                },
-                {
-                    containerId: 'confidenceOptions',
-                    options: this.confidenceOptions,
-                    field: 'confidence'
-                }
+                { containerId: 'revenueOptions', options: this.revenueOptions, field: 'revenue' },
+                { containerId: 'customerReachOptions', options: this.customerReachOptions, field: 'customerReach' },
+                { containerId: 'customerCareOptions', options: this.customerCareOptions, field: 'customerCare' },
+                { containerId: 'insightOptions', options: this.insightOptions, field: 'insight' },
+                { containerId: 'productPayoffOptions', options: this.productPayoffOptions, field: 'productPayoff' },
+                { containerId: 'effortOptions', options: this.effortOptions, field: 'effort' },
+                { containerId: 'teamExcitementOptions', options: this.teamExcitementOptions, field: 'teamExcitement' },
+                { containerId: 'confidenceOptions', options: this.confidenceOptions, field: 'confidence' }
             ];
 
             optionSets.forEach(({ containerId, options, field }) => {
