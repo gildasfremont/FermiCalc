@@ -9,6 +9,10 @@
     --spacing-2xl: 2.5rem;
 }
 
+body {
+    background-color: var(--dark-900) !important;
+}
+
 /* Common styles for language select and clear button */
 .navbar .language-select {
     background-color: transparent;
@@ -45,7 +49,7 @@
     padding-right: var(--spacing-base);
 }
 
-/* Rest of the existing styles */
+/* Options stack styles */
 .options-stack {
     display: flex;
     flex-direction: column;
@@ -59,7 +63,7 @@
     padding: var(--spacing-xl);
     cursor: pointer;
     transition: all 0.2s ease;
-    background-color: var(--dark-900);
+    background-color: var(--dark-900) !important;
 }
 
 .option-card:hover {
@@ -125,7 +129,7 @@
     border: 2px solid rgba(255, 255, 255, 0.1);
     border-radius: 16px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    background-color: var(--dark-900);
+    background-color: var(--dark-900) !important;
 }
 
 .card-body {
@@ -133,7 +137,7 @@
 }
 
 #analysis-content {
-    background-color: var(--dark-900);
+    background-color: var(--dark-900) !important;
     border: 2px solid var(--primary-700);
 }
 

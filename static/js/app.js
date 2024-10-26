@@ -110,7 +110,6 @@ class FermiCalculator {
 
     handleError(type, error) {
         const errorMessages = {
-            'missing-containers': `Missing containers: ${error.containers?.join(', ')}`,
             'initialization': 'Failed to initialize calculator',
             'event-listeners': 'Failed to set up event listeners',
             'option-grids': 'Failed to set up option grids',
@@ -160,19 +159,12 @@ class FermiCalculator {
                 { containerId: 'confidenceOptions', options: this.confidenceOptions, field: 'confidence' }
             ];
 
-            let missingContainers = [];
             optionSets.forEach(({ containerId, options, field }) => {
                 const container = document.getElementById(containerId);
-                if (!container) {
-                    missingContainers.push(containerId);
-                    return;
+                if (container) {
+                    this.renderOptionGrid(container, options, field);
                 }
-                this.renderOptionGrid(container, options, field);
             });
-
-            if (missingContainers.length > 0) {
-                this.handleError('missing-containers', { containers: missingContainers });
-            }
         } catch (error) {
             console.error('Error initializing option grids:', error);
             this.handleError('option-grids', error);
