@@ -31,7 +31,7 @@
     outline: none;
 }
 
-/* Style for the language select dropdown arrow */
+/* Language select specific styles */
 #languageSelect {
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
     background-repeat: no-repeat;
@@ -40,7 +40,12 @@
     padding-right: 2.5rem;
 }
 
-/* Options stack styles */
+/* Clear button specific styles */
+#clearButton {
+    padding-right: var(--spacing-base);
+}
+
+/* Rest of the existing styles */
 .options-stack {
     display: flex;
     flex-direction: column;
@@ -70,7 +75,6 @@
     box-shadow: 0 4px 12px rgba(8, 50, 125, 0.35);
 }
 
-/* Analysis point styling */
 .analysis-point {
     padding: var(--spacing-xl);
     margin-bottom: var(--spacing-lg);
@@ -104,7 +108,6 @@
     border: 2px solid var(--secondary-700);
 }
 
-/* Navbar styling */
 .navbar.sticky-top {
     background-color: var(--dark-900) !important;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
@@ -118,7 +121,6 @@
     font-weight: 600;
 }
 
-/* Card styling */
 .card {
     border: 2px solid rgba(255, 255, 255, 0.1);
     border-radius: 16px;
@@ -159,7 +161,6 @@
     margin-bottom: var(--spacing-base);
 }
 
-/* Error state styling */
 .error-container {
     padding: var(--spacing-lg);
     background-color: rgba(220, 53, 69, 0.1);
@@ -174,7 +175,6 @@
     margin: 0;
 }
 
-/* Unanswered questions styling */
 .alert-warning {
     background-color: rgba(255, 143, 0, 0.1);
     border: 2px solid #FF8F00;
@@ -197,7 +197,6 @@
     text-decoration: underline !important;
 }
 
-/* Highlight animation */
 @keyframes highlight-pulse {
     0% { border-color: rgba(255, 143, 0, 0.5); }
     50% { border-color: #FF8F00; }
@@ -208,7 +207,6 @@
     animation: highlight-pulse 1s ease-in-out;
 }
 
-/* Error handling */
 .options-stack:empty {
     position: relative;
     min-height: 100px;
