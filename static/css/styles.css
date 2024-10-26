@@ -9,6 +9,25 @@
     --spacing-2xl: 2.5rem;
 }
 
+/* Clear button styles */
+#clearButton {
+    background-color: transparent;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    color: var(--light-500);
+    font-weight: 500;
+    padding: calc(var(--spacing-base) * 0.5) var(--spacing-base);
+    border-radius: 8px;
+    cursor: pointer;
+    min-width: 120px;
+}
+
+#clearButton:hover,
+#clearButton:focus {
+    border-color: var(--secondary-700);
+    box-shadow: 0 2px 8px rgba(85, 138, 134, 0.25);
+    outline: none;
+}
+
 /* Vertical stacking for options */
 .options-stack {
     display: flex;

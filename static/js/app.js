@@ -90,6 +90,9 @@ class FermiCalculator {
             this.state[field] = undefined;
         });
         
+        // Scroll to top smoothly
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        
         this.saveToStorage();
         this.render();
     }
@@ -480,7 +483,6 @@ class FermiCalculator {
     }
 }
 
-// Initialize the calculator when the DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
     try {
         if (!window.calculator) {
