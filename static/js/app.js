@@ -2,7 +2,6 @@ class FermiCalculator {
     constructor() {
         // Initialize state
         this.state = {
-            revenue: undefined,
             customerReach: undefined,
             customerCare: undefined,
             insight: undefined,
@@ -13,86 +12,197 @@ class FermiCalculator {
             language: 'EN'
         };
 
-        // Initialize revenue options
-        this.revenueOptions = [
-            { value: 1000, labelKey: 'revenue-1000', descriptionKey: 'revenue-1000-desc' },
-            { value: 10000, labelKey: 'revenue-10000', descriptionKey: 'revenue-10000-desc' },
-            { value: 100000, labelKey: 'revenue-100000', descriptionKey: 'revenue-100000-desc' },
-            { value: 1000000, labelKey: 'revenue-1000000', descriptionKey: 'revenue-1000000-desc' }
-        ];
+        // Initialize clear button
+        this.initializeClearButton();
 
-        // Initialize customer reach options
-        this.customerReachOptions = [
-            { value: 100, labelKey: 'reach-100', descriptionKey: 'reach-100-desc' },
-            { value: 70, labelKey: 'reach-70', descriptionKey: 'reach-70-desc' },
-            { value: 30, labelKey: 'reach-30', descriptionKey: 'reach-30-desc' },
-            { value: 0, labelKey: 'reach-0', descriptionKey: 'reach-0-desc' }
-        ];
+        // Customer Reach options (0-100)
+        this.customerReachOptions = [{
+            value: 100,
+            labelKey: 'reach-100',
+            descriptionKey: 'reach-100-desc'
+        },
+        {
+            value: 70,
+            labelKey: 'reach-70',
+            descriptionKey: 'reach-70-desc'
+        },
+        {
+            value: 30,
+            labelKey: 'reach-30',
+            descriptionKey: 'reach-30-desc'
+        },
+        {
+            value: 0,
+            labelKey: 'reach-0',
+            descriptionKey: 'reach-0-desc'
+        }];
 
-        // Initialize customer care options
-        this.customerCareOptions = [
-            { value: 1000, labelKey: 'care-1000', descriptionKey: 'care-1000-desc' },
-            { value: 100, labelKey: 'care-100', descriptionKey: 'care-100-desc' },
-            { value: 10, labelKey: 'care-10', descriptionKey: 'care-10-desc' },
-            { value: 1, labelKey: 'care-1', descriptionKey: 'care-1-desc' },
-            { value: 0, labelKey: 'care-0', descriptionKey: 'care-0-desc' }
-        ];
+        // Customer Care options (0-1000)
+        this.customerCareOptions = [{
+            value: 1000,
+            labelKey: 'care-1000',
+            descriptionKey: 'care-1000-desc'
+        },
+        {
+            value: 100,
+            labelKey: 'care-100',
+            descriptionKey: 'care-100-desc'
+        },
+        {
+            value: 10,
+            labelKey: 'care-10',
+            descriptionKey: 'care-10-desc'
+        },
+        {
+            value: 1,
+            labelKey: 'care-1',
+            descriptionKey: 'care-1-desc'
+        },
+        {
+            value: 0,
+            labelKey: 'care-0',
+            descriptionKey: 'care-0-desc'
+        }];
 
-        // Initialize insight options
-        this.insightOptions = [
-            { value: 1000, labelKey: 'insight-1000', descriptionKey: 'insight-1000-desc' },
-            { value: 100, labelKey: 'insight-100', descriptionKey: 'insight-100-desc' },
-            { value: 10, labelKey: 'insight-10', descriptionKey: 'insight-10-desc' },
-            { value: 1, labelKey: 'insight-1', descriptionKey: 'insight-1-desc' },
-            { value: 0, labelKey: 'insight-0', descriptionKey: 'insight-0-desc' }
-        ];
+        // Insight options (0-1000)
+        this.insightOptions = [{
+            value: 1000,
+            labelKey: 'insight-1000',
+            descriptionKey: 'insight-1000-desc'
+        },
+        {
+            value: 100,
+            labelKey: 'insight-100',
+            descriptionKey: 'insight-100-desc'
+        },
+        {
+            value: 10,
+            labelKey: 'insight-10',
+            descriptionKey: 'insight-10-desc'
+        },
+        {
+            value: 1,
+            labelKey: 'insight-1',
+            descriptionKey: 'insight-1-desc'
+        },
+        {
+            value: 0,
+            labelKey: 'insight-0',
+            descriptionKey: 'insight-0-desc'
+        }];
 
-        // Initialize product payoff options
-        this.productPayoffOptions = [
-            { value: 1000, labelKey: 'payoff-1000', descriptionKey: 'payoff-1000-desc' },
-            { value: 100, labelKey: 'payoff-100', descriptionKey: 'payoff-100-desc' },
-            { value: 10, labelKey: 'payoff-10', descriptionKey: 'payoff-10-desc' },
-            { value: 1, labelKey: 'payoff-1', descriptionKey: 'payoff-1-desc' },
-            { value: 0, labelKey: 'payoff-0', descriptionKey: 'payoff-0-desc' }
-        ];
+        // Product Payoff options (0-1000)
+        this.productPayoffOptions = [{
+            value: 1000,
+            labelKey: 'payoff-1000',
+            descriptionKey: 'payoff-1000-desc'
+        },
+        {
+            value: 100,
+            labelKey: 'payoff-100',
+            descriptionKey: 'payoff-100-desc'
+        },
+        {
+            value: 10,
+            labelKey: 'payoff-10',
+            descriptionKey: 'payoff-10-desc'
+        },
+        {
+            value: 1,
+            labelKey: 'payoff-1',
+            descriptionKey: 'payoff-1-desc'
+        },
+        {
+            value: 0,
+            labelKey: 'payoff-0',
+            descriptionKey: 'payoff-0-desc'
+        }];
 
-        // Initialize effort options
-        this.effortOptions = [
-            { value: 2, labelKey: 'effort-2d', descriptionKey: 'effort-2d-desc' },
-            { value: 10, labelKey: 'effort-2w', descriptionKey: 'effort-2w-desc' },
-            { value: 45, labelKey: 'effort-2m', descriptionKey: 'effort-2m-desc' }
-        ];
+        // Effort options
+        this.effortOptions = [{
+            value: 2,
+            labelKey: 'effort-2d',
+            descriptionKey: 'effort-2d-desc'
+        },
+        {
+            value: 10,
+            labelKey: 'effort-2w',
+            descriptionKey: 'effort-2w-desc'
+        },
+        {
+            value: 45,
+            labelKey: 'effort-2m',
+            descriptionKey: 'effort-2m-desc'
+        }];
 
-        // Initialize team excitement options
-        this.teamExcitementOptions = [
-            { value: 100, labelKey: 'excitement-100', descriptionKey: 'excitement-100-desc' },
-            { value: 10, labelKey: 'excitement-10', descriptionKey: 'excitement-10-desc' },
-            { value: 1, labelKey: 'excitement-1', descriptionKey: 'excitement-1-desc' },
-            { value: 0, labelKey: 'excitement-0', descriptionKey: 'excitement-0-desc' }
-        ];
+        // Team Excitement options
+        this.teamExcitementOptions = [{
+            value: 100,
+            labelKey: 'excitement-100',
+            descriptionKey: 'excitement-100-desc'
+        },
+        {
+            value: 10,
+            labelKey: 'excitement-10',
+            descriptionKey: 'excitement-10-desc'
+        },
+        {
+            value: 1,
+            labelKey: 'excitement-1',
+            descriptionKey: 'excitement-1-desc'
+        },
+        {
+            value: 0,
+            labelKey: 'excitement-0',
+            descriptionKey: 'excitement-0-desc'
+        }];
 
-        // Initialize confidence options
-        this.confidenceOptions = [
-            { value: 100, labelKey: 'confidence-100', descriptionKey: 'confidence-100-desc' },
-            { value: 10, labelKey: 'confidence-10', descriptionKey: 'confidence-10-desc' },
-            { value: 1, labelKey: 'confidence-1', descriptionKey: 'confidence-1-desc' },
-            { value: 0, labelKey: 'confidence-0', descriptionKey: 'confidence-0-desc' }
-        ];
+        // Confidence options
+        this.confidenceOptions = [{
+            value: 100,
+            labelKey: 'confidence-100',
+            descriptionKey: 'confidence-100-desc'
+        },
+        {
+            value: 10,
+            labelKey: 'confidence-10',
+            descriptionKey: 'confidence-10-desc'
+        },
+        {
+            value: 1,
+            labelKey: 'confidence-1',
+            descriptionKey: 'confidence-1-desc'
+        },
+        {
+            value: 0,
+            labelKey: 'confidence-0',
+            descriptionKey: 'confidence-0-desc'
+        }];
+    }
+
+    initializeClearButton() {
+        const clearButton = document.getElementById('clearButton');
+        if (clearButton) {
+            clearButton.addEventListener('click', () => {
+                this.clearAllSelections();
+            });
+        }
     }
 
     clearAllSelections() {
-        const fieldsToReset = [
-            'revenue', 'customerReach', 'customerCare', 'insight',
-            'productPayoff', 'effort', 'teamExcitement', 'confidence'
-        ];
-        
-        fieldsToReset.forEach(field => {
-            this.state[field] = undefined;
-        });
-        
-        // Scroll to top smoothly
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-        
+        // Reset state to initial values
+        this.state = {
+            customerReach: undefined,
+            customerCare: undefined,
+            insight: undefined,
+            productPayoff: undefined,
+            effort: undefined,
+            teamExcitement: undefined,
+            confidence: undefined,
+            language: this.state.language // Preserve language setting
+        };
+
+        // Save cleared state and re-render
         this.saveToStorage();
         this.render();
     }
@@ -115,7 +225,8 @@ class FermiCalculator {
             'option-grids': 'Failed to set up option grids',
             'render': 'Failed to render calculator',
             'analysis': 'Failed to generate analysis',
-            'storage': 'Failed to access local storage'
+            'storage': 'Failed to access local storage',
+            'translation': 'Translation error occurred'
         };
 
         const message = errorMessages[type] || 'An unknown error occurred';
@@ -131,14 +242,6 @@ class FermiCalculator {
                     this.updateState('language', event.target.value);
                 });
             }
-
-            const clearButton = document.getElementById('clearButton');
-            if (clearButton) {
-                clearButton.addEventListener('click', () => {
-                    this.clearAllSelections();
-                });
-            }
-
             this.initializeOptionGrids();
         } catch (error) {
             console.error('Error initializing event listeners:', error);
@@ -149,14 +252,41 @@ class FermiCalculator {
     initializeOptionGrids() {
         try {
             const optionSets = [
-                { containerId: 'revenueOptions', options: this.revenueOptions, field: 'revenue' },
-                { containerId: 'customerReachOptions', options: this.customerReachOptions, field: 'customerReach' },
-                { containerId: 'customerCareOptions', options: this.customerCareOptions, field: 'customerCare' },
-                { containerId: 'insightOptions', options: this.insightOptions, field: 'insight' },
-                { containerId: 'productPayoffOptions', options: this.productPayoffOptions, field: 'productPayoff' },
-                { containerId: 'effortOptions', options: this.effortOptions, field: 'effort' },
-                { containerId: 'teamExcitementOptions', options: this.teamExcitementOptions, field: 'teamExcitement' },
-                { containerId: 'confidenceOptions', options: this.confidenceOptions, field: 'confidence' }
+                {
+                    containerId: 'customerReachOptions',
+                    options: this.customerReachOptions,
+                    field: 'customerReach'
+                },
+                {
+                    containerId: 'customerCareOptions',
+                    options: this.customerCareOptions,
+                    field: 'customerCare'
+                },
+                {
+                    containerId: 'insightOptions',
+                    options: this.insightOptions,
+                    field: 'insight'
+                },
+                {
+                    containerId: 'productPayoffOptions',
+                    options: this.productPayoffOptions,
+                    field: 'productPayoff'
+                },
+                {
+                    containerId: 'effortOptions',
+                    options: this.effortOptions,
+                    field: 'effort'
+                },
+                {
+                    containerId: 'teamExcitementOptions',
+                    options: this.teamExcitementOptions,
+                    field: 'teamExcitement'
+                },
+                {
+                    containerId: 'confidenceOptions',
+                    options: this.confidenceOptions,
+                    field: 'confidence'
+                }
             ];
 
             optionSets.forEach(({ containerId, options, field }) => {
@@ -185,11 +315,11 @@ class FermiCalculator {
                     <div class="option-label fw-bold">${this.translate(option.labelKey)}</div>
                     <div class="option-description small text-gray-300">${this.translate(option.descriptionKey)}</div>
                 `;
-                
+
                 card.addEventListener('click', () => {
                     this.updateState(field, option.value);
                 });
-                
+
                 container.appendChild(card);
             });
         } catch (error) {
@@ -201,16 +331,25 @@ class FermiCalculator {
     calculateROI() {
         try {
             if (!this.state.effort) return 0;
-            
-            const impact = (
-                this.state.customerReach * 
-                this.state.customerCare * 
-                this.state.insight * 
+
+            const factors = [
+                this.state.customerReach,
+                this.state.customerCare,
+                this.state.insight,
                 this.state.productPayoff
-            ) / 10000;
-            
-            const roi = Math.round((this.state.revenue * impact) / this.state.effort);
-            return roi;
+            ];
+
+            // Check if any required factors are missing
+            if (factors.some(factor => factor === undefined)) return 0;
+
+            // Multiply all factors
+            const impactScore = factors.reduce((a, b) => a * b, 1);
+            const baseROI = impactScore / this.state.effort;
+
+            // Apply typical margins of error
+            const conservativeROI = (baseROI * 0.8) / 1.5;
+
+            return Math.round(conservativeROI);
         } catch (error) {
             console.error('Error calculating ROI:', error);
             this.handleError('analysis', error);
@@ -218,47 +357,17 @@ class FermiCalculator {
         }
     }
 
-    updateState(field, value) {
-        try {
-            this.state[field] = value;
-            this.saveToStorage();
-            this.render();
-        } catch (error) {
-            console.error('Error updating state:', error);
-            this.handleError('state-update', error);
+    calculateTieBreakScore() {
+        if (this.state.teamExcitement === undefined || this.state.confidence === undefined) {
+            return 0;
         }
-    }
-
-    getUnansweredQuestions() {
-        const unanswered = [];
-        Object.entries(this.state)
-            .filter(([key]) => key !== 'language')
-            .forEach(([field, value]) => {
-                if (value === undefined || value === null) {
-                    const titleKey = {
-                        revenue: 'revenue-title',
-                        customerReach: 'customer-reach-title',
-                        customerCare: 'customer-care-title',
-                        insight: 'insight-title',
-                        productPayoff: 'product-payoff-title',
-                        effort: 'effort-title',
-                        teamExcitement: 'team-excitement-title',
-                        confidence: 'confidence-title'
-                    }[field];
-                    
-                    unanswered.push({
-                        field,
-                        title: this.translate(titleKey)
-                    });
-                }
-            });
-        return unanswered;
+        return (this.state.teamExcitement + this.state.confidence) / 200;
     }
 
     getAnalysis() {
         try {
             const unanswered = this.getUnansweredQuestions();
-            
+
             if (unanswered.length > 0) {
                 return {
                     complete: false,
@@ -270,6 +379,7 @@ class FermiCalculator {
             const roi = this.calculateROI();
             const analysis = [];
 
+            // ROI Analysis
             if (roi > 0) {
                 analysis.push({
                     type: 'primary',
@@ -277,6 +387,20 @@ class FermiCalculator {
                 });
             }
 
+            // Effort Analysis
+            if (this.state.effort === 2) {
+                analysis.push({
+                    type: 'positive',
+                    content: this.translate('quick-win')
+                });
+            } else if (this.state.effort === 45) {
+                analysis.push({
+                    type: 'warning',
+                    content: this.translate('large-effort')
+                });
+            }
+
+            // Team Factors Analysis
             if (this.state.teamExcitement === 100) {
                 analysis.push({
                     type: 'positive',
@@ -301,26 +425,51 @@ class FermiCalculator {
                 });
             }
 
-            if (this.state.effort === 2) {
-                analysis.push({
-                    type: 'positive',
-                    content: this.translate('quick-win')
-                });
-            } else if (this.state.effort === 45) {
-                analysis.push({
-                    type: 'warning',
-                    content: this.translate('large-effort')
-                });
-            }
-
             return {
                 complete: true,
-                points: analysis
+                points: analysis,
+                tieBreakScore: this.calculateTieBreakScore()
             };
         } catch (error) {
             console.error('Error getting analysis:', error);
             this.handleError('analysis', error);
             return null;
+        }
+    }
+
+    getUnansweredQuestions() {
+        const unanswered = [];
+        const requiredFields = [
+            'customerReach',
+            'customerCare',
+            'insight',
+            'productPayoff',
+            'effort',
+            'teamExcitement',
+            'confidence'
+        ];
+
+        requiredFields.forEach(field => {
+            if (this.state[field] === undefined) {
+                const titleKey = `${field.replace(/([A-Z])/g, '-$1').toLowerCase()}-title`;
+                unanswered.push({
+                    field,
+                    title: this.translate(titleKey)
+                });
+            }
+        });
+
+        return unanswered;
+    }
+
+    updateState(field, value) {
+        try {
+            this.state[field] = value;
+            this.saveToStorage();
+            this.render();
+        } catch (error) {
+            console.error('Error updating state:', error);
+            this.handleError('state-update', error);
         }
     }
 
@@ -350,12 +499,12 @@ class FermiCalculator {
             if (!translations || !translations[this.state.language]) {
                 return key;
             }
-            
+
             let text = translations[this.state.language][key];
             if (!text) {
                 return key;
             }
-            
+
             Object.entries(params).forEach(([param, value]) => {
                 text = text.replace(`{${param}}`, value);
             });
@@ -376,29 +525,10 @@ class FermiCalculator {
                 }
             });
 
-            this.renderOptionSelections();
             this.renderAnalysis();
+            this.initializeOptionGrids();
         } catch (error) {
             console.error('Error rendering:', error);
-            this.handleError('render', error);
-        }
-    }
-
-    renderOptionSelections() {
-        try {
-            const fields = [
-                'revenue', 'customerReach', 'customerCare', 'insight',
-                'productPayoff', 'effort', 'teamExcitement', 'confidence'
-            ];
-            
-            fields.forEach(field => {
-                const container = document.getElementById(`${field}Options`);
-                if (container) {
-                    this.renderOptionGrid(container, this[`${field}Options`], field);
-                }
-            });
-        } catch (error) {
-            console.error('Error rendering option selections:', error);
             this.handleError('render', error);
         }
     }
@@ -407,7 +537,7 @@ class FermiCalculator {
         try {
             const analysisContent = document.getElementById('analysis-content');
             if (!analysisContent) return;
-            
+
             const analysis = this.getAnalysis();
             if (!analysis) {
                 analysisContent.innerHTML = `
@@ -468,13 +598,16 @@ class FermiCalculator {
     scrollToQuestion(field) {
         const container = document.getElementById(`${field}Options`);
         if (container) {
-            container.scrollIntoView({ behavior: 'smooth' });
+            container.scrollIntoView({
+                behavior: 'smooth'
+            });
             container.classList.add('highlight-container');
             setTimeout(() => container.classList.remove('highlight-container'), 2000);
         }
     }
 }
 
+// Initialize the calculator when the DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
     try {
         if (!window.calculator) {
