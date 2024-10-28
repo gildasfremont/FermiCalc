@@ -13,11 +13,11 @@ class FermiCalculator {
             language: 'EN'
         };
 
-        // Initialize all options
-        this.initializeOptions();
-
         // Initialize clear button
         this.initializeClearButton();
+
+        // Initialize all options
+        this.initializeOptions();
     }
 
     initializeOptions() {
@@ -40,7 +40,7 @@ class FermiCalculator {
             descriptionKey: 'revenue-1000-desc'
         }];
 
-        // Customer Reach options (0-100)
+        // Customer Reach options
         this.customerReachOptions = [{
             value: 100,
             labelKey: 'reach-100',
@@ -59,7 +59,7 @@ class FermiCalculator {
             descriptionKey: 'reach-0-desc'
         }];
 
-        // Customer Care options
+        // Other options initialization...
         this.customerCareOptions = [{
             value: 1000,
             labelKey: 'care-1000',
@@ -82,7 +82,6 @@ class FermiCalculator {
             descriptionKey: 'care-0-desc'
         }];
 
-        // Insight options
         this.insightOptions = [{
             value: 1000,
             labelKey: 'insight-1000',
@@ -105,7 +104,6 @@ class FermiCalculator {
             descriptionKey: 'insight-0-desc'
         }];
 
-        // Product Payoff options
         this.productPayoffOptions = [{
             value: 1000,
             labelKey: 'payoff-1000',
@@ -128,7 +126,6 @@ class FermiCalculator {
             descriptionKey: 'payoff-0-desc'
         }];
 
-        // Effort options
         this.effortOptions = [{
             value: 60,  // 2 months
             labelKey: 'effort-2m',
@@ -143,7 +140,6 @@ class FermiCalculator {
             descriptionKey: 'effort-2d-desc'
         }];
 
-        // Team Excitement options
         this.teamExcitementOptions = [{
             value: 100,
             labelKey: 'excitement-100',
@@ -162,7 +158,6 @@ class FermiCalculator {
             descriptionKey: 'excitement-0-desc'
         }];
 
-        // Confidence options
         this.confidenceOptions = [{
             value: 100,
             labelKey: 'confidence-100',
@@ -229,38 +224,6 @@ class FermiCalculator {
         }
     }
 
-    handleError(type, error) {
-        const errorMessages = {
-            'initialization': 'Failed to initialize calculator',
-            'event-listeners': 'Failed to set up event listeners',
-            'option-grids': 'Failed to set up option grids',
-            'render': 'Failed to render calculator',
-            'analysis': 'Failed to generate analysis',
-            'storage': 'Failed to access local storage',
-            'translation': 'Translation error occurred'
-        };
-
-        const message = errorMessages[type] || 'An unknown error occurred';
-        console.error(`${message}:`, error);
-    }
-
-    initializeEventListeners() {
-        try {
-            const languageSelect = document.getElementById('languageSelect');
-            if (languageSelect) {
-                languageSelect.value = this.state.language;
-                languageSelect.addEventListener('change', (event) => {
-                    this.updateState('language', event.target.value);
-                });
-            }
-            this.initializeOptionGrids();
-        } catch (error) {
-            console.error('Error initializing event listeners:', error);
-            this.handleError('event-listeners', error);
-        }
-    }
-
-    // Helper function to find the next unanswered question
     findNextQuestion(currentField) {
         const questionOrder = [
             'revenue',
@@ -288,7 +251,6 @@ class FermiCalculator {
         return null;
     }
 
-    // Helper function to scroll to a specific question
     scrollToNextQuestion(field) {
         const nextField = this.findNextQuestion(field);
         if (nextField) {
@@ -297,12 +259,40 @@ class FermiCalculator {
                 setTimeout(() => {
                     container.scrollIntoView({
                         behavior: 'smooth',
-                        block: 'start'
+                        block: 'center'
                     });
                     container.classList.add('highlight-container');
                     setTimeout(() => container.classList.remove('highlight-container'), 2000);
                 }, 100);
             }
+        }
+    }
+
+    scrollToQuestion(field) {
+        const container = document.getElementById(`${field}Options`);
+        if (container) {
+            container.scrollIntoView({
+                behavior: 'smooth',
+                block: 'center'
+            });
+            container.classList.add('highlight-container');
+            setTimeout(() => container.classList.remove('highlight-container'), 2000);
+        }
+    }
+
+    initializeEventListeners() {
+        try {
+            const languageSelect = document.getElementById('languageSelect');
+            if (languageSelect) {
+                languageSelect.value = this.state.language;
+                languageSelect.addEventListener('change', (event) => {
+                    this.updateState('language', event.target.value);
+                });
+            }
+            this.initializeOptionGrids();
+        } catch (error) {
+            console.error('Error initializing event listeners:', error);
+            this.handleError('event-listeners', error);
         }
     }
 
@@ -356,6 +346,60 @@ class FermiCalculator {
         } catch (error) {
             console.error('Error rendering option grid:', error);
             this.handleError('render', error);
+        }
+    }
+
+    updateState(field, value) {
+        try {
+            this.state[field] = value;
+            this.saveToStorage();
+            this.render();
+        } catch (error) {
+            console.error('Error updating state:', error);
+            this.handleError('state-update', error);
+        }
+    }
+
+    saveToStorage() {
+        try {
+            localStorage.setItem('fermiCalculator', JSON.stringify(this.state));
+        } catch (error) {
+            console.error('Error saving to storage:', error);
+            this.handleError('storage', error);
+        }
+    }
+
+    loadFromStorage() {
+        try {
+            const saved = localStorage.getItem('fermiCalculator');
+            if (saved) {
+                this.state = JSON.parse(saved);
+            }
+        } catch (error) {
+            console.error('Error loading from storage:', error);
+            this.handleError('storage', error);
+        }
+    }
+
+    translate(key, params = {}) {
+        try {
+            if (!translations || !translations[this.state.language]) {
+                return key;
+            }
+
+            let text = translations[this.state.language][key];
+            if (!text) {
+                return key;
+            }
+
+            Object.entries(params).forEach(([param, value]) => {
+                text = text.replace(`{${param}}`, value);
+            });
+            return text;
+        } catch (error) {
+            console.error('Translation error:', error);
+            this.handleError('translation', error);
+            return key;
         }
     }
 
@@ -494,60 +538,6 @@ class FermiCalculator {
         return unanswered;
     }
 
-    updateState(field, value) {
-        try {
-            this.state[field] = value;
-            this.saveToStorage();
-            this.render();
-        } catch (error) {
-            console.error('Error updating state:', error);
-            this.handleError('state-update', error);
-        }
-    }
-
-    saveToStorage() {
-        try {
-            localStorage.setItem('fermiCalculator', JSON.stringify(this.state));
-        } catch (error) {
-            console.error('Error saving to storage:', error);
-            this.handleError('storage', error);
-        }
-    }
-
-    loadFromStorage() {
-        try {
-            const saved = localStorage.getItem('fermiCalculator');
-            if (saved) {
-                this.state = JSON.parse(saved);
-            }
-        } catch (error) {
-            console.error('Error loading from storage:', error);
-            this.handleError('storage', error);
-        }
-    }
-
-    translate(key, params = {}) {
-        try {
-            if (!translations || !translations[this.state.language]) {
-                return key;
-            }
-
-            let text = translations[this.state.language][key];
-            if (!text) {
-                return key;
-            }
-
-            Object.entries(params).forEach(([param, value]) => {
-                text = text.replace(`{${param}}`, value);
-            });
-            return text;
-        } catch (error) {
-            console.error('Translation error:', error);
-            this.handleError('translation', error);
-            return key;
-        }
-    }
-
     render() {
         try {
             document.querySelectorAll('[data-translate]').forEach(element => {
@@ -627,16 +617,20 @@ class FermiCalculator {
         }
     }
 
-    scrollToQuestion(field) {
-        const container = document.getElementById(`${field}Options`);
-        if (container) {
-            container.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
-            container.classList.add('highlight-container');
-            setTimeout(() => container.classList.remove('highlight-container'), 2000);
-        }
+    handleError(type, error) {
+        const errorMessages = {
+            'initialization': 'Failed to initialize calculator',
+            'event-listeners': 'Failed to set up event listeners',
+            'option-grids': 'Failed to set up option grids',
+            'render': 'Failed to render calculator',
+            'analysis': 'Failed to generate analysis',
+            'storage': 'Failed to access local storage',
+            'translation': 'Translation error occurred',
+            'state-update': 'Failed to update state'
+        };
+
+        const message = errorMessages[type] || 'An unknown error occurred';
+        console.error(`${message}:`, error);
     }
 }
 
