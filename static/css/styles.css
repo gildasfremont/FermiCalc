@@ -51,6 +51,18 @@ body {
     scroll-margin-top: calc(var(--navbar-height) + 20px);
 }
 
+.text-gray-300 {
+    color: var(--orange-11) !important;
+}
+
+.small {
+    color: var(--orange-11);
+}
+
+.option-description {
+    color: var(--orange-11) !important;
+}
+
 .option-card {
     cursor: pointer;
     padding: var(--spacing-base);
@@ -70,18 +82,6 @@ body {
     background-color: var(--orange-9) !important;
     border-color: var(--orange-9);
     color: var(--gray-12) !important;
-}
-
-.text-gray-300 {
-    color: var(--orange-11) !important;
-}
-
-.small {
-    color: var(--orange-11);
-}
-
-.option-description {
-    color: var(--orange-11) !important;
 }
 
 .option-card.selected .option-description {
@@ -146,6 +146,11 @@ body {
 
 .alert-warning a {
     color: var(--orange-12) !important;
+}
+
+.alert-warning a:hover {
+    color: var(--orange-12) !important;
+    text-decoration: underline !important;
 }
 
 .options-stack:empty {
