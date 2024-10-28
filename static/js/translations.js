@@ -19,8 +19,8 @@ const translations = {
         'confidence-description': "Consider technical complexity and team expertise",
         'analysis-title': "Analysis",
         'analysis-empty': "Complete all questions to see analysis",
-        'cohen-attribution': "This calculator helps prioritize features by applying Fermi estimation principles to both impact and effort calculations.",
-
+        'cohen-attribution': "Based on Jason Cohen's Fermi estimation framework, this calculator helps prioritize features by applying Fermi estimation principles to both impact and effort calculations.",
+        
         // Revenue options
         'revenue-1000': "$1,000/year",
         'revenue-1000-desc': "A minor improvement for a few customers",
@@ -40,6 +40,18 @@ const translations = {
         'reach-70-desc': "The majority of our customers",
         'reach-100': "Everyone (100)",
         'reach-100-desc': "All customers would benefit",
+
+        // Customer Care options
+        'care-0': "Don't waste my time",
+        'care-0-desc': "Actively opposed to this feature",
+        'care-1': "Meh, whatever",
+        'care-1-desc': "Indifferent to the feature",
+        'care-10': "I'm curious",
+        'care-10-desc': "Interested in learning more",
+        'care-100': "Serious concern",
+        'care-100-desc': "This addresses a significant pain point",
+        'care-1000': "Mission critical",
+        'care-1000-desc': "Essential for customer success",
 
         // Analysis messages
         'high-team-excitement': "The team is highly motivated to work on this feature",
@@ -68,7 +80,39 @@ const translations = {
         'confidence-description': "Considérez la complexité technique et l'expertise de l'équipe",
         'analysis-title': "Analyse",
         'analysis-empty': "Complétez toutes les questions pour voir l'analyse",
-        'cohen-attribution': "Cette calculatrice aide à prioriser les fonctionnalités en appliquant les principes d'estimation Fermi aux calculs d'impact et d'effort.",
+        'cohen-attribution': "Basé sur le cadre d'estimation Fermi de Jason Cohen, cette calculatrice aide à prioriser les fonctionnalités en appliquant les principes d'estimation Fermi aux calculs d'impact et d'effort.",
+
+        // Revenue options
+        'revenue-1000': "1 000 €/an",
+        'revenue-1000-desc': "Une amélioration mineure pour quelques clients",
+        'revenue-10000': "10 000 €/an",
+        'revenue-10000-desc': "Valeur notable pour plusieurs clients",
+        'revenue-100000': "100 000 €/an",
+        'revenue-100000-desc': "Valeur majeure pour de nombreux clients",
+        'revenue-1000000': "1 000 000 €/an",
+        'revenue-1000000-desc': "Valeur transformative pour la plupart des clients",
+
+        // Customer Reach options
+        'reach-0': "Personne (0)",
+        'reach-0-desc': "Ne peut penser à personne qui s'en soucie",
+        'reach-30': "Quelques-uns (30)",
+        'reach-30-desc': "Un segment spécifique de clients",
+        'reach-70': "La plupart (70)",
+        'reach-70-desc': "La majorité de nos clients",
+        'reach-100': "Tous (100)",
+        'reach-100-desc': "Tous les clients en bénéficieraient",
+
+        // Customer Care options
+        'care-0': "Ne perdez pas mon temps",
+        'care-0-desc': "Activement opposé à cette fonctionnalité",
+        'care-1': "Bof, peu importe",
+        'care-1-desc': "Indifférent à la fonctionnalité",
+        'care-10': "Je suis curieux",
+        'care-10-desc': "Intéressé d'en savoir plus",
+        'care-100': "Préoccupation sérieuse",
+        'care-100-desc': "Cela résout un point critique",
+        'care-1000': "Mission critique",
+        'care-1000-desc': "Essentiel pour le succès du client",
 
         // Analysis messages
         'high-team-excitement': "L'équipe est très motivée pour travailler sur cette fonctionnalité",
@@ -97,7 +141,39 @@ const translations = {
         'confidence-description': "Considere la complejidad técnica y la experiencia del equipo",
         'analysis-title': "Análisis",
         'analysis-empty': "Complete todas las preguntas para ver el análisis",
-        'cohen-attribution': "Esta calculadora ayuda a priorizar funciones aplicando principios de estimación Fermi a los cálculos de impacto y esfuerzo.",
+        'cohen-attribution': "Basado en el marco de estimación Fermi de Jason Cohen, esta calculadora ayuda a priorizar funciones aplicando principios de estimación Fermi a los cálculos de impacto y esfuerzo.",
+
+        // Revenue options
+        'revenue-1000': "$1.000/año",
+        'revenue-1000-desc': "Una mejora menor para algunos clientes",
+        'revenue-10000': "$10.000/año",
+        'revenue-10000-desc': "Valor notable para varios clientes",
+        'revenue-100000': "$100.000/año",
+        'revenue-100000-desc': "Valor importante para muchos clientes",
+        'revenue-1000000': "$1.000.000/año",
+        'revenue-1000000-desc': "Valor transformador para la mayoría de los clientes",
+
+        // Customer Reach options
+        'reach-0': "Nadie (0)",
+        'reach-0-desc': "No puedo pensar en nadie que le importe",
+        'reach-30': "Algunos (30)",
+        'reach-30-desc': "Un segmento específico de clientes",
+        'reach-70': "La mayoría (70)",
+        'reach-70-desc': "La mayoría de nuestros clientes",
+        'reach-100': "Todos (100)",
+        'reach-100-desc': "Todos los clientes se beneficiarían",
+
+        // Customer Care options
+        'care-0': "No pierda mi tiempo",
+        'care-0-desc': "Activamente opuesto a esta función",
+        'care-1': "Meh, lo que sea",
+        'care-1-desc': "Indiferente a la función",
+        'care-10': "Tengo curiosidad",
+        'care-10-desc': "Interesado en saber más",
+        'care-100': "Preocupación seria",
+        'care-100-desc': "Esto aborda un punto crítico",
+        'care-1000': "Misión crítica",
+        'care-1000-desc': "Esencial para el éxito del cliente",
 
         // Analysis messages
         'high-team-excitement': "El equipo está muy motivado para trabajar en esta función",
