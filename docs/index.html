@@ -92,9 +92,9 @@
         </div>
     </div>
     
-    <!-- Load translations first, without defer -->
-    <script src="translations.js"></script>
-    <!-- Then load app.js -->
-    <script src="app.js"></script>
+    <!-- First load translations synchronously -->
+    <script src="./translations.js"></script>
+    <!-- Then load app.js after translations -->
+    <script src="./app.js"></script>
 </body>
 </html>
