@@ -176,6 +176,17 @@ class FermiCalculator {
         }];
     }
 
+    initialize() {
+        try {
+            this.loadFromStorage();
+            this.initializeEventListeners();
+            this.render();
+        } catch (error) {
+            console.error('Initialization error:', error);
+            this.handleError('initialization', error);
+        }
+    }
+
     initializeClearButton() {
         const clearButton = document.getElementById('clearButton');
         if (clearButton) {
@@ -210,17 +221,6 @@ class FermiCalculator {
                 behavior: 'smooth'
             });
         }, 100);
-    }
-
-    initialize() {
-        try {
-            this.loadFromStorage();
-            this.initializeEventListeners();
-            this.render();
-        } catch (error) {
-            console.error('Initialization error:', error);
-            this.handleError('initialization', error);
-        }
     }
 
     findNextQuestion(currentField) {
@@ -259,7 +259,7 @@ class FermiCalculator {
                 const navbarHeight = navbar ? navbar.offsetHeight : 0;
                 
                 setTimeout(() => {
-                    container.style.scrollMarginTop = `${navbarHeight}px`;
+                    container.style.scrollMarginTop = `${navbarHeight + 20}px`; // Added extra padding
                     container.scrollIntoView({
                         behavior: 'smooth',
                         block: 'start',
@@ -278,7 +278,7 @@ class FermiCalculator {
             const navbar = document.querySelector('.navbar');
             const navbarHeight = navbar ? navbar.offsetHeight : 0;
             
-            container.style.scrollMarginTop = `${navbarHeight}px`;
+            container.style.scrollMarginTop = `${navbarHeight + 20}px`; // Added extra padding
             container.scrollIntoView({
                 behavior: 'smooth',
                 block: 'start',
