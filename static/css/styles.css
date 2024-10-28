@@ -1,6 +1,6 @@
 :root {
     /* Gray scale variables */
-    --gray-1: #000003;
+    --gray-1: #000;
     --gray-2: #141414;
     --gray-3: #202020;
     --gray-4: #282828;
@@ -36,6 +36,15 @@
 body {
     background-color: var(--gray-1) !important;
     color: var(--gray-12);
+}
+
+.navbar-brand {
+    color: var(--orange-12) !important;
+    font-size: 1.25rem;
+}
+
+.navbar-brand:hover {
+    color: var(--orange-11) !important;
 }
 
 .fermi-question {
