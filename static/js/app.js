@@ -13,11 +13,11 @@ class FermiCalculator {
             language: 'EN'
         };
 
-        // Initialize clear button
-        this.initializeClearButton();
-
-        // Initialize all options
+        // Initialize options first
         this.initializeOptions();
+        
+        // Then initialize clear button
+        this.initializeClearButton();
     }
 
     initializeOptions() {
@@ -59,7 +59,6 @@ class FermiCalculator {
             descriptionKey: 'reach-0-desc'
         }];
 
-        // Other options initialization...
         this.customerCareOptions = [{
             value: 1000,
             labelKey: 'care-1000',
@@ -256,10 +255,15 @@ class FermiCalculator {
         if (nextField) {
             const container = document.getElementById(`${nextField}Options`);
             if (container) {
+                const navbar = document.querySelector('.navbar');
+                const navbarHeight = navbar ? navbar.offsetHeight : 0;
+                
                 setTimeout(() => {
+                    container.style.scrollMarginTop = `${navbarHeight}px`;
                     container.scrollIntoView({
                         behavior: 'smooth',
-                        block: 'center'
+                        block: 'start',
+                        inline: 'nearest'
                     });
                     container.classList.add('highlight-container');
                     setTimeout(() => container.classList.remove('highlight-container'), 2000);
@@ -271,9 +275,14 @@ class FermiCalculator {
     scrollToQuestion(field) {
         const container = document.getElementById(`${field}Options`);
         if (container) {
+            const navbar = document.querySelector('.navbar');
+            const navbarHeight = navbar ? navbar.offsetHeight : 0;
+            
+            container.style.scrollMarginTop = `${navbarHeight}px`;
             container.scrollIntoView({
                 behavior: 'smooth',
-                block: 'center'
+                block: 'start',
+                inline: 'nearest'
             });
             container.classList.add('highlight-container');
             setTimeout(() => container.classList.remove('highlight-container'), 2000);
