@@ -95,8 +95,9 @@
     <script src="/static/js/translations.js"></script>
     <script src="/static/js/app.js"></script>
     <script>
-        // Initialize calculator immediately
-        window.calculator = new FermiCalculator();
+        document.addEventListener('DOMContentLoaded', () => {
+            window.calculator = new FermiCalculator();
+        });
     </script>
 </body>
 </html>

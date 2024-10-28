@@ -21,7 +21,97 @@ const translations = {
         'confidence-description': "Consider technical complexity and team expertise",
         'analysis-title': "Analysis",
         'analysis-empty': "Complete all questions to see analysis",
-        'cohen-attribution': "Based on Jason Cohen's Fermi estimation framework, this calculator helps prioritize features by applying Fermi estimation principles to both impact and effort calculations."
+        'quick-win': "Quick win - can be implemented in 2 days",
+        'large-effort': "Large effort - requires 2 months",
+        'high-team-excitement': "High team excitement",
+        'low-team-excitement': "Low team excitement",
+        'high-confidence': "High confidence in execution",
+        'low-confidence': "Low confidence in execution",
+        'cohen-attribution': "Based on Jason Cohen's Fermi estimation framework, this calculator helps prioritize features by applying Fermi estimation principles to both impact and effort calculations.",
+
+        // Revenue options
+        'revenue-1000': '$1,000',
+        'revenue-1000-desc': 'Small but meaningful impact',
+        'revenue-10000': '$10,000',
+        'revenue-10000-desc': 'Significant revenue increase',
+        'revenue-100000': '$100,000',
+        'revenue-100000-desc': 'Major revenue opportunity',
+        'revenue-1000000': '$1,000,000',
+        'revenue-1000000-desc': 'Game-changing revenue impact',
+        
+        // Customer Reach options
+        'reach-0': 'No one',
+        'reach-0-desc': 'I can think of one or two',
+        'reach-30': 'Some',
+        'reach-30-desc': 'A notable segment of customers',
+        'reach-70': 'Most',
+        'reach-70-desc': 'The majority of our customers',
+        'reach-100': 'Everyone',
+        'reach-100-desc': 'All customers are affected',
+        
+        // Customer Care options
+        'care-0': "Don't waste my time with this",
+        'care-0-desc': 'No customer interest',
+        'care-1': 'Meh, whatever',
+        'care-1-desc': 'Minimal customer interest',
+        'care-10': "I'm curious, tell me more",
+        'care-10-desc': 'Moderate customer interest',
+        'care-100': "I care; this is a serious concern",
+        'care-100-desc': 'High customer interest',
+        'care-1000': 'Mission-critical',
+        'care-1000-desc': 'Critical to customer success',
+
+        // Insight options
+        'insight-0': 'No clue what you're talking about',
+        'insight-0-desc': 'Unclear perspective',
+        'insight-1': 'No shit, Sherlock',
+        'insight-1-desc': 'Obvious insight',
+        'insight-10': 'Yup, OK, makes sense',
+        'insight-10-desc': 'Reasonable insight',
+        'insight-100': "That's a great point",
+        'insight-100-desc': 'Valuable insight',
+        'insight-1000': 'Wow! This changes everything',
+        'insight-1000-desc': 'Game-changing insight',
+
+        // Product Payoff options
+        'payoff-0': 'I actively do not want this',
+        'payoff-0-desc': 'Negative product value',
+        'payoff-1': 'So what?',
+        'payoff-1-desc': 'Minimal product value',
+        'payoff-10': "That's fine",
+        'payoff-10-desc': 'Acceptable product value',
+        'payoff-100': "Nice, I'll take a look",
+        'payoff-100-desc': 'Good product value',
+        'payoff-1000': "I'll buy just for that!",
+        'payoff-1000-desc': 'Exceptional product value',
+
+        // Effort options
+        'effort-2d': 'Two days',
+        'effort-2d-desc': 'Quick implementation',
+        'effort-2w': 'Two weeks',
+        'effort-2w-desc': 'Medium-term project',
+        'effort-2m': 'Two months',
+        'effort-2m-desc': 'Long-term investment',
+
+        // Team Excitement options
+        'excitement-0': 'No excitement',
+        'excitement-0-desc': 'No one is excited',
+        'excitement-1': 'One person excited',
+        'excitement-1-desc': 'Limited team interest',
+        'excitement-10': 'Half team excited',
+        'excitement-10-desc': 'Mixed team interest',
+        'excitement-100': 'All excited',
+        'excitement-100-desc': 'Full team enthusiasm',
+
+        // Confidence options
+        'confidence-0': 'No way',
+        'confidence-0-desc': "Can't execute this",
+        'confidence-1': 'Might fail',
+        'confidence-1-desc': 'High risk of failure',
+        'confidence-10': 'Probably can do it',
+        'confidence-10-desc': 'Moderate confidence',
+        'confidence-100': 'Complete confidence',
+        'confidence-100-desc': 'Within our expertise'
     },
     FR: {
         'navbar-title': "Est-ce que ça vaut le coup ?",
@@ -44,7 +134,97 @@ const translations = {
         'confidence-description': "Considérez la complexité technique et l'expertise de l'équipe",
         'analysis-title': "Analyse",
         'analysis-empty': "Complétez toutes les questions pour voir l'analyse",
-        'cohen-attribution': "Basé sur le cadre d'estimation Fermi de Jason Cohen, cette calculatrice aide à prioriser les fonctionnalités en appliquant les principes d'estimation Fermi aux calculs d'impact et d'effort."
+        'quick-win': "Victoire rapide - peut être implémenté en 2 jours",
+        'large-effort': "Effort important - nécessite 2 mois",
+        'high-team-excitement': "Forte motivation de l'équipe",
+        'low-team-excitement': "Faible motivation de l'équipe",
+        'high-confidence': "Haute confiance dans l'exécution",
+        'low-confidence': "Faible confiance dans l'exécution",
+        'cohen-attribution': "Basé sur le cadre d'estimation Fermi de Jason Cohen, cette calculatrice aide à prioriser les fonctionnalités en appliquant les principes d'estimation Fermi aux calculs d'impact et d'effort.",
+
+        // Revenue options
+        'revenue-1000': '1 000 €',
+        'revenue-1000-desc': 'Impact modeste mais significatif',
+        'revenue-10000': '10 000 €',
+        'revenue-10000-desc': 'Augmentation significative des revenus',
+        'revenue-100000': '100 000 €',
+        'revenue-100000-desc': 'Opportunité majeure de revenus',
+        'revenue-1000000': '1 000 000 €',
+        'revenue-1000000-desc': 'Impact révolutionnaire sur les revenus',
+        
+        // Customer Reach options
+        'reach-0': 'Personne',
+        'reach-0-desc': 'Je peux en citer un ou deux',
+        'reach-30': 'Quelques-uns',
+        'reach-30-desc': 'Un segment notable de clients',
+        'reach-70': 'La plupart',
+        'reach-70-desc': 'La majorité de nos clients',
+        'reach-100': 'Tout le monde',
+        'reach-100-desc': 'Tous les clients sont concernés',
+        
+        // Customer Care options
+        'care-0': "Ne me faites pas perdre mon temps",
+        'care-0-desc': 'Aucun intérêt client',
+        'care-1': "Bof, peu importe",
+        'care-1-desc': 'Intérêt minimal des clients',
+        'care-10': "Je suis curieux, dites-m'en plus",
+        'care-10-desc': 'Intérêt modéré des clients',
+        'care-100': "Je m'en soucie, c'est une préoccupation sérieuse",
+        'care-100-desc': 'Fort intérêt des clients',
+        'care-1000': 'Mission critique',
+        'care-1000-desc': 'Critique pour le succès des clients',
+
+        // Insight options
+        'insight-0': "Je ne comprends pas de quoi vous parlez",
+        'insight-0-desc': 'Perspective peu claire',
+        'insight-1': "Sans blague, Sherlock",
+        'insight-1-desc': 'Perspective évidente',
+        'insight-10': "Oui, OK, ça se tient",
+        'insight-10-desc': 'Perspective raisonnable',
+        'insight-100': "C'est un excellent point",
+        'insight-100-desc': 'Perspective précieuse',
+        'insight-1000': "Wow ! Ça change tout",
+        'insight-1000-desc': 'Perspective révolutionnaire',
+
+        // Product Payoff options
+        'payoff-0': "Je ne veux absolument pas de ça",
+        'payoff-0-desc': 'Valeur produit négative',
+        'payoff-1': "Et alors ?",
+        'payoff-1-desc': 'Valeur produit minimale',
+        'payoff-10': "C'est correct",
+        'payoff-10-desc': 'Valeur produit acceptable',
+        'payoff-100': "Sympa, je vais y jeter un œil",
+        'payoff-100-desc': 'Bonne valeur produit',
+        'payoff-1000': "Je l'achète rien que pour ça !",
+        'payoff-1000-desc': 'Valeur produit exceptionnelle',
+
+        // Effort options
+        'effort-2d': 'Deux jours',
+        'effort-2d-desc': 'Implémentation rapide',
+        'effort-2w': 'Deux semaines',
+        'effort-2w-desc': 'Projet à moyen terme',
+        'effort-2m': 'Deux mois',
+        'effort-2m-desc': 'Investissement à long terme',
+
+        // Team Excitement options
+        'excitement-0': 'Aucun enthousiasme',
+        'excitement-0-desc': "Personne n'est enthousiaste",
+        'excitement-1': 'Une personne enthousiaste',
+        'excitement-1-desc': "Intérêt limité de l'équipe",
+        'excitement-10': "La moitié de l'équipe est enthousiaste",
+        'excitement-10-desc': "Intérêt mitigé de l'équipe",
+        'excitement-100': 'Tous enthousiastes',
+        'excitement-100-desc': "Enthousiasme total de l'équipe",
+
+        // Confidence options
+        'confidence-0': 'Impossible',
+        'confidence-0-desc': "On ne peut pas y arriver",
+        'confidence-1': 'Risque d'échec',
+        'confidence-1-desc': "Risque élevé d'échec",
+        'confidence-10': 'On devrait pouvoir le faire',
+        'confidence-10-desc': 'Confiance modérée',
+        'confidence-100': 'Confiance totale',
+        'confidence-100-desc': 'Dans notre domaine d'expertise'
     },
     ES: {
         'navbar-title': "¿Vale la pena?",
@@ -67,6 +247,96 @@ const translations = {
         'confidence-description': "Considere la complejidad técnica y la experiencia del equipo",
         'analysis-title': "Análisis",
         'analysis-empty': "Complete todas las preguntas para ver el análisis",
-        'cohen-attribution': "Basado en el marco de estimación Fermi de Jason Cohen, esta calculadora ayuda a priorizar funciones aplicando principios de estimación Fermi a los cálculos de impacto y esfuerzo."
+        'quick-win': "Victoria rápida - se puede implementar en 2 días",
+        'large-effort': "Gran esfuerzo - requiere 2 meses",
+        'high-team-excitement': "Alto entusiasmo del equipo",
+        'low-team-excitement': "Bajo entusiasmo del equipo",
+        'high-confidence': "Alta confianza en la ejecución",
+        'low-confidence': "Baja confianza en la ejecución",
+        'cohen-attribution': "Basado en el marco de estimación Fermi de Jason Cohen, esta calculadora ayuda a priorizar funciones aplicando principios de estimación Fermi a los cálculos de impacto y esfuerzo.",
+
+        // Revenue options
+        'revenue-1000': '$1.000',
+        'revenue-1000-desc': 'Impacto pequeño pero significativo',
+        'revenue-10000': '$10.000',
+        'revenue-10000-desc': 'Aumento significativo de ingresos',
+        'revenue-100000': '$100.000',
+        'revenue-100000-desc': 'Oportunidad mayor de ingresos',
+        'revenue-1000000': '$1.000.000',
+        'revenue-1000000-desc': 'Impacto revolucionario en ingresos',
+        
+        // Customer Reach options
+        'reach-0': 'Nadie',
+        'reach-0-desc': 'Puedo pensar en uno o dos',
+        'reach-30': 'Algunos',
+        'reach-30-desc': 'Un segmento notable de clientes',
+        'reach-70': 'La mayoría',
+        'reach-70-desc': 'La mayoría de nuestros clientes',
+        'reach-100': 'Todos',
+        'reach-100-desc': 'Todos los clientes están afectados',
+        
+        // Customer Care options
+        'care-0': "No me hagas perder el tiempo",
+        'care-0-desc': 'Sin interés del cliente',
+        'care-1': "Meh, lo que sea",
+        'care-1-desc': 'Interés mínimo del cliente',
+        'care-10': "Me interesa, cuéntame más",
+        'care-10-desc': 'Interés moderado del cliente',
+        'care-100': "Me importa, es una preocupación seria",
+        'care-100-desc': 'Alto interés del cliente',
+        'care-1000': 'Misión crítica',
+        'care-1000-desc': 'Crítico para el éxito del cliente',
+
+        // Insight options
+        'insight-0': "No entiendo de qué hablas",
+        'insight-0-desc': 'Perspectiva poco clara',
+        'insight-1': "No me digas, Sherlock",
+        'insight-1-desc': 'Perspectiva obvia',
+        'insight-10': "Sí, OK, tiene sentido",
+        'insight-10-desc': 'Perspectiva razonable',
+        'insight-100': "Ese es un gran punto",
+        'insight-100-desc': 'Perspectiva valiosa',
+        'insight-1000': "¡Wow! Esto lo cambia todo",
+        'insight-1000-desc': 'Perspectiva revolucionaria',
+
+        // Product Payoff options
+        'payoff-0': "Activamente no quiero esto",
+        'payoff-0-desc': 'Valor de producto negativo',
+        'payoff-1': "¿Y qué?",
+        'payoff-1-desc': 'Valor de producto mínimo',
+        'payoff-10': "Está bien",
+        'payoff-10-desc': 'Valor de producto aceptable',
+        'payoff-100': "Bien, le echaré un vistazo",
+        'payoff-100-desc': 'Buen valor de producto',
+        'payoff-1000': "¡Lo compro solo por eso!",
+        'payoff-1000-desc': 'Valor de producto excepcional',
+
+        // Effort options
+        'effort-2d': 'Dos días',
+        'effort-2d-desc': 'Implementación rápida',
+        'effort-2w': 'Dos semanas',
+        'effort-2w-desc': 'Proyecto a mediano plazo',
+        'effort-2m': 'Dos meses',
+        'effort-2m-desc': 'Inversión a largo plazo',
+
+        // Team Excitement options
+        'excitement-0': 'Sin entusiasmo',
+        'excitement-0-desc': 'Nadie está entusiasmado',
+        'excitement-1': 'Una persona entusiasmada',
+        'excitement-1-desc': 'Interés limitado del equipo',
+        'excitement-10': 'Medio equipo entusiasmado',
+        'excitement-10-desc': 'Interés mixto del equipo',
+        'excitement-100': 'Todos entusiasmados',
+        'excitement-100-desc': 'Entusiasmo total del equipo',
+
+        // Confidence options
+        'confidence-0': 'Imposible',
+        'confidence-0-desc': "No podemos hacer esto",
+        'confidence-1': 'Podría fallar',
+        'confidence-1-desc': 'Alto riesgo de fracaso',
+        'confidence-10': 'Probablemente podamos hacerlo',
+        'confidence-10-desc': 'Confianza moderada',
+        'confidence-100': 'Confianza completa',
+        'confidence-100-desc': 'Dentro de nuestra experiencia'
     }
 };

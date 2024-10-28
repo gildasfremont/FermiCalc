@@ -89,20 +89,22 @@ body {
     color: var(--gray-1) !important;
 }
 
-.text-gray-300 {
-    color: var(--gray-11) !important;
-}
-
-.small {
-    color: var(--gray-11);
+.option-label {
+    color: var(--gray-12);
+    margin-bottom: 0.5rem;
 }
 
 .option-description {
     color: var(--gray-11) !important;
 }
 
+.option-card.selected .option-label,
 .option-card.selected .option-description {
     color: var(--gray-1) !important;
+}
+
+.text-gray-300 {
+    color: var(--gray-11) !important;
 }
 
 .navbar .language-select {
