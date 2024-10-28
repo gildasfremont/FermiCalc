@@ -1,3 +1,23 @@
+// Initialize translations object if it doesn't exist
+window.translations = window.translations || {};
+
+// Add a promise-based loading mechanism
+const translationsLoaded = new Promise((resolve) => {
+    if (window.translations && Object.keys(window.translations).length > 0) {
+        resolve();
+    } else {
+        window.addEventListener('translationsLoaded', () => resolve());
+    }
+});
+
+// Wait for translations before initializing
+translationsLoaded.then(() => {
+    window.calculator = new FermiCalculator();
+    window.calculator.initialize();
+}).catch(error => {
+    console.error('Failed to initialize calculator:', error);
+});
+
 class FermiCalculator {
     constructor() {
         this.selectedOptions = {};
@@ -229,24 +249,3 @@ class FermiCalculator {
         });
     }
 }
-
-// Initialize calculator only after translations are loaded
-document.addEventListener('DOMContentLoaded', () => {
-    // Function to initialize calculator
-    const initializeCalculator = () => {
-        if (!window.translations) {
-            console.error('Translations not loaded. Make sure translations.js is loaded before app.js');
-            return;
-        }
-        window.calculator = new FermiCalculator();
-        window.calculator.initialize();
-    };
-
-    // Check if translations are already loaded
-    if (window.translations) {
-        initializeCalculator();
-    } else {
-        // Listen for translations loaded event
-        window.addEventListener('translationsLoaded', initializeCalculator);
-    }
-});
