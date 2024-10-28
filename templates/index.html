@@ -36,7 +36,6 @@
         <div class="card border-2 mb-4">
             <div class="card-body p-5">
                 <div id="questions" class="mt-4">
-                    <!-- Questions sections -->
                     <div class="fermi-question">
                         <h5 data-translate="revenue-title"></h5>
                         <p class="text-gray-300 small" data-translate="revenue-description"></p>
@@ -93,11 +92,15 @@
         </div>
     </div>
 
-    <script src="/static/js/translations.js"></script>
-    <script src="/static/js/app.js"></script>
-    <script>
-        // Wait for both scripts to load before initializing
-        window.addEventListener('load', () => {
+    <script src="/static/js/translations.js" defer></script>
+    <script src="/static/js/app.js" defer></script>
+    <script defer>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Ensure translations are loaded
+            if (typeof translations === 'undefined') {
+                console.error('Translations not loaded');
+                return;
+            }
             window.calculator = new FermiCalculator();
         });
     </script>
