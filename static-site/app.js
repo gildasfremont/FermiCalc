@@ -14,23 +14,37 @@ class FermiCalculator {
         };
     }
 
-    // ... rest of the implementation stays exactly the same ...
+    // Rest of the FermiCalculator implementation stays exactly the same
 }
 
-// Wait for both DOM and translations to be loaded
+// Initialize translations loading state
+let translationsLoaded = false;
+
 window.addEventListener('load', () => {
-    // Add a small delay to ensure translations are loaded
+    // Check if translations are already loaded
+    if (window.translations) {
+        translationsLoaded = true;
+    }
+    
+    // Add event listener for translations
+    window.addEventListener('translationsLoaded', () => {
+        translationsLoaded = true;
+        initializeCalculator();
+    });
+    
+    // Try to initialize after a short delay
     setTimeout(() => {
-        if (!window.translations) {
-            console.error('Translations not loaded. Make sure translations.js is loaded before app.js');
-            return;
+        if (translationsLoaded) {
+            initializeCalculator();
         }
-        
-        try {
-            window.calculator = new FermiCalculator();
-            window.calculator.initialize();
-        } catch (error) {
-            console.error('Failed to initialize calculator:', error);
-        }
-    }, 100);
+    }, 200);
 });
+
+function initializeCalculator() {
+    try {
+        window.calculator = new FermiCalculator();
+        window.calculator.initialize();
+    } catch (error) {
+        console.error('Failed to initialize calculator:', error);
+    }
+}
