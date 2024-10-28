@@ -202,15 +202,16 @@ body {
     background-color: var(--orange-3);
     border: 2px solid var(--orange-9);
     border-radius: 12px;
+    color: var(--orange-12);
 }
 
 .alert-warning .alert-heading {
-    color: var(--orange-11);
+    color: var(--orange-12);
     font-size: 1.1rem;
 }
 
 .alert-warning a {
-    color: var(--orange-11) !important;
+    color: var(--orange-12) !important;
     display: flex;
     align-items: center;
 }
