@@ -11,6 +11,12 @@ class FermiCalculator {
             confidence: undefined,
             language: 'EN'
         };
+        
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => this.initialize());
+        } else {
+            this.initialize();
+        }
     }
 
     initialize() {
@@ -20,7 +26,9 @@ class FermiCalculator {
             this.initializeClearButton();
             this.initializeLanguageSelect();
             this.render();
-            this.initializeOptions();
+            document.addEventListener('DOMContentLoaded', () => {
+                this.initializeOptions();
+            });
         } catch (error) {
             console.error('Initialization error:', error);
             this.handleError('initialization', error);
@@ -518,13 +526,7 @@ class FermiCalculator {
     }
 }
 
-// Initialize calculator only after DOM is fully loaded
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
-        window.calculator = new FermiCalculator();
-        window.calculator.initialize();
-    });
-} else {
+// Initialize calculator after translations are loaded
+document.addEventListener('DOMContentLoaded', () => {
     window.calculator = new FermiCalculator();
-    window.calculator.initialize();
-}
+});
