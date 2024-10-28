@@ -1,5 +1,5 @@
 :root {
-    /* Gray scale variables */
+    /* Gray scale variables from dark theme */
     --gray-1: #000;
     --gray-2: #141414;
     --gray-3: #202020;
@@ -13,7 +13,7 @@
     --gray-11: #b3b3b3;
     --gray-12: #eee;
 
-    /* Orange accent variables */
+    /* Orange accent variables from dark theme */
     --orange-1: #010000;
     --orange-2: #19110b;
     --orange-3: #2f1b0d;
