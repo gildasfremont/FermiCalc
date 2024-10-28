@@ -10,7 +10,7 @@
     --navbar-height: 56px;
 }
 
-/* Rest of the CSS remains the same until .fermi-question */
+/* Rest of the CSS */
 body {
     background-color: var(--dark-900) !important;
 }
@@ -202,16 +202,6 @@ body {
 .alert-warning a:hover {
     color: #F57C00 !important;
     text-decoration: underline !important;
-}
-
-@keyframes highlight-pulse {
-    0% { border-color: rgba(255, 143, 0, 0.5); }
-    50% { border-color: #FF8F00; }
-    100% { border-color: rgba(255, 143, 0, 0.5); }
-}
-
-.highlight-container {
-    animation: highlight-pulse 1s ease-in-out;
 }
 
 .options-stack:empty {
