@@ -259,12 +259,11 @@ class FermiCalculator {
                 const navbarHeight = navbar ? navbar.offsetHeight : 0;
                 
                 setTimeout(() => {
-                    const elementRect = container.getBoundingClientRect();
-                    const absoluteElementTop = elementRect.top + window.pageYOffset;
-                    const offsetPosition = absoluteElementTop - navbarHeight - 20; // Added extra padding
+                    const rect = container.getBoundingClientRect();
+                    const scrollTop = rect.top + window.pageYOffset - navbarHeight - 20;
                     
                     window.scrollTo({
-                        top: offsetPosition,
+                        top: scrollTop,
                         behavior: 'smooth'
                     });
                     
@@ -281,12 +280,11 @@ class FermiCalculator {
             const navbar = document.querySelector('.navbar');
             const navbarHeight = navbar ? navbar.offsetHeight : 0;
             
-            const elementRect = container.getBoundingClientRect();
-            const absoluteElementTop = elementRect.top + window.pageYOffset;
-            const offsetPosition = absoluteElementTop - navbarHeight - 20; // Added extra padding
+            const rect = container.getBoundingClientRect();
+            const scrollTop = rect.top + window.pageYOffset - navbarHeight - 20;
             
             window.scrollTo({
-                top: offsetPosition,
+                top: scrollTop,
                 behavior: 'smooth'
             });
             
