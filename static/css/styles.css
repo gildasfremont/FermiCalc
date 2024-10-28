@@ -1,6 +1,6 @@
-:root, .dark, .dark-theme {
+:root {
     /* Gray scale variables */
-    --gray-1: #000;
+    --gray-1: #000003;
     --gray-2: #141414;
     --gray-3: #202020;
     --gray-4: #282828;
@@ -38,10 +38,6 @@ body {
     color: var(--gray-12);
 }
 
-.navbar-brand {
-    color: var(--gray-12) !important;
-}
-
 .fermi-question {
     scroll-margin-top: calc(var(--navbar-height) + 20px);
     margin-bottom: var(--spacing-lg);
@@ -49,18 +45,6 @@ body {
 
 #analysis-content {
     scroll-margin-top: calc(var(--navbar-height) + 20px);
-}
-
-.text-gray-300 {
-    color: var(--orange-11) !important;
-}
-
-.small {
-    color: var(--orange-11);
-}
-
-.option-description {
-    color: var(--orange-11) !important;
 }
 
 .option-card {
@@ -82,6 +66,18 @@ body {
     background-color: var(--orange-9) !important;
     border-color: var(--orange-9);
     color: var(--gray-12) !important;
+}
+
+.text-gray-300 {
+    color: var(--orange-11) !important;
+}
+
+.small {
+    color: var(--orange-11);
+}
+
+.option-description {
+    color: var(--orange-11) !important;
 }
 
 .option-card.selected .option-description {
@@ -148,11 +144,6 @@ body {
     color: var(--orange-12) !important;
 }
 
-.alert-warning a:hover {
-    color: var(--orange-12) !important;
-    text-decoration: underline !important;
-}
-
 .options-stack:empty {
     background-color: var(--gray-3);
     border: 2px dashed var(--gray-4);
@@ -167,23 +158,4 @@ body {
     left: 50%;
     transform: translate(-50%, -50%);
     color: var(--orange-11);
-}
-
-@supports (color: color(display-p3 1 1 1)) {
-    @media (color-gamut: p3) {
-        .dark, .dark-theme {
-            --orange-1: oklch(4.4% 0.0105 56.14);
-            --orange-2: oklch(18.5% 0.017 56.14);
-            --orange-3: oklch(24.6% 0.04 56.14);
-            --orange-4: oklch(28.7% 0.0704 56.14);
-            --orange-5: oklch(33.1% 0.0768 56.14);
-            --orange-6: oklch(38.5% 0.0768 56.14);
-            --orange-7: oklch(45.2% 0.0838 56.14);
-            --orange-8: oklch(54% 0.1028 56.14);
-            --orange-9: oklch(70.9% 0.169 56.14);
-            --orange-10: oklch(67.2% 0.169 56.14);
-            --orange-11: oklch(79.9% 0.1443 56.14);
-            --orange-12: oklch(92.5% 0.0464 56.14);
-        }
-    }
 }
