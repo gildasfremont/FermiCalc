@@ -1,7 +1,5 @@
 const translations = {
     EN: {
-        'fermi-intro': "Make better product decisions with Fermi estimation - a powerful method that uses educated guesses to quickly evaluate ideas. Break down complex problems into simpler parts to get reliable order-of-magnitude estimates.",
-        'cohen-attribution': "Inspired by Jason Cohen's 'Fermi ROI' methodology, this calculator helps prioritize features by applying Fermi estimation principles to both impact and effort calculations, making ROI assessments more meaningful and actionable.",
         'revenue-title': "What's the expected annual revenue impact?",
         'revenue-description': "Consider direct revenue from sales, upgrades, or reduced churn",
         'customer-reach-title': "How many customers care about this topic?",
@@ -114,8 +112,6 @@ const translations = {
         'large-effort': "This is a significant investment - consider breaking it into smaller deliverables"
     },
     FR: {
-        'fermi-intro': "Prenez de meilleures décisions produit grâce à l'estimation Fermi - une méthode puissante qui utilise des estimations éclairées pour évaluer rapidement les idées. Décomposez les problèmes complexes en parties plus simples pour obtenir des estimations fiables.",
-        'cohen-attribution': "Inspiré par la méthodologie 'Fermi ROI' de Jason Cohen, ce calculateur aide à prioriser les fonctionnalités en appliquant les principes d'estimation Fermi aux calculs d'impact et d'effort.",
         'revenue-title': "Quel est l'impact annuel attendu sur les revenus ?",
         'revenue-description': "Considérez les revenus directs des ventes, des mises à niveau ou de la réduction du churn",
         'customer-reach-title': "Combien de clients s'intéressent à ce sujet ?",
@@ -228,8 +224,6 @@ const translations = {
         'large-effort': "C'est un investissement important - envisagez de le découper en livrables plus petits"
     },
     ES: {
-        'fermi-intro': "Tome mejores decisiones de producto con la estimación Fermi - un método poderoso que utiliza conjeturas educadas para evaluar ideas rápidamente. Desglose problemas complejos en partes más simples para obtener estimaciones confiables.",
-        'cohen-attribution': "Inspirado en la metodología 'Fermi ROI' de Jason Cohen, esta calculadora ayuda a priorizar funcionalidades aplicando principios de estimación Fermi a los cálculos de impacto y esfuerzo.",
         'revenue-title': "¿Cuál es el impacto anual esperado en ingresos?",
         'revenue-description': "Considere ingresos directos de ventas, actualizaciones o reducción de abandono",
         'customer-reach-title': "¿Cuántos clientes se preocupan por este tema?",
