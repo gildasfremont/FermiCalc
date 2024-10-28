@@ -148,7 +148,6 @@ body {
     font-size: 1.25rem;
     margin-bottom: var(--spacing-lg);
     color: var(--light-500);
-    scroll-margin-top: 1em;
 }
 
 .text-gray-300 {
@@ -162,7 +161,7 @@ body {
 
 .fermi-question {
     margin-bottom: var(--spacing-2xl);
-    scroll-margin-top: 3em;
+    scroll-margin-top: calc(var(--navbar-height) + 20px);
 }
 
 .fermi-question h5 {
