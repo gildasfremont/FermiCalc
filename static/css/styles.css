@@ -40,6 +40,9 @@
     --bs-primary-rgb: 238, 128, 18;
     --bs-link-color: var(--orange-11);
     --bs-link-hover-color: var(--orange-12);
+    --bs-border-color: var(--gray-4);
+    --bs-card-bg: var(--gray-2);
+    --bs-card-border-color: var(--gray-4);
 }
 
 body {
@@ -70,6 +73,7 @@ body {
 .language-select:focus {
     border-color: var(--orange-9);
     box-shadow: 0 2px 8px rgba(238, 128, 18, 0.25);
+    background-color: var(--gray-4);
 }
 
 .card {
@@ -89,19 +93,20 @@ body {
     margin-bottom: 0.5rem;
     border-radius: 8px;
     transition: all 0.2s ease;
-    background-color: var(--gray-2);
+    background-color: var(--gray-3);
     border: 2px solid var(--gray-4);
 }
 
 .option-card:hover {
     border-color: var(--orange-9);
+    background-color: var(--gray-4);
     box-shadow: 0 4px 12px rgba(238, 128, 18, 0.25);
 }
 
 .option-card.selected {
     background-color: var(--orange-9) !important;
     border-color: var(--orange-9);
-    color: var(--gray-12) !important;
+    color: var(--gray-1) !important;
 }
 
 .option-description {
@@ -109,33 +114,11 @@ body {
 }
 
 .option-card.selected .option-description {
-    color: var(--gray-12) !important;
+    color: var(--gray-1) !important;
 }
 
 .text-gray-300 {
     color: var(--orange-11) !important;
-}
-
-.analysis-point {
-    padding: var(--spacing-lg);
-    margin-bottom: var(--spacing-base);
-    border-radius: 8px;
-}
-
-.analysis-point.primary {
-    background-color: var(--orange-9);
-    color: var(--gray-12);
-}
-
-.analysis-point.warning {
-    background-color: var(--orange-3);
-    color: var(--orange-12);
-    border: 2px solid var(--orange-9);
-}
-
-.analysis-point.positive {
-    background-color: var(--orange-7);
-    color: var(--gray-12);
 }
 
 .alert-warning {
@@ -149,11 +132,39 @@ body {
     color: var(--orange-12) !important;
 }
 
+.alert-warning a:hover {
+    color: var(--orange-11) !important;
+    text-decoration: none;
+}
+
+.analysis-point {
+    padding: var(--spacing-lg);
+    margin-bottom: var(--spacing-base);
+    border-radius: 8px;
+}
+
+.analysis-point.primary {
+    background-color: var(--orange-9);
+    color: var(--gray-1);
+}
+
+.analysis-point.warning {
+    background-color: var(--orange-3);
+    color: var(--orange-12);
+    border: 2px solid var(--orange-9);
+}
+
+.analysis-point.positive {
+    background-color: var(--orange-7);
+    color: var(--gray-1);
+}
+
 .options-stack:empty {
     background-color: var(--gray-3);
     border: 2px dashed var(--gray-4);
     min-height: 100px;
     position: relative;
+    border-radius: 8px;
 }
 
 .options-stack:empty::after {
