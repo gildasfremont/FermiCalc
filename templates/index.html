@@ -33,11 +33,56 @@
             </div>
         </div>
 
-        <!-- Rest of the HTML remains the same -->
         <div class="card border-2 mb-4">
             <div class="card-body p-5">
                 <div id="questions" class="mt-4">
-                    <!-- Questions content -->
+                    <div class="fermi-question">
+                        <h5 data-translate="revenue-title"></h5>
+                        <p class="text-gray-300 small" data-translate="revenue-description"></p>
+                        <div id="revenueOptions" class="options-stack"></div>
+                    </div>
+
+                    <div class="fermi-question">
+                        <h5 data-translate="customer-reach-title"></h5>
+                        <p class="text-gray-300 small" data-translate="customer-reach-description"></p>
+                        <div id="customerReachOptions" class="options-stack"></div>
+                    </div>
+
+                    <div class="fermi-question">
+                        <h5 data-translate="customer-care-title"></h5>
+                        <p class="text-gray-300 small" data-translate="customer-care-description"></p>
+                        <div id="customerCareOptions" class="options-stack"></div>
+                    </div>
+
+                    <div class="fermi-question">
+                        <h5 data-translate="insight-title"></h5>
+                        <p class="text-gray-300 small" data-translate="insight-description"></p>
+                        <div id="insightOptions" class="options-stack"></div>
+                    </div>
+
+                    <div class="fermi-question">
+                        <h5 data-translate="product-payoff-title"></h5>
+                        <p class="text-gray-300 small" data-translate="product-payoff-description"></p>
+                        <div id="productPayoffOptions" class="options-stack"></div>
+                    </div>
+
+                    <div class="fermi-question">
+                        <h5 data-translate="effort-title"></h5>
+                        <p class="text-gray-300 small" data-translate="effort-description"></p>
+                        <div id="effortOptions" class="options-stack"></div>
+                    </div>
+
+                    <div class="fermi-question">
+                        <h5 data-translate="team-excitement-title"></h5>
+                        <p class="text-gray-300 small" data-translate="team-excitement-description"></p>
+                        <div id="teamExcitementOptions" class="options-stack"></div>
+                    </div>
+
+                    <div class="fermi-question">
+                        <h5 data-translate="confidence-title"></h5>
+                        <p class="text-gray-300 small" data-translate="confidence-description"></p>
+                        <div id="confidenceOptions" class="options-stack"></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -46,7 +91,13 @@
             <!-- Analysis content will be dynamically rendered here -->
         </div>
     </div>
+
     <script src="/static/js/translations.js"></script>
     <script src="/static/js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            window.calculator = new FermiCalculator();
+        });
+    </script>
 </body>
 </html>
