@@ -11,8 +11,6 @@ class FermiCalculator {
             confidence: undefined,
             language: 'EN'
         };
-        
-        this.initialize();
     }
 
     initialize() {
@@ -21,8 +19,8 @@ class FermiCalculator {
             this.initializeEventListeners();
             this.initializeClearButton();
             this.initializeLanguageSelect();
-            this.initializeOptions();
             this.render();
+            this.initializeOptions();
         } catch (error) {
             console.error('Initialization error:', error);
             this.handleError('initialization', error);
@@ -204,7 +202,8 @@ class FermiCalculator {
     translate(key, params = {}) {
         try {
             if (!translations || !translations[this.state.language]) {
-                throw new Error('Translations not loaded');
+                console.error('Translations not loaded');
+                return key;
             }
 
             let text = translations[this.state.language][key];
@@ -393,11 +392,14 @@ class FermiCalculator {
 
         requiredFields.forEach(field => {
             if (this.state[field] === undefined) {
-                const titleKey = field.split(/(?=[A-Z])/).join('-').toLowerCase() + '-title';
-                unanswered.push({
-                    field,
-                    title: this.translate(titleKey)
-                });
+                const titleKey = field.replace(/([A-Z])/g, '-$1').toLowerCase() + '-title';
+                const title = this.translate(titleKey);
+                if (title) {
+                    unanswered.push({
+                        field,
+                        title
+                    });
+                }
             }
         });
 
@@ -516,7 +518,13 @@ class FermiCalculator {
     }
 }
 
-// Initialize calculator when DOM is ready
-document.addEventListener('DOMContentLoaded', () => {
+// Initialize calculator only after DOM is fully loaded
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+        window.calculator = new FermiCalculator();
+        window.calculator.initialize();
+    });
+} else {
     window.calculator = new FermiCalculator();
-});
+    window.calculator.initialize();
+}
