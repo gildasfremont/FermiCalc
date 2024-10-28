@@ -1,3 +1,4 @@
+// Initialize translations object
 const translations = {
     EN: {
         'revenue-title': "What's the expected annual revenue impact?",
@@ -18,6 +19,7 @@ const translations = {
         'confidence-description': "Consider technical complexity and team expertise",
         'analysis-title': "Analysis",
         'analysis-empty': "Complete all questions to see analysis",
+        'cohen-attribution': "This calculator helps prioritize features by applying Fermi estimation principles to both impact and effort calculations.",
 
         // Revenue options
         'revenue-1000': "$1,000/year",
@@ -38,70 +40,6 @@ const translations = {
         'reach-70-desc': "The majority of our customers",
         'reach-100': "Everyone (100)",
         'reach-100-desc': "All customers would benefit",
-
-        // Customer Care options
-        'care-0': "Don't waste my time",
-        'care-0-desc': "Actively opposed to this feature",
-        'care-1': "Meh, whatever",
-        'care-1-desc': "Indifferent to the feature",
-        'care-10': "I'm curious",
-        'care-10-desc': "Interested in learning more",
-        'care-100': "Serious concern",
-        'care-100-desc': "This addresses a significant pain point",
-        'care-1000': "Mission critical",
-        'care-1000-desc': "Essential for customer success",
-
-        // Insight options
-        'insight-0': "No clue",
-        'insight-0-desc': "We don't understand the problem space",
-        'insight-1': "Obviously",
-        'insight-1-desc': "Common knowledge in the industry",
-        'insight-10': "Makes sense",
-        'insight-10-desc': "Logical extension of known principles",
-        'insight-100': "Great point",
-        'insight-100-desc': "Novel insight worth noting",
-        'insight-1000': "Game changer",
-        'insight-1000-desc': "Revolutionary perspective",
-
-        // Product Payoff options
-        'payoff-0': "Actively harmful",
-        'payoff-0-desc': "Would make things worse",
-        'payoff-1': "So what?",
-        'payoff-1-desc': "Minimal impact on the problem",
-        'payoff-10': "It's fine",
-        'payoff-10-desc': "Adequately addresses the need",
-        'payoff-100': "Very nice",
-        'payoff-100-desc': "Strong solution to the problem",
-        'payoff-1000': "Must have",
-        'payoff-1000-desc': "Worth buying just for this feature",
-
-        // Effort options
-        'effort-2d': "2 days",
-        'effort-2d-desc': "Small, well-defined task",
-        'effort-2w': "2 weeks",
-        'effort-2w-desc': "Medium complexity, clear requirements",
-        'effort-2m': "2 months",
-        'effort-2m-desc': "Large project, may have unknowns",
-
-        // Team Excitement options
-        'excitement-0': "No excitement",
-        'excitement-0-desc': "No one wants to work on this",
-        'excitement-1': "One person",
-        'excitement-1-desc': "Single team member is interested",
-        'excitement-10': "Half the team",
-        'excitement-10-desc': "Mixed excitement levels",
-        'excitement-100': "Everyone",
-        'excitement-100-desc': "Full team enthusiasm",
-
-        // Confidence options
-        'confidence-0': "No way",
-        'confidence-0-desc': "We can't pull this off",
-        'confidence-1': "We can try...",
-        'confidence-1-desc': "High uncertainty, expect issues",
-        'confidence-10': "Probably doable",
-        'confidence-10-desc': "Some unknowns but familiar ground",
-        'confidence-100': "Got this",
-        'confidence-100-desc': "Completely within our expertise",
 
         // Analysis messages
         'high-team-excitement': "The team is highly motivated to work on this feature",
@@ -130,90 +68,7 @@ const translations = {
         'confidence-description': "Considérez la complexité technique et l'expertise de l'équipe",
         'analysis-title': "Analyse",
         'analysis-empty': "Complétez toutes les questions pour voir l'analyse",
-
-        // Revenue options
-        'revenue-1000': "1 000 €/an",
-        'revenue-1000-desc': "Une amélioration mineure pour quelques clients",
-        'revenue-10000': "10 000 €/an",
-        'revenue-10000-desc': "Valeur notable pour plusieurs clients",
-        'revenue-100000': "100 000 €/an",
-        'revenue-100000-desc': "Valeur majeure pour de nombreux clients",
-        'revenue-1000000': "1 000 000 €/an",
-        'revenue-1000000-desc': "Valeur transformative pour la plupart des clients",
-
-        // Customer Reach options
-        'reach-0': "Personne (0)",
-        'reach-0-desc': "Ne peut penser à personne qui s'en soucie",
-        'reach-30': "Quelques-uns (30)",
-        'reach-30-desc': "Un segment spécifique de clients",
-        'reach-70': "La plupart (70)",
-        'reach-70-desc': "La majorité de nos clients",
-        'reach-100': "Tous (100)",
-        'reach-100-desc': "Tous les clients en bénéficieraient",
-
-        // Customer Care options
-        'care-0': "Ne perdez pas mon temps",
-        'care-0-desc': "Activement opposé à cette fonctionnalité",
-        'care-1': "Bof, peu importe",
-        'care-1-desc': "Indifférent à la fonctionnalité",
-        'care-10': "Je suis curieux",
-        'care-10-desc': "Intéressé d'en savoir plus",
-        'care-100': "Préoccupation sérieuse",
-        'care-100-desc': "Cela résout un point critique",
-        'care-1000': "Mission critique",
-        'care-1000-desc': "Essentiel pour le succès du client",
-
-        // Insight options
-        'insight-0': "Aucune idée",
-        'insight-0-desc': "Nous ne comprenons pas le domaine du problème",
-        'insight-1': "Évident",
-        'insight-1-desc': "Connaissance commune dans l'industrie",
-        'insight-10': "Logique",
-        'insight-10-desc': "Extension logique des principes connus",
-        'insight-100': "Excellent point",
-        'insight-100-desc': "Perspective novatrice à noter",
-        'insight-1000': "Révolutionnaire",
-        'insight-1000-desc': "Perspective révolutionnaire",
-
-        // Product Payoff options
-        'payoff-0': "Nuisible",
-        'payoff-0-desc': "Empirerait les choses",
-        'payoff-1': "Et alors ?",
-        'payoff-1-desc': "Impact minimal sur le problème",
-        'payoff-10': "C'est bien",
-        'payoff-10-desc': "Répond adéquatement au besoin",
-        'payoff-100': "Très bien",
-        'payoff-100-desc': "Solution forte au problème",
-        'payoff-1000': "Indispensable",
-        'payoff-1000-desc': "Vaut l'achat juste pour cette fonctionnalité",
-
-        // Effort options
-        'effort-2d': "2 jours",
-        'effort-2d-desc': "Tâche petite et bien définie",
-        'effort-2w': "2 semaines",
-        'effort-2w-desc': "Complexité moyenne, exigences claires",
-        'effort-2m': "2 mois",
-        'effort-2m-desc': "Grand projet, peut avoir des inconnues",
-
-        // Team Excitement options
-        'excitement-0': "Aucun enthousiasme",
-        'excitement-0-desc': "Personne ne veut travailler dessus",
-        'excitement-1': "Une personne",
-        'excitement-1-desc': "Un seul membre de l'équipe est intéressé",
-        'excitement-10': "Moitié de l'équipe",
-        'excitement-10-desc': "Niveaux d'enthousiasme mixtes",
-        'excitement-100': "Tout le monde",
-        'excitement-100-desc': "Enthousiasme de toute l'équipe",
-
-        // Confidence options
-        'confidence-0': "Impossible",
-        'confidence-0-desc': "Nous ne pouvons pas y arriver",
-        'confidence-1': "On peut essayer...",
-        'confidence-1-desc': "Grande incertitude, attendez-vous à des problèmes",
-        'confidence-10': "Probablement faisable",
-        'confidence-10-desc': "Quelques inconnues mais terrain familier",
-        'confidence-100': "On maîtrise",
-        'confidence-100-desc': "Complètement dans notre expertise",
+        'cohen-attribution': "Cette calculatrice aide à prioriser les fonctionnalités en appliquant les principes d'estimation Fermi aux calculs d'impact et d'effort.",
 
         // Analysis messages
         'high-team-excitement': "L'équipe est très motivée pour travailler sur cette fonctionnalité",
@@ -242,90 +97,7 @@ const translations = {
         'confidence-description': "Considere la complejidad técnica y la experiencia del equipo",
         'analysis-title': "Análisis",
         'analysis-empty': "Complete todas las preguntas para ver el análisis",
-
-        // Revenue options
-        'revenue-1000': "$1,000/año",
-        'revenue-1000-desc': "Una mejora menor para algunos clientes",
-        'revenue-10000': "$10,000/año",
-        'revenue-10000-desc': "Valor notable para varios clientes",
-        'revenue-100000': "$100,000/año",
-        'revenue-100000-desc': "Valor importante para muchos clientes",
-        'revenue-1000000': "$1,000,000/año",
-        'revenue-1000000-desc': "Valor transformador para la mayoría de los clientes",
-
-        // Customer Reach options
-        'reach-0': "Nadie (0)",
-        'reach-0-desc': "No puedo pensar en nadie que le importe",
-        'reach-30': "Algunos (30)",
-        'reach-30-desc': "Un segmento específico de clientes",
-        'reach-70': "La mayoría (70)",
-        'reach-70-desc': "La mayoría de nuestros clientes",
-        'reach-100': "Todos (100)",
-        'reach-100-desc': "Todos los clientes se beneficiarían",
-
-        // Customer Care options
-        'care-0': "No pierda mi tiempo",
-        'care-0-desc': "Activamente opuesto a esta función",
-        'care-1': "Meh, lo que sea",
-        'care-1-desc': "Indiferente a la función",
-        'care-10': "Tengo curiosidad",
-        'care-10-desc': "Interesado en saber más",
-        'care-100': "Preocupación seria",
-        'care-100-desc': "Esto aborda un punto crítico",
-        'care-1000': "Misión crítica",
-        'care-1000-desc': "Esencial para el éxito del cliente",
-
-        // Insight options
-        'insight-0': "Ni idea",
-        'insight-0-desc': "No entendemos el espacio del problema",
-        'insight-1': "Obvio",
-        'insight-1-desc': "Conocimiento común en la industria",
-        'insight-10': "Tiene sentido",
-        'insight-10-desc': "Extensión lógica de principios conocidos",
-        'insight-100': "Buen punto",
-        'insight-100-desc': "Perspectiva novedosa a tener en cuenta",
-        'insight-1000': "Revolucionario",
-        'insight-1000-desc': "Perspectiva revolucionaria",
-
-        // Product Payoff options
-        'payoff-0': "Activamente dañino",
-        'payoff-0-desc': "Empeoraría las cosas",
-        'payoff-1': "¿Y qué?",
-        'payoff-1-desc': "Impacto mínimo en el problema",
-        'payoff-10': "Está bien",
-        'payoff-10-desc': "Aborda adecuadamente la necesidad",
-        'payoff-100': "Muy bien",
-        'payoff-100-desc': "Solución sólida al problema",
-        'payoff-1000': "Imprescindible",
-        'payoff-1000-desc': "Vale la pena comprarlo solo por esta función",
-
-        // Effort options
-        'effort-2d': "2 días",
-        'effort-2d-desc': "Tarea pequeña y bien definida",
-        'effort-2w': "2 semanas",
-        'effort-2w-desc': "Complejidad media, requisitos claros",
-        'effort-2m': "2 meses",
-        'effort-2m-desc': "Proyecto grande, puede tener incógnitas",
-
-        // Team Excitement options
-        'excitement-0': "Sin entusiasmo",
-        'excitement-0-desc': "Nadie quiere trabajar en esto",
-        'excitement-1': "Una persona",
-        'excitement-1-desc': "Un solo miembro del equipo está interesado",
-        'excitement-10': "Mitad del equipo",
-        'excitement-10-desc': "Niveles mixtos de entusiasmo",
-        'excitement-100': "Todos",
-        'excitement-100-desc': "Entusiasmo de todo el equipo",
-
-        // Confidence options
-        'confidence-0': "Imposible",
-        'confidence-0-desc': "No podemos lograrlo",
-        'confidence-1': "Podemos intentar...",
-        'confidence-1-desc': "Alta incertidumbre, espere problemas",
-        'confidence-10': "Probablemente factible",
-        'confidence-10-desc': "Algunas incógnitas pero terreno familiar",
-        'confidence-100': "Lo tenemos",
-        'confidence-100-desc': "Completamente dentro de nuestra experiencia",
+        'cohen-attribution': "Esta calculadora ayuda a priorizar funciones aplicando principios de estimación Fermi a los cálculos de impacto y esfuerzo.",
 
         // Analysis messages
         'high-team-excitement': "El equipo está muy motivado para trabajar en esta función",
