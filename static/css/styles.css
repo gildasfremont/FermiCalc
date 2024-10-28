@@ -47,6 +47,15 @@ body {
     color: var(--orange-11) !important;
 }
 
+/* Language selector spacing */
+.language-select {
+    margin-right: 12px;
+}
+
+.navbar .d-flex.align-items-center {
+    padding: 0 var(--spacing-base);
+}
+
 .fermi-question {
     scroll-margin-top: calc(var(--navbar-height) + 20px);
     margin-bottom: var(--spacing-lg);
