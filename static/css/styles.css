@@ -35,7 +35,7 @@
 
 body {
     background-color: var(--gray-1) !important;
-    color: var(--gray-12);
+    color: var(--gray-12) !important;
 }
 
 .navbar-brand {
@@ -47,9 +47,11 @@ body {
     color: var(--orange-11) !important;
 }
 
-/* Language selector spacing */
 .language-select {
     margin-right: 12px;
+    background-color: var(--gray-3);
+    border: 2px solid var(--gray-4);
+    color: var(--gray-12);
 }
 
 .navbar .d-flex.align-items-center {
@@ -77,29 +79,30 @@ body {
 
 .option-card:hover {
     border-color: var(--orange-9);
-    box-shadow: 0 4px 12px rgba(238, 128, 18, 0.25);
+    background-color: var(--gray-3);
+    box-shadow: 0 4px 12px rgba(238, 128, 18, 0.15);
 }
 
 .option-card.selected {
     background-color: var(--orange-9) !important;
-    border-color: var(--orange-9);
-    color: var(--gray-12) !important;
+    border-color: var(--orange-10);
+    color: var(--gray-1) !important;
 }
 
 .text-gray-300 {
-    color: var(--orange-11) !important;
+    color: var(--gray-11) !important;
 }
 
 .small {
-    color: var(--orange-11);
+    color: var(--gray-11);
 }
 
 .option-description {
-    color: var(--orange-11) !important;
+    color: var(--gray-11) !important;
 }
 
 .option-card.selected .option-description {
-    color: var(--gray-12) !important;
+    color: var(--gray-1) !important;
 }
 
 .navbar .language-select {
@@ -114,7 +117,8 @@ body {
 .navbar .language-select:hover,
 .navbar .language-select:focus {
     border-color: var(--orange-9);
-    box-shadow: 0 2px 8px rgba(238, 128, 18, 0.25);
+    background-color: var(--gray-4);
+    box-shadow: 0 2px 8px rgba(238, 128, 18, 0.15);
 }
 
 .navbar.sticky-top {
@@ -137,7 +141,7 @@ body {
 
 .analysis-point.primary {
     background-color: var(--orange-9);
-    color: var(--gray-12);
+    color: var(--gray-1);
 }
 
 .analysis-point.warning {
@@ -148,7 +152,7 @@ body {
 
 .analysis-point.positive {
     background-color: var(--orange-7);
-    color: var(--gray-12);
+    color: var(--gray-1);
 }
 
 .alert-warning {
@@ -162,11 +166,17 @@ body {
     color: var(--orange-12) !important;
 }
 
+.alert-warning a:hover {
+    color: var(--orange-11) !important;
+    text-decoration: underline !important;
+}
+
 .options-stack:empty {
     background-color: var(--gray-3);
     border: 2px dashed var(--gray-4);
     min-height: 100px;
     position: relative;
+    border-radius: 8px;
 }
 
 .options-stack:empty::after {
@@ -175,5 +185,22 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    color: var(--orange-11);
+    color: var(--gray-11);
+}
+
+select.form-select {
+    background-color: var(--gray-3);
+    border-color: var(--gray-4);
+    color: var(--gray-12);
+}
+
+select.form-select:focus {
+    border-color: var(--orange-9);
+    box-shadow: 0 0 0 0.25rem rgba(238, 128, 18, 0.15);
+}
+
+/* Fix for scrolling functionality */
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: calc(var(--navbar-height) + 20px);
 }

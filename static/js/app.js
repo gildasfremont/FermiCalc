@@ -12,10 +12,11 @@ class FermiCalculator {
             language: 'EN'
         };
         
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', () => this.initialize());
-        } else {
+        // Initialize immediately if DOM is ready
+        if (document.readyState === 'complete' || document.readyState === 'interactive') {
             this.initialize();
+        } else {
+            document.addEventListener('DOMContentLoaded', () => this.initialize());
         }
     }
 
@@ -30,6 +31,18 @@ class FermiCalculator {
         } catch (error) {
             console.error('Initialization error:', error);
             this.handleError('initialization', error);
+        }
+    }
+
+    loadFromStorage() {
+        try {
+            const saved = localStorage.getItem('fermiCalculator');
+            if (saved) {
+                this.state = JSON.parse(saved);
+            }
+        } catch (error) {
+            console.error('Error loading from storage:', error);
+            this.handleError('storage', error);
         }
     }
 
@@ -140,6 +153,23 @@ class FermiCalculator {
         });
     }
 
+    scrollToQuestion(field) {
+        const container = document.getElementById(`${field}Options`);
+        if (container) {
+            const questionContainer = container.closest('.fermi-question');
+            if (questionContainer) {
+                const navbar = document.querySelector('.navbar');
+                const navbarHeight = navbar ? navbar.offsetHeight : 0;
+                const containerTop = questionContainer.getBoundingClientRect().top + window.pageYOffset;
+                
+                window.scrollTo({
+                    top: containerTop - navbarHeight - 20,
+                    behavior: 'smooth'
+                });
+            }
+        }
+    }
+
     findNextQuestion(currentField) {
         const questionOrder = [
             'revenue',
@@ -165,23 +195,6 @@ class FermiCalculator {
         }
 
         return null;
-    }
-
-    scrollToQuestion(field) {
-        const container = document.getElementById(`${field}Options`);
-        if (container) {
-            const questionContainer = container.closest('.fermi-question');
-            if (questionContainer) {
-                const navbar = document.querySelector('.navbar');
-                const navbarHeight = navbar ? navbar.offsetHeight : 0;
-                const containerTop = questionContainer.getBoundingClientRect().top + window.pageYOffset;
-                
-                window.scrollTo({
-                    top: containerTop - navbarHeight - 20,
-                    behavior: 'smooth'
-                });
-            }
-        }
     }
 
     scrollToNextQuestion(field) {
@@ -259,18 +272,6 @@ class FermiCalculator {
             localStorage.setItem('fermiCalculator', JSON.stringify(this.state));
         } catch (error) {
             console.error('Error saving to storage:', error);
-            this.handleError('storage', error);
-        }
-    }
-
-    loadFromStorage() {
-        try {
-            const saved = localStorage.getItem('fermiCalculator');
-            if (saved) {
-                this.state = JSON.parse(saved);
-            }
-        } catch (error) {
-            console.error('Error loading from storage:', error);
             this.handleError('storage', error);
         }
     }
@@ -519,8 +520,3 @@ class FermiCalculator {
         console.error(`${message}:`, error);
     }
 }
-
-// Initialize calculator when DOM is ready
-document.addEventListener('DOMContentLoaded', () => {
-    window.calculator = new FermiCalculator();
-});
