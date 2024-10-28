@@ -38,6 +38,10 @@ body {
     color: var(--gray-12);
 }
 
+.navbar-brand {
+    color: #fff !important;
+}
+
 .fermi-question {
     scroll-margin-top: calc(var(--navbar-height) + 20px);
     margin-bottom: var(--spacing-lg);
