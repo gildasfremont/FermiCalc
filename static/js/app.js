@@ -13,11 +13,11 @@ class FermiCalculator {
             language: 'EN'
         };
 
-        // Initialize clear button
-        this.initializeClearButton();
-
         // Initialize all options
         this.initializeOptions();
+
+        // Initialize clear button
+        this.initializeClearButton();
     }
 
     initializeOptions() {
@@ -208,6 +208,14 @@ class FermiCalculator {
         // Save cleared state and re-render
         this.saveToStorage();
         this.render();
+
+        // Add a small delay before scrolling to top
+        setTimeout(() => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }, 100);
     }
 
     initialize() {
@@ -249,6 +257,52 @@ class FermiCalculator {
         } catch (error) {
             console.error('Error initializing event listeners:', error);
             this.handleError('event-listeners', error);
+        }
+    }
+
+    // Helper function to find the next unanswered question
+    findNextQuestion(currentField) {
+        const questionOrder = [
+            'revenue',
+            'customerReach',
+            'customerCare',
+            'insight',
+            'productPayoff',
+            'effort',
+            'teamExcitement',
+            'confidence'
+        ];
+
+        const currentIndex = questionOrder.indexOf(currentField);
+        if (currentIndex === -1 || currentIndex === questionOrder.length - 1) {
+            return null;
+        }
+
+        for (let i = currentIndex + 1; i < questionOrder.length; i++) {
+            const nextField = questionOrder[i];
+            if (this.state[nextField] === undefined) {
+                return nextField;
+            }
+        }
+
+        return null;
+    }
+
+    // Helper function to scroll to a specific question
+    scrollToNextQuestion(field) {
+        const nextField = this.findNextQuestion(field);
+        if (nextField) {
+            const container = document.getElementById(`${nextField}Options`);
+            if (container) {
+                setTimeout(() => {
+                    container.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                    container.classList.add('highlight-container');
+                    setTimeout(() => container.classList.remove('highlight-container'), 2000);
+                }, 100);
+            }
         }
     }
 
@@ -294,6 +348,7 @@ class FermiCalculator {
 
                 card.addEventListener('click', () => {
                     this.updateState(field, option.value);
+                    this.scrollToNextQuestion(field);
                 });
 
                 container.appendChild(card);
@@ -576,7 +631,8 @@ class FermiCalculator {
         const container = document.getElementById(`${field}Options`);
         if (container) {
             container.scrollIntoView({
-                behavior: 'smooth'
+                behavior: 'smooth',
+                block: 'start'
             });
             container.classList.add('highlight-container');
             setTimeout(() => container.classList.remove('highlight-container'), 2000);
