@@ -1,10 +1,5 @@
 class FermiCalculator {
     constructor() {
-        // Ensure translations are loaded
-        if (typeof translations === 'undefined') {
-            throw new Error('Translations not loaded');
-        }
-
         this.state = {
             revenue: undefined,
             customerReach: undefined,
@@ -17,11 +12,10 @@ class FermiCalculator {
             language: 'EN'
         };
         
-        // Initialize only after document is fully loaded
-        if (document.readyState === 'complete') {
-            this.initialize();
-        } else {
+        if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', () => this.initialize());
+        } else {
+            this.initialize();
         }
     }
 
@@ -39,15 +33,13 @@ class FermiCalculator {
         }
     }
 
-    loadFromStorage() {
-        try {
-            const saved = localStorage.getItem('fermiCalculator');
-            if (saved) {
-                this.state = JSON.parse(saved);
-            }
-        } catch (error) {
-            console.error('Error loading from storage:', error);
-            this.handleError('storage', error);
+    initializeLanguageSelect() {
+        const languageSelect = document.getElementById('languageSelect');
+        if (languageSelect) {
+            languageSelect.value = this.state.language;
+            languageSelect.addEventListener('change', (event) => {
+                this.updateState('language', event.target.value);
+            });
         }
     }
 
@@ -148,13 +140,66 @@ class FermiCalculator {
         });
     }
 
-    initializeEventListeners() {
-        const languageSelect = document.getElementById('languageSelect');
-        if (languageSelect) {
-            languageSelect.value = this.state.language;
-            languageSelect.addEventListener('change', (event) => {
-                this.updateState('language', event.target.value);
-            });
+    findNextQuestion(currentField) {
+        const questionOrder = [
+            'revenue',
+            'customerReach',
+            'customerCare',
+            'insight',
+            'productPayoff',
+            'effort',
+            'teamExcitement',
+            'confidence'
+        ];
+
+        const currentIndex = questionOrder.indexOf(currentField);
+        if (currentIndex === -1 || currentIndex === questionOrder.length - 1) {
+            return null;
+        }
+
+        for (let i = currentIndex + 1; i < questionOrder.length; i++) {
+            const nextField = questionOrder[i];
+            if (this.state[nextField] === undefined) {
+                return nextField;
+            }
+        }
+
+        return null;
+    }
+
+    scrollToQuestion(field) {
+        const container = document.getElementById(`${field}Options`);
+        if (container) {
+            const questionContainer = container.closest('.fermi-question');
+            if (questionContainer) {
+                const navbar = document.querySelector('.navbar');
+                const navbarHeight = navbar ? navbar.offsetHeight : 0;
+                const containerTop = questionContainer.getBoundingClientRect().top + window.pageYOffset;
+                
+                window.scrollTo({
+                    top: containerTop - navbarHeight - 20,
+                    behavior: 'smooth'
+                });
+            }
+        }
+    }
+
+    scrollToNextQuestion(field) {
+        const nextField = this.findNextQuestion(field);
+        if (nextField) {
+            this.scrollToQuestion(nextField);
+        } else {
+            const analysisContent = document.getElementById('analysis-content');
+            if (analysisContent) {
+                const navbar = document.querySelector('.navbar');
+                const navbarHeight = navbar ? navbar.offsetHeight : 0;
+                const analysisTop = analysisContent.getBoundingClientRect().top + window.pageYOffset;
+                
+                window.scrollTo({
+                    top: analysisTop - navbarHeight - 20,
+                    behavior: 'smooth'
+                });
+            }
         }
     }
 
@@ -164,71 +209,6 @@ class FermiCalculator {
             clearButton.addEventListener('click', () => {
                 this.clearAllSelections();
             });
-        }
-    }
-
-    initializeLanguageSelect() {
-        const languageSelect = document.getElementById('languageSelect');
-        if (languageSelect) {
-            languageSelect.value = this.state.language;
-            languageSelect.addEventListener('change', (event) => {
-                this.updateState('language', event.target.value);
-            });
-        }
-    }
-
-    translate(key, params = {}) {
-        try {
-            // Check if translations object exists
-            if (typeof translations === 'undefined') {
-                console.error('Translations not loaded');
-                return key;
-            }
-
-            // Check if selected language exists
-            if (!translations[this.state.language]) {
-                console.error(`Language ${this.state.language} not found`);
-                return key;
-            }
-
-            // Get translation
-            let text = translations[this.state.language][key];
-            
-            // If translation not found, try English as fallback
-            if (!text && this.state.language !== 'EN') {
-                text = translations['EN'][key];
-            }
-
-            // If still no translation, return key
-            if (!text) {
-                return key;
-            }
-
-            // Replace parameters
-            Object.entries(params).forEach(([param, value]) => {
-                text = text.replace(`{${param}}`, value);
-            });
-            
-            return text;
-        } catch (error) {
-            console.error('Translation error:', error);
-            return key;
-        }
-    }
-
-    updateState(field, value) {
-        this.state[field] = value;
-        this.saveToStorage();
-        this.render();
-        this.initializeOptions();
-    }
-
-    saveToStorage() {
-        try {
-            localStorage.setItem('fermiCalculator', JSON.stringify(this.state));
-        } catch (error) {
-            console.error('Error saving to storage:', error);
-            this.handleError('storage', error);
         }
     }
 
@@ -257,66 +237,63 @@ class FermiCalculator {
         }, 100);
     }
 
-    scrollToQuestion(field) {
-        const container = document.getElementById(`${field}Options`);
-        if (container) {
-            const questionContainer = container.closest('.fermi-question');
-            if (questionContainer) {
-                const navbar = document.querySelector('.navbar');
-                const navbarHeight = navbar ? navbar.offsetHeight : 0;
-                const containerTop = questionContainer.getBoundingClientRect().top + window.pageYOffset;
-                
-                window.scrollTo({
-                    top: containerTop - navbarHeight - 20,
-                    behavior: 'smooth'
-                });
-            }
+    initializeEventListeners() {
+        const languageSelect = document.getElementById('languageSelect');
+        if (languageSelect) {
+            languageSelect.value = this.state.language;
+            languageSelect.addEventListener('change', (event) => {
+                this.updateState('language', event.target.value);
+            });
         }
     }
 
-    findNextQuestion(currentField) {
-        const questionOrder = [
-            'revenue',
-            'customerReach',
-            'customerCare',
-            'insight',
-            'productPayoff',
-            'effort',
-            'teamExcitement',
-            'confidence'
-        ];
-
-        const currentIndex = questionOrder.indexOf(currentField);
-        if (currentIndex === -1 || currentIndex === questionOrder.length - 1) {
-            return null;
-        }
-
-        for (let i = currentIndex + 1; i < questionOrder.length; i++) {
-            const nextField = questionOrder[i];
-            if (this.state[nextField] === undefined) {
-                return nextField;
-            }
-        }
-
-        return null;
+    updateState(field, value) {
+        this.state[field] = value;
+        this.saveToStorage();
+        this.render();
+        this.initializeOptions();
     }
 
-    scrollToNextQuestion(field) {
-        const nextField = this.findNextQuestion(field);
-        if (nextField) {
-            this.scrollToQuestion(nextField);
-        } else {
-            const analysisContent = document.getElementById('analysis-content');
-            if (analysisContent) {
-                const navbar = document.querySelector('.navbar');
-                const navbarHeight = navbar ? navbar.offsetHeight : 0;
-                const analysisTop = analysisContent.getBoundingClientRect().top + window.pageYOffset;
-                
-                window.scrollTo({
-                    top: analysisTop - navbarHeight - 20,
-                    behavior: 'smooth'
-                });
+    saveToStorage() {
+        try {
+            localStorage.setItem('fermiCalculator', JSON.stringify(this.state));
+        } catch (error) {
+            console.error('Error saving to storage:', error);
+            this.handleError('storage', error);
+        }
+    }
+
+    loadFromStorage() {
+        try {
+            const saved = localStorage.getItem('fermiCalculator');
+            if (saved) {
+                this.state = JSON.parse(saved);
             }
+        } catch (error) {
+            console.error('Error loading from storage:', error);
+            this.handleError('storage', error);
+        }
+    }
+
+    translate(key, params = {}) {
+        try {
+            if (!translations || !translations[this.state.language]) {
+                return key;
+            }
+
+            let text = translations[this.state.language][key];
+            if (!text) {
+                return key;
+            }
+
+            Object.entries(params).forEach(([param, value]) => {
+                text = text.replace(`{${param}}`, value);
+            });
+            return text;
+        } catch (error) {
+            console.error('Translation error:', error);
+            this.handleError('translation', error);
+            return key;
         }
     }
 
@@ -350,32 +327,6 @@ class FermiCalculator {
             return 0;
         }
         return (this.state.teamExcitement + this.state.confidence) / 200;
-    }
-
-    getUnansweredQuestions() {
-        const unanswered = [];
-        const requiredFields = [
-            'revenue',
-            'customerReach',
-            'customerCare',
-            'insight',
-            'productPayoff',
-            'effort',
-            'teamExcitement',
-            'confidence'
-        ];
-
-        requiredFields.forEach(field => {
-            if (this.state[field] === undefined) {
-                const titleKey = `${field.replace(/([A-Z])/g, '-$1').toLowerCase()}-title`;
-                unanswered.push({
-                    field,
-                    title: this.translate(titleKey)
-                });
-            }
-        });
-
-        return unanswered;
     }
 
     getAnalysis() {
@@ -446,6 +397,32 @@ class FermiCalculator {
             this.handleError('analysis', error);
             return null;
         }
+    }
+
+    getUnansweredQuestions() {
+        const unanswered = [];
+        const requiredFields = [
+            'revenue',
+            'customerReach',
+            'customerCare',
+            'insight',
+            'productPayoff',
+            'effort',
+            'teamExcitement',
+            'confidence'
+        ];
+
+        requiredFields.forEach(field => {
+            if (this.state[field] === undefined) {
+                const titleKey = `${field.replace(/([A-Z])/g, '-$1').toLowerCase()}-title`;
+                unanswered.push({
+                    field,
+                    title: this.translate(titleKey)
+                });
+            }
+        });
+
+        return unanswered;
     }
 
     render() {
@@ -542,3 +519,8 @@ class FermiCalculator {
         console.error(`${message}:`, error);
     }
 }
+
+// Initialize calculator when DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+    window.calculator = new FermiCalculator();
+});

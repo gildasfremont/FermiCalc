@@ -13,7 +13,7 @@
         <div class="container-fluid">
             <span class="navbar-brand fw-bold" data-translate="navbar-title">Is it worth it?</span>
             <div class="d-flex align-items-center gap-3">
-                <button id="clearButton" class="language-select" data-translate="clear-button">
+                <button id="clearButton" class="language-select">
                     Clear
                 </button>
                 <select id="languageSelect" class="form-select language-select">
@@ -92,16 +92,13 @@
         </div>
     </div>
 
-    <script src="/static/js/translations.js" defer></script>
-    <script src="/static/js/app.js" defer></script>
-    <script defer>
+    <script src="/static/js/translations.js"></script>
+    <script src="/static/js/app.js"></script>
+    <script>
+        let calculator;
         document.addEventListener('DOMContentLoaded', () => {
-            // Ensure translations are loaded
-            if (typeof translations === 'undefined') {
-                console.error('Translations not loaded');
-                return;
-            }
-            window.calculator = new FermiCalculator();
+            calculator = new FermiCalculator();
+            window.calculator = calculator;
         });
     </script>
 </body>
