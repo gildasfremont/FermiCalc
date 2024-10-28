@@ -14,37 +14,40 @@ class FermiCalculator {
         };
     }
 
-    // Rest of the FermiCalculator implementation stays exactly the same
+    initialize() {
+        try {
+            this.loadFromStorage();
+            this.initializeEventListeners();
+            this.initializeClearButton();
+            this.initializeLanguageSelect();
+            this.render();
+            this.initializeOptions();
+        } catch (error) {
+            console.error('Initialization error:', error);
+            this.handleError('initialization', error);
+        }
+    }
+
+    // ... rest of the FermiCalculator implementation stays exactly the same ...
 }
 
-// Initialize translations loading state
-let translationsLoaded = false;
-
-window.addEventListener('load', () => {
-    // Check if translations are already loaded
-    if (window.translations) {
-        translationsLoaded = true;
-    }
-    
-    // Add event listener for translations
-    window.addEventListener('translationsLoaded', () => {
-        translationsLoaded = true;
-        initializeCalculator();
-    });
-    
-    // Try to initialize after a short delay
-    setTimeout(() => {
-        if (translationsLoaded) {
-            initializeCalculator();
+// Wait for DOM content to be loaded
+document.addEventListener('DOMContentLoaded', () => {
+    // Function to initialize calculator
+    const initializeCalculator = () => {
+        if (!window.translations) {
+            console.error('Translations not loaded. Make sure translations.js is loaded before app.js');
+            return;
         }
-    }, 200);
-});
-
-function initializeCalculator() {
-    try {
         window.calculator = new FermiCalculator();
         window.calculator.initialize();
-    } catch (error) {
-        console.error('Failed to initialize calculator:', error);
+    };
+
+    // Check if translations are already loaded
+    if (window.translations) {
+        initializeCalculator();
+    } else {
+        // Listen for translations loaded event
+        window.addEventListener('translationsLoaded', initializeCalculator);
     }
-}
+});
