@@ -13,7 +13,7 @@ class FermiCalculator {
             language: 'EN'
         };
 
-        // Initialize options and clear button
+        // Initialize options first
         this.initializeOptions();
         this.initializeClearButton();
     }
@@ -254,14 +254,12 @@ class FermiCalculator {
             const container = document.getElementById(`${nextField}Options`);
             if (container) {
                 container.scrollIntoView({ behavior: 'smooth' });
-                container.classList.add('highlight-container');
-                setTimeout(() => container.classList.remove('highlight-container'), 2000);
             }
         } else {
             // If no next question, scroll to analysis
-            const analysisSection = document.getElementById('analysis-content');
-            if (analysisSection) {
-                analysisSection.scrollIntoView({ behavior: 'smooth' });
+            const analysisContent = document.getElementById('analysis-content');
+            if (analysisContent) {
+                analysisContent.scrollIntoView({ behavior: 'smooth' });
             }
         }
     }
@@ -270,8 +268,6 @@ class FermiCalculator {
         const container = document.getElementById(`${field}Options`);
         if (container) {
             container.scrollIntoView({ behavior: 'smooth' });
-            container.classList.add('highlight-container');
-            setTimeout(() => container.classList.remove('highlight-container'), 2000);
         }
     }
 
