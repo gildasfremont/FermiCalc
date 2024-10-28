@@ -233,7 +233,6 @@ class FermiCalculator {
                 
                 window.scrollTo({
                     top: containerTop - navbarHeight - 20,
-                    behavior: 'smooth'
                 });
             }
         } else {
@@ -246,7 +245,6 @@ class FermiCalculator {
                 
                 window.scrollTo({
                     top: analysisTop - navbarHeight - 20,
-                    behavior: 'smooth'
                 });
             }
         }
@@ -261,7 +259,6 @@ class FermiCalculator {
             
             window.scrollTo({
                 top: containerTop - navbarHeight - 20,
-                behavior: 'smooth'
             });
         }
     }
