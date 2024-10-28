@@ -30,7 +30,6 @@ waitForPort = 5000
 [deployment]
 deploymentTarget = "static"
 publicDir = "fermiROI"
-run = ["sh", "-c", "python3 main.py"]
 
 [[ports]]
 localPort = 5000
