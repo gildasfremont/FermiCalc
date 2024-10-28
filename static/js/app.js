@@ -224,7 +224,6 @@ class FermiCalculator {
     }
 
     clearAllSelections() {
-        // Reset state to initial values
         this.state = {
             revenue: undefined,
             customerReach: undefined,
@@ -237,11 +236,10 @@ class FermiCalculator {
             language: this.state.language // Preserve language setting
         };
 
-        // Save cleared state and re-render
         this.saveToStorage();
         this.render();
+        this.initializeOptions();
 
-        // Add a small delay before scrolling to top
         setTimeout(() => {
             window.scrollTo({
                 top: 0,
@@ -264,6 +262,7 @@ class FermiCalculator {
         this.state[field] = value;
         this.saveToStorage();
         this.render();
+        this.initializeOptions();
     }
 
     saveToStorage() {
@@ -320,14 +319,10 @@ class FermiCalculator {
                 this.state.productPayoff
             ];
 
-            // Check if any required factors are missing
             if (factors.some(factor => factor === undefined)) return 0;
 
-            // Multiply all factors
             const impactScore = factors.reduce((a, b) => a * b, 1);
             const baseROI = impactScore / this.state.effort;
-
-            // Apply typical margins of error
             const conservativeROI = (baseROI * 0.8) / 1.5;
 
             return Math.round(conservativeROI);
@@ -360,7 +355,6 @@ class FermiCalculator {
             const roi = this.calculateROI();
             const analysis = [];
 
-            // ROI Analysis
             if (roi > 0) {
                 analysis.push({
                     type: 'primary',
@@ -368,7 +362,6 @@ class FermiCalculator {
                 });
             }
 
-            // Effort Analysis
             if (this.state.effort === 2) {
                 analysis.push({
                     type: 'positive',
@@ -381,7 +374,6 @@ class FermiCalculator {
                 });
             }
 
-            // Team Factors Analysis
             if (this.state.teamExcitement === 100) {
                 analysis.push({
                     type: 'positive',
@@ -469,7 +461,7 @@ class FermiCalculator {
             if (!analysis) {
                 analysisContent.innerHTML = `
                     <div class="card-body p-5">
-                        <h5 class="text-white mb-4" data-translate="analysis-title">Analysis</h5>
+                        <h5 class="mb-4" data-translate="analysis-title">Analysis</h5>
                         <div class="text-gray-300">
                             <i class="bi bi-info-circle"></i>
                             ${this.translate('analysis-empty')}
@@ -481,7 +473,7 @@ class FermiCalculator {
 
             let content = `
                 <div class="card-body p-5">
-                    <h5 class="text-white mb-4" data-translate="analysis-title">Analysis</h5>
+                    <h5 class="mb-4" data-translate="analysis-title">Analysis</h5>
             `;
 
             if (!analysis.complete) {
@@ -539,7 +531,7 @@ class FermiCalculator {
     }
 }
 
-// Initialize calculator after DOM is fully loaded
+// Initialize calculator when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
     window.calculator = new FermiCalculator();
 });
