@@ -20,6 +20,17 @@ class FermiCalculator {
         this.initializeClearButton();
     }
 
+    initialize() {
+        try {
+            this.loadFromStorage();
+            this.initializeEventListeners();
+            this.render();
+        } catch (error) {
+            console.error('Initialization error:', error);
+            this.handleError('initialization', error);
+        }
+    }
+
     initializeOptions() {
         // Revenue options
         this.revenueOptions = [{
@@ -176,17 +187,6 @@ class FermiCalculator {
         }];
     }
 
-    initialize() {
-        try {
-            this.loadFromStorage();
-            this.initializeEventListeners();
-            this.render();
-        } catch (error) {
-            console.error('Initialization error:', error);
-            this.handleError('initialization', error);
-        }
-    }
-
     initializeClearButton() {
         const clearButton = document.getElementById('clearButton');
         if (clearButton) {
@@ -259,12 +259,15 @@ class FermiCalculator {
                 const navbarHeight = navbar ? navbar.offsetHeight : 0;
                 
                 setTimeout(() => {
-                    container.style.scrollMarginTop = `${navbarHeight + 20}px`; // Added extra padding
-                    container.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start',
-                        inline: 'nearest'
+                    const elementRect = container.getBoundingClientRect();
+                    const absoluteElementTop = elementRect.top + window.pageYOffset;
+                    const offsetPosition = absoluteElementTop - navbarHeight - 20; // Added extra padding
+                    
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
                     });
+                    
                     container.classList.add('highlight-container');
                     setTimeout(() => container.classList.remove('highlight-container'), 2000);
                 }, 100);
@@ -278,12 +281,15 @@ class FermiCalculator {
             const navbar = document.querySelector('.navbar');
             const navbarHeight = navbar ? navbar.offsetHeight : 0;
             
-            container.style.scrollMarginTop = `${navbarHeight + 20}px`; // Added extra padding
-            container.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start',
-                inline: 'nearest'
+            const elementRect = container.getBoundingClientRect();
+            const absoluteElementTop = elementRect.top + window.pageYOffset;
+            const offsetPosition = absoluteElementTop - navbarHeight - 20; // Added extra padding
+            
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth'
             });
+            
             container.classList.add('highlight-container');
             setTimeout(() => container.classList.remove('highlight-container'), 2000);
         }
