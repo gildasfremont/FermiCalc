@@ -26,13 +26,6 @@
     --orange-10: #e17400;
     --orange-11: #ffa35a;
     --orange-12: #ffdfc9;
-
-    /* Spacing variables */
-    --spacing-base: 1rem;
-    --spacing-lg: 1.5rem;
-    --spacing-xl: 2rem;
-    --spacing-2xl: 2.5rem;
-    --navbar-height: 56px;
 }
 
 body {
@@ -40,201 +33,88 @@ body {
     color: var(--gray-12);
 }
 
-.text-gray-300 {
+.text-gray-300, .small {
     color: var(--gray-11) !important;
 }
 
-.small {
-    color: var(--gray-11);
-    font-size: 0.95rem;
-}
-
-/* Common styles for language select and clear button */
 .navbar .language-select {
     background-color: var(--gray-3);
     border: 2px solid var(--gray-4);
     color: var(--gray-12);
     font-weight: 500;
-    padding: calc(var(--spacing-base) * 0.5) var(--spacing-base);
-    border-radius: 8px;
-    cursor: pointer;
-    min-width: 120px;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
 }
 
 .navbar .language-select:hover,
 .navbar .language-select:focus {
     border-color: var(--orange-9);
     box-shadow: 0 2px 8px rgba(238, 128, 18, 0.25);
-    outline: none;
-}
-
-/* Language select specific styles */
-#languageSelect {
-    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23eeeeee' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
-    background-repeat: no-repeat;
-    background-position: right 0.75rem center;
-    background-size: 16px 12px;
-    padding-right: 2.5rem;
-}
-
-/* Clear button specific styles */
-#clearButton {
-    padding-right: var(--spacing-base);
-}
-
-/* Options stack styles */
-.options-stack {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-lg);
-    margin-top: var(--spacing-xl);
 }
 
 .option-card {
-    border: 2px solid var(--gray-4);
-    border-radius: 12px;
-    padding: var(--spacing-xl);
-    cursor: pointer;
-    transition: all 0.2s ease;
     background-color: var(--gray-2) !important;
+    border: 2px solid var(--gray-4);
 }
 
 .option-card:hover {
     border-color: var(--orange-9);
     box-shadow: 0 4px 12px rgba(238, 128, 18, 0.25);
-    transform: translateY(-2px);
 }
 
 .option-card.selected {
     background-color: var(--orange-9) !important;
     border-color: var(--orange-9);
     color: var(--gray-12) !important;
-    box-shadow: 0 4px 12px rgba(238, 128, 18, 0.35);
 }
 
 .option-description {
     color: var(--gray-11) !important;
 }
 
-.analysis-point {
-    padding: var(--spacing-xl);
-    margin-bottom: var(--spacing-lg);
-    border-radius: 12px;
-    font-size: 1.1rem;
-    line-height: 1.6;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+.option-card.selected .option-description {
+    color: var(--gray-12) !important;
 }
 
 .analysis-point.primary {
     background-color: var(--orange-9);
     color: var(--gray-12);
-    border: 2px solid var(--orange-9);
-}
-
-.analysis-point.highlight {
-    background-color: var(--orange-8);
-    color: var(--gray-12);
-    border: 2px solid var(--orange-8);
 }
 
 .analysis-point.warning {
-    background-color: var(--orange-10);
-    color: var(--gray-12);
-    border: 2px solid var(--orange-11);
+    background-color: var(--orange-3);
+    color: var(--orange-12);
+    border-color: var(--orange-9);
 }
 
 .analysis-point.positive {
     background-color: var(--orange-7);
     color: var(--gray-12);
-    border: 2px solid var(--orange-7);
 }
 
 .navbar.sticky-top {
     background-color: var(--gray-1) !important;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     border-bottom: 1px solid var(--gray-4);
-    z-index: 1030;
-    padding: var(--spacing-base) 0;
-}
-
-.navbar-brand {
-    color: var(--gray-12) !important;
-    font-weight: 600;
 }
 
 .card {
+    background-color: var(--gray-2) !important;
     border: 2px solid var(--gray-4);
-    border-radius: 16px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    background-color: var(--gray-2) !important;
-}
-
-.card-body {
-    padding: var(--spacing-2xl) !important;
-}
-
-#analysis-content {
-    background-color: var(--gray-2) !important;
-    border: 2px solid var(--orange-9);
-    scroll-margin-top: calc(var(--navbar-height) + 20px);
-}
-
-#analysis-content h5 {
-    font-size: 1.25rem;
-    margin-bottom: var(--spacing-lg);
-    color: var(--gray-12);
-}
-
-.fermi-question {
-    margin-bottom: var(--spacing-2xl);
-    scroll-margin-top: calc(var(--navbar-height) + 20px);
-}
-
-.fermi-question h5 {
-    margin-bottom: var(--spacing-base);
-    color: var(--gray-12);
 }
 
 .alert-warning {
     background-color: var(--orange-3);
     border: 2px solid var(--orange-9);
-    border-radius: 12px;
     color: var(--orange-12);
-}
-
-.alert-warning .alert-heading {
-    color: var(--orange-12);
-    font-size: 1.1rem;
 }
 
 .alert-warning a {
     color: var(--orange-12) !important;
-    display: flex;
-    align-items: center;
-}
-
-.alert-warning a:hover {
-    color: var(--orange-12) !important;
-    text-decoration: underline !important;
 }
 
 .options-stack:empty {
-    position: relative;
-    min-height: 100px;
     background-color: var(--gray-3);
-    border-radius: 12px;
     border: 2px dashed var(--gray-4);
 }
 
 .options-stack:empty::after {
-    content: "Loading options...";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: var(--gray-11);
-    font-size: 0.95rem;
+    color: var(--orange-11);
 }

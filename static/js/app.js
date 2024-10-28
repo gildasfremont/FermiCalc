@@ -1,6 +1,5 @@
 class FermiCalculator {
     constructor() {
-        // Initialize state
         this.state = {
             revenue: undefined,
             customerReach: undefined,
@@ -125,7 +124,7 @@ class FermiCalculator {
 
             card.innerHTML = `
                 <div class="option-label fw-bold">${this.translate(option.label)}</div>
-                <div class="option-description small text-gray-300">${this.translate(option.description)}</div>
+                <div class="option-description small">${this.translate(option.description)}</div>
             `;
 
             card.addEventListener('click', () => {
@@ -197,23 +196,6 @@ class FermiCalculator {
         }
     }
 
-    scrollToQuestion(field) {
-        const optionsContainer = document.getElementById(`${field}Options`);
-        if (optionsContainer) {
-            const container = optionsContainer.closest('.fermi-question');
-            if (container) {
-                const navbar = document.querySelector('.navbar');
-                const navbarHeight = navbar ? navbar.offsetHeight : 0;
-                const containerTop = container.getBoundingClientRect().top + window.pageYOffset;
-                
-                window.scrollTo({
-                    top: containerTop - navbarHeight - 20,
-                    behavior: 'smooth'
-                });
-            }
-        }
-    }
-
     initializeClearButton() {
         const clearButton = document.getElementById('clearButton');
         if (clearButton) {
@@ -233,7 +215,7 @@ class FermiCalculator {
             effort: undefined,
             teamExcitement: undefined,
             confidence: undefined,
-            language: this.state.language // Preserve language setting
+            language: this.state.language
         };
 
         this.saveToStorage();
