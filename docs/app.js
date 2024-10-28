@@ -1,17 +1,27 @@
 // Initialize translations object if it doesn't exist
 window.translations = window.translations || {};
 
-// Wait for DOM to be loaded before initializing
-window.addEventListener('DOMContentLoaded', () => {
-    // Check if translations are loaded
-    if (!window.translations || Object.keys(window.translations).length === 0) {
-        console.error('Translations not loaded');
-        return;
+// Create a promise to handle translations loading
+const translationsLoaded = new Promise((resolve) => {
+    if (window.translations && Object.keys(window.translations).length > 0) {
+        resolve();
+    } else {
+        window.addEventListener('translationsLoaded', () => resolve());
     }
-    
-    // Initialize calculator
+});
+
+// Wait for both DOM and translations before initializing
+Promise.all([
+    new Promise(resolve => {
+        if (document.readyState !== 'loading') resolve();
+        else document.addEventListener('DOMContentLoaded', resolve);
+    }),
+    translationsLoaded
+]).then(() => {
     window.calculator = new FermiCalculator();
     window.calculator.initialize();
+}).catch(error => {
+    console.error('Failed to initialize calculator:', error);
 });
 
 class FermiCalculator {
