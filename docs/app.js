@@ -1,5 +1,6 @@
+// Wrap everything in a self-executing function
 (function() {
-    // Initialize translations object
+    // Define translations object if not already defined
     window.translations = window.translations || {};
 
     // Wait for translations to load
@@ -18,8 +19,8 @@
         }
     });
 
-    // Define FermiCalculator class
-    class FermiCalculator {
+    // FermiCalculator class definition
+    window.FermiCalculator = class {
         constructor() {
             this.selectedOptions = {};
             this.currentLanguage = 'EN';
@@ -249,10 +250,7 @@
                 });
             });
         }
-    }
-
-    // Add to window object
-    window.FermiCalculator = FermiCalculator;
+    };
 
     // Initialization with retries
     function retryInitialization(maxRetries = 3, currentRetry = 0) {
@@ -266,7 +264,7 @@
                 }
             })
         ]).then(() => {
-            window.calculator = new FermiCalculator();
+            window.calculator = new window.FermiCalculator();
             window.calculator.initialize();
         }).catch(error => {
             console.error('Failed to initialize calculator:', error);
@@ -276,6 +274,6 @@
         });
     }
 
-    // Start initialization
+    // Start initialization with retries
     retryInitialization();
 })();
