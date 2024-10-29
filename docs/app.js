@@ -20,7 +20,7 @@
     });
 
     // FermiCalculator class definition
-    window.FermiCalculator = class {
+    class FermiCalculator {
         constructor() {
             this.selectedOptions = {};
             this.currentLanguage = 'EN';
@@ -250,7 +250,10 @@
                 });
             });
         }
-    };
+    }
+
+    // Make FermiCalculator available globally
+    window.FermiCalculator = FermiCalculator;
 
     // Initialization with retries
     function retryInitialization(maxRetries = 3, currentRetry = 0) {
@@ -264,7 +267,7 @@
                 }
             })
         ]).then(() => {
-            window.calculator = new window.FermiCalculator();
+            window.calculator = new FermiCalculator();
             window.calculator.initialize();
         }).catch(error => {
             console.error('Failed to initialize calculator:', error);
@@ -274,6 +277,6 @@
         });
     }
 
-    // Start initialization with retries
+    // Start initialization
     retryInitialization();
 })();
