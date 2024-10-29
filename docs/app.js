@@ -1,5 +1,7 @@
+"use strict";
+
 // Wrap everything in a self-executing function
-(function() {
+(() => {
     // Define translations object if not already defined
     window.translations = window.translations || {};
 
@@ -252,10 +254,7 @@
         }
     }
 
-    // Make FermiCalculator available globally
-    window.FermiCalculator = FermiCalculator;
-
-    // Initialization with retries
+    // Initialize with retries
     function retryInitialization(maxRetries = 3, currentRetry = 0) {
         Promise.all([
             translationsLoaded,
@@ -267,8 +266,9 @@
                 }
             })
         ]).then(() => {
-            window.calculator = new FermiCalculator();
-            window.calculator.initialize();
+            const calculator = new FermiCalculator();
+            calculator.initialize();
+            window.calculator = calculator;
         }).catch(error => {
             console.error('Failed to initialize calculator:', error);
             if (currentRetry < maxRetries) {
