@@ -1,5 +1,24 @@
 // Wrap everything in a self-executing function
 (function() {
+    // Define translations object if not already defined
+    window.translations = window.translations || {};
+
+    // Wait for translations to load
+    const translationsLoaded = new Promise((resolve, reject) => {
+        if (window.translations && Object.keys(window.translations).length > 0) {
+            resolve();
+        } else {
+            const timeout = setTimeout(() => {
+                reject(new Error('Translations loading timeout'));
+            }, 5000);
+
+            window.addEventListener('translationsLoaded', () => {
+                clearTimeout(timeout);
+                resolve();
+            });
+        }
+    });
+
     // FermiCalculator class definition
     class FermiCalculator {
         constructor() {
@@ -233,24 +252,7 @@
         }
     }
 
-    // Initialization code
-    window.translations = window.translations || {};
-
-    const translationsLoaded = new Promise((resolve, reject) => {
-        if (window.translations && Object.keys(window.translations).length > 0) {
-            resolve();
-        } else {
-            const timeout = setTimeout(() => {
-                reject(new Error('Translations loading timeout'));
-            }, 5000);
-
-            window.addEventListener('translationsLoaded', () => {
-                clearTimeout(timeout);
-                resolve();
-            });
-        }
-    });
-
+    // Initialization with retries
     function retryInitialization(maxRetries = 3, currentRetry = 0) {
         Promise.all([
             translationsLoaded,
